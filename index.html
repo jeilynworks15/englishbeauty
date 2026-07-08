@@ -365,10 +365,60 @@
 
         </div>
     </div>
+<!-- JAVASCRIPT SYSTEM (Control de Pestañas, Modales y Voz) -->
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
 
+            const buttons = [
+                { id: 'btn-panel' },
+                { id: 'btn-modulos' }
+            ];
+
+            buttons.forEach(btn => {
+                const el = document.getElementById(btn.id);
+                if (el) {
+                    el.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition text-sm text-left";
+                }
+            });
+
+            const activeEl = document.getElementById('btn-' + tabId);
+            if (activeEl) {
+                activeEl.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-fuchsia-500/10 to-transparent border-l-2 border-fuchsia-500 text-fuchsia-400 font-medium transition text-sm text-left";
+            }
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85; 
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+
+</body>
+</html>
  
 <!-- MODAL DE LA CLASE 2 -->
    
 
-</body>
-</html>
