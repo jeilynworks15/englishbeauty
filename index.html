@@ -2,76 +2,77 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Beauty English - Keratin Talk Course</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beauty English: Keratin Talk</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-950 text-slate-200 min-h-screen p-4 md:p-8">
+<body class="bg-slate-950 text-slate-200 font-sans p-4 md:p-10">
 
-    <div class="max-w-4xl mx-auto space-y-8">
-        <header class="text-center mb-10">
-            <h1 class="text-4xl font-black text-fuchsia-500 uppercase tracking-tighter">Beauty English: Keratin Talk</h1>
-            <p class="text-slate-400 mt-2">Curso interactivo de atención al cliente y técnicas de salón</p>
-        </header>
+    <div class="max-w-4xl mx-auto">
+        <div class="mb-10 border-b border-slate-800 pb-6">
+            <h1 class="text-3xl font-black text-fuchsia-500 uppercase tracking-tighter">Beauty English: Keratin Talk</h1>
+            <p class="text-slate-400 text-sm">Portal oficial de capacitación - Módulos de atención técnica.</p>
+        </div>
 
-        <div id="course-content" class="grid gap-6">
+        <div id="content" class="space-y-8">
             </div>
     </div>
 
     <script>
-        // Data del curso extraída de los documentos oficiales
-        const curso = [
+        const curriculum = [
             {
-                unidad: "Unidad 1: Greetings & Welcome",
+                u: "Unidad 1",
                 clases: [
-                    { id: 1, titulo: "Welcoming the Customer", vocab: [["Good morning", "Buenos días"], ["Welcome to the salon", "Bienvenido al salón"], ["Please, take a seat", "Por favor, tome asiento"]], link: "https://wordwall.net/es/resource/clase1-bienvenida" },
-                    { id: 2, titulo: "Personal Information", vocab: [["What is your name?", "¿Cuál es su nombre?"], ["Can you spell it?", "¿Puede deletrearlo?"]], link: "https://wordwall.net/es/resource/clase2-datos" }
+                    { id: 1, title: "Welcoming the Customer", v: [["Good morning/afternoon", "Buenos días/tardes"], ["Welcome to the salon", "Bienvenido al salón"], ["Please, take a seat", "Por favor, tome asiento"]], link: "#" },
+                    { id: 2, title: "Personal Information", v: [["What is your name?", "¿Cuál es su nombre?"], ["Can you spell it?", "¿Puede deletrearlo?"]], link: "#" }
                 ]
             },
             {
-                unidad: "Unidad 2: Giving Information",
+                u: "Unidad 2",
                 clases: [
-                    { id: 3, titulo: "Explaining the Process", vocab: [["First, we wash hair", "Primero, lavamos el cabello"], ["Then, we dry it", "Luego, lo secamos"], ["We use the flat iron", "Usamos la plancha"]], link: "https://wordwall.net/es/resource/clase3-keratin-process" },
-                    { id: 4, titulo: "Talking about Price and Time", vocab: [["The price is $40", "El precio es $40"], ["It takes two hours", "Toma dos horas"], ["Pay by cash or card", "Pagar en efectivo o tarjeta"]], link: "https://wordwall.net/es/resource/clase4-price-time" }
+                    { id: 3, title: "Explaining the Process", v: [["First, we wash hair", "Primero, lavamos el cabello"], ["Then, we dry it", "Luego, lo secamos"], ["We use the flat iron", "Usamos la plancha"]], link: "#" },
+                    { id: 4, title: "Talking about Price and Time", v: [["The price is $40", "El precio es $40"], ["It takes two hours", "Toma dos horas"], ["Pay by cash or card", "Pagar en efectivo o tarjeta"]], link: "#" }
                 ]
             },
             {
-                unidad: "Unidad 3: Customer Interaction",
+                u: "Unidad 3",
                 clases: [
-                    { id: 5, titulo: "Customer Consultation", vocab: [["First keratin treatment?", "¿Primer tratamiento?"], ["Any allergies?", "¿Alguna alergia?"], ["Is hair colored?", "¿Cabello teñido?"]], link: "https://wordwall.net/es/resource/clase5-diagnostico" },
-                    { id: 6, titulo: "Saying Goodbye", vocab: [["Thank you for coming", "Gracias por venir"], ["Have a nice day", "Que tenga buen día"], ["See you next time", "Hasta la próxima"]], link: "https://wordwall.net/es/resource/clase6-despedida" }
+                    { id: 5, title: "Customer Consultation", v: [["First keratin treatment?", "¿Primer tratamiento?"], ["Any allergies?", "¿Alguna alergia?"], ["Is hair colored?", "¿Cabello teñido?"]], link: "#" },
+                    { id: 6, title: "Saying Goodbye", v: [["Thank you for coming", "Gracias por venir"], ["Have a nice day", "Que tenga buen día"], ["See you next time", "Hasta la próxima"]], link: "#" }
                 ]
             }
         ];
 
         function render() {
-            const container = document.getElementById('course-content');
-            curso.forEach(u => {
-                let html = `<section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-                    <h2 class="text-xl font-bold text-cyan-400 mb-4">${u.unidad}</h2>
+            const container = document.getElementById('content');
+            curriculum.forEach(unidad => {
+                let html = `<div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                    <h2 class="text-lg font-bold text-cyan-400 mb-4 uppercase tracking-widest">${unidad.u}</h2>
                     <div class="grid md:grid-cols-2 gap-4">`;
-                u.clases.forEach(c => {
+                unidad.clases.forEach(c => {
                     html += `
-                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
-                        <h3 class="font-bold text-white mb-2">Clase ${c.id}: ${c.titulo}</h3>
-                        <ul class="text-sm text-slate-400 mb-4 space-y-1">
-                            ${c.vocab.map(v => `<li><i class="fa-solid fa-check text-fuchsia-500 mr-2 text-[10px]"></i><strong>${v[0]}</strong>: ${v[1]}</li>`).join('')}
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 hover:border-fuchsia-900 transition">
+                        <h3 class="font-bold text-white mb-3 text-sm">Clase ${c.id}: ${c.title}</h3>
+                        <ul class="text-xs text-slate-400 space-y-2 mb-4">
+                            ${c.v.map(v => `<li><span class="text-fuchsia-500 font-bold">●</span> ${v[0]} <span class="text-slate-600">/ ${v[1]}</span></li>`).join('')}
                         </ul>
                         <div class="flex gap-2">
-                            <button onclick="speak('${c.vocab.map(v => v[0]).join('. ')}')" class="bg-fuchsia-600 px-3 py-1 rounded text-xs font-bold text-white">Escuchar</button>
-                            <a href="${c.link}" target="_blank" class="bg-slate-700 px-3 py-1 rounded text-xs font-bold text-white">Juego</a>
+                            <button onclick="speak('${c.v.map(v => v[0]).join('. ')}')" class="bg-fuchsia-600 px-3 py-1.5 rounded-lg text-xs font-bold text-white hover:bg-fuchsia-500 transition">Escuchar</button>
+                            <a href="${c.link}" target="_blank" class="bg-slate-800 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-300 border border-slate-700 hover:bg-slate-700">Practicar</a>
                         </div>
                     </div>`;
                 });
-                html += `</div></section>`;
+                html += `</div></div>`;
                 container.innerHTML += html;
             });
         }
 
         function speak(text) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US';
-            window.speechSynthesis.speak(utterance);
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'en-US';
+            u.rate = 0.9;
+            window.speechSynthesis.speak(u);
         }
 
         render();
