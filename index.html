@@ -37,21 +37,23 @@
                         <i class="fa-solid fa-graduation-cap w-5 text-center text-base"></i>
                         Módulos de Clase
                     </button>
-                    <button onclick="switchTab('anuncios')" id="btn-anuncios" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition text-sm text-left">
-                        <i class="fa-solid fa-bullhorn w-5 text-center text-base"></i>
-                        Anuncios del Campus
-                    </button>
                 </nav>
             </div>
 
-            <!-- Perfil de la Profesora -->
-            <div class="mt-8 pt-4 border-t border-slate-800 flex items-center gap-3">
-                <div class="h-10 w-10 rounded-full bg-fuchsia-600 flex items-center justify-center text-white font-bold shadow-md shadow-fuchsia-600/20">
-                    J
+            <!-- Perfil de las Profesoras -->
+            <div class="mt-8 pt-4 border-t border-slate-800 space-y-3">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Your Teachers</span>
+                <div class="flex items-center gap-2">
+                    <div class="h-7 w-7 rounded-full bg-fuchsia-600 flex items-center justify-center text-white font-bold text-xs">J</div>
+                    <span class="text-xs text-slate-300 font-medium">Miss Jeilyn Gómez</span>
                 </div>
-                <div>
-                    <p class="text-sm font-semibold text-slate-200">Teacher Jeilyn</p>
-                    <p class="text-xs text-slate-500">Administradora</p>
+                <div class="flex items-center gap-2">
+                    <div class="h-7 w-7 rounded-full bg-cyan-600 flex items-center justify-center text-white font-bold text-xs">D</div>
+                    <span class="text-xs text-slate-300 font-medium">Miss Daniela Manzaba</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="h-7 w-7 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-xs">J</div>
+                    <span class="text-xs text-slate-300 font-medium">Miss Josselyne Lucas</span>
                 </div>
             </div>
         </aside>
@@ -62,53 +64,64 @@
             <!-- PESTAÑA 1: PANEL PRINCIPAL -->
             <div id="tab-panel" class="tab-content">
                 <div class="mb-8">
-                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">¡Welcome back!</h1>
-                    <p class="text-slate-400 text-sm mt-1">Aquí tienes las novedades de tu curso de inglés especializado en keratinas.</p>
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">¡Welcome to Keratin Talk!</h1>
+                    <p class="text-slate-400 text-sm mt-1">Este curso práctico está diseñado para estilistas que desean atender clientes angloparlantes durante un tratamiento de keratina.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Laboratorio de Pronunciación -->
-                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="h-10 w-10 rounded-xl bg-fuchsia-500/10 flex items-center justify-center text-fuchsia-400">
-                                <i class="fa-solid fa-microphone-lines text-lg"></i>
+                <!-- Detalles Generales -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                        <span class="text-xs text-slate-500 block mb-1">Duration</span>
+                        <span class="text-sm font-bold text-slate-200">3 Weeks</span>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                        <span class="text-xs text-slate-500 block mb-1">Frequency</span>
+                        <span class="text-sm font-bold text-slate-200">2 Classes / Week</span>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                        <span class="text-xs text-slate-500 block mb-1">Skill Focus</span>
+                        <span class="text-sm font-bold text-fuchsia-400">Speaking 🗣️</span>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                        <span class="text-xs text-slate-500 block mb-1">Modality</span>
+                        <span class="text-sm font-bold text-cyan-400">Zoom Online</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Calificaciones -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 md:col-span-1">
+                        <h3 class="font-bold text-slate-200 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-star text-amber-400 text-sm"></i> Grading Scheme
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between border-b border-slate-800 pb-2">
+                                <span class="text-xs text-slate-400">Participation</span>
+                                <span class="text-xs font-bold text-slate-200">30%</span>
                             </div>
-                            <div>
-                                <h3 class="font-bold text-slate-200">Pronunciation Lab</h3>
-                                <p class="text-xs text-slate-500">Términos técnicos de Salón</p>
+                            <div class="flex justify-between border-b border-slate-800 pb-2">
+                                <span class="text-xs text-slate-400">Assignments</span>
+                                <span class="text-xs font-bold text-slate-200">40%</span>
+                            </div>
+                            <div class="flex justify-between pb-1">
+                                <span class="text-xs text-slate-400">Final Oral Exam</span>
+                                <span class="text-xs font-bold text-fuchsia-400">30%</span>
                             </div>
                         </div>
-                        <p class="text-slate-400 text-sm mb-4">Practica la pronunciación correcta de los químicos de la keratina.</p>
-                        <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 mb-4">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <span class="text-xs font-mono text-fuchsia-400 uppercase tracking-wider block mb-1">Palabra Clave</span>
-                                    <span class="text-base font-bold text-white">Formaldehyde</span>
-                                    <span class="text-xs text-slate-500 block italic">/fɔːrˈmældəhaɪd/</span>
-                                </div>
-                                <button onclick="alert('Reproduciendo audio: Formaldehyde')" class="h-9 w-9 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition">
-                                    <i class="fa-solid fa-volume-high text-sm"></i>
-                                </button>
-                            </div>
+                        <div class="mt-4 p-3 bg-slate-950 rounded-xl text-[11px] text-slate-500 leading-normal">
+                            <strong>Pass:</strong> 100% - 70% <br>
+                            <strong>Fail:</strong> Below 70%
                         </div>
                     </div>
 
-                    <!-- Tarjeta informativa de progreso rápido -->
-                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+                    <!-- Botón de Acción Rápida -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 md:col-span-2 flex flex-col justify-between">
                         <div>
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="h-10 w-10 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400">
-                                    <i class="fa-solid fa-graduation-cap text-lg"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-slate-200">Tu Progreso</h3>
-                                    <p class="text-xs text-slate-500">Curso en marcha</p>
-                                </div>
-                            </div>
-                            <p class="text-slate-400 text-sm mb-4">Tienes acceso completo a las lecciones técnicas de estilismo internacional.</p>
+                            <h3 class="font-bold text-slate-200 mb-2">Are you ready to practice?</h3>
+                            <p class="text-slate-400 text-sm">Aprende los diálogos, saludos, instrucciones de post-cuidado, manejo de precios y la interacción completa de servicio al cliente.</p>
                         </div>
-                        <button onclick="switchTab('modulos')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-white text-xs font-bold transition text-center">
-                            Ir a mis clases
+                        <button onclick="switchTab('modulos')" class="w-full mt-4 py-3 rounded-xl bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-white text-xs font-bold transition text-center tracking-wide uppercase">
+                            Open Lesson Modules
                         </button>
                     </div>
                 </div>
@@ -117,87 +130,132 @@
             <!-- PESTAÑA 2: MÓDULOS DE CLASE -->
             <div id="tab-modulos" class="tab-content hidden">
                 <div class="mb-8">
-                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Módulos de Aprendizaje</h1>
-                    <p class="text-slate-400 text-sm mt-1 font-medium">Domina el vocabulario técnico de principio a fin.</p>
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Course Syllabus</h1>
+                    <p class="text-slate-400 text-sm mt-1">Explora las 3 unidades interactivas diseñadas para tu capacitación.</p>
                 </div>
 
-                <!-- Lista de Lecciones -->
-                <div class="space-y-4">
-                    <!-- Módulo 1 -->
-                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <div class="flex items-start gap-4">
-                            <div class="h-12 w-12 rounded-xl bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-400 flex items-center justify-center shrink-0 font-bold font-mono">01</div>
-                            <div>
-                                <h3 class="font-bold text-slate-200 leading-snug">Hair Assessment & Consultation</h3>
-                                <p class="text-xs text-slate-400 mt-0.5 mb-2">Evaluación del cabello, tipos de daño y entrevista con el cliente en inglés.</p>
-                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 uppercase tracking-wide">Disponible</span>
-                            </div>
-                        </div>
-                        <button onclick="alert('Abriendo lección 1...')" class="py-2 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition shrink-0 w-full sm:w-auto text-center">
-                            Estudiar Lección
-                        </button>
-                    </div>
-
-                    <!-- Módulo 2 -->
-                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <div class="flex items-start gap-4">
-                            <div class="h-12 w-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 font-bold font-mono">02</div>
-                            <div>
-                                <h3 class="font-bold text-slate-200 leading-snug">Chemical Application & Processing</h3>
-                                <p class="text-xs text-slate-400 mt-0.5 mb-2">Instrucciones técnicas de aplicación, tiempos de pose y compuestos químicos.</p>
-                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 uppercase tracking-wide">Disponible</span>
-                            </div>
-                        </div>
-                        <button onclick="alert('Abriendo lección 2...')" class="py-2 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition shrink-0 w-full sm:w-auto text-center">
-                            Estudiar Lección
-                        </button>
-                    </div>
-
-                    <!-- Módulo 3 -->
-                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <div class="flex items-start gap-4">
-                            <div class="h-12 w-12 rounded-xl bg-slate-800 border border-slate-700 text-slate-500 flex items-center justify-center shrink-0 font-bold font-mono">03</div>
-                            <div>
-                                <h3 class="font-bold text-slate-400 leading-snug">Flat Ironing & Aftercare English</h3>
-                                <p class="text-xs text-slate-500 mt-0.5 mb-2">Sellado perfecto y recomendaciones post-tratamiento para el hogar en inglés.</p>
-                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-500 uppercase tracking-wide">Próximamente</span>
-                            </div>
-                        </div>
-                        <button disabled class="py-2 px-4 rounded-xl bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-600 cursor-not-allowed shrink-0 w-full sm:w-auto text-center">
-                            Bloqueado
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PESTAÑA 3: ANUNCIOS -->
-            <div id="tab-anuncios" class="tab-content hidden">
+                <!-- UNIT 1 -->
                 <div class="mb-8">
-                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Anuncios de la Academia</h1>
-                    <p class="text-slate-400 text-sm mt-1">Mantente al tanto de avisos importantes y sesiones en vivo.</p>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="px-2.5 py-1 rounded bg-fuchsia-500/10 text-fuchsia-400 text-xs font-bold font-mono">UNIT 1</span>
+                        <h2 class="text-lg font-bold text-slate-200">Welcome to the Client (13-18 July)</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Class 1 -->
+                        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-xs text-slate-500 font-semibold font-mono">CLASS 01</span>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 uppercase">Available</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-200 mb-1">Greetings and Introduction</h4>
+                            <p class="text-xs text-slate-400 mb-3">Hello, Hi, Good morning/afternoon, Please have a seat.</p>
+                            <div class="bg-slate-950 p-3 rounded-lg text-xs mb-3 text-slate-400 border border-slate-800">
+                                <strong>Task:</strong> Greeting and introduction in the online class.
+                            </div>
+                            <button onclick="alert('Estudiando expresiones de saludo...')" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg text-slate-300 transition">View Phrases</button>
+                        </div>
+                        <!-- Class 2 -->
+                        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-xs text-slate-500 font-semibold font-mono">CLASS 02</span>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 uppercase">Available</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-200 mb-1">Explanation of the Process</h4>
+                            <p class="text-xs text-slate-400 mb-3">Wash your hair, dry, apply keratin, use the flat iron.</p>
+                            <div class="bg-slate-950 p-3 rounded-lg text-xs mb-3 text-slate-400 border border-slate-800">
+                                <strong>Task:</strong> Explain the keratin process in a voice recorder.
+                            </div>
+                            <button onclick="alert('Abriendo grabadora de voz...')" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg text-slate-300 transition">Record Audio</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-center text-slate-500 text-sm">
-                    No hay anuncios nuevos por el momento. ¡Buen trabajo!
+
+                <!-- UNIT 2 -->
+                <div class="mb-8">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="px-2.5 py-1 rounded bg-cyan-500/10 text-cyan-400 text-xs font-bold font-mono">UNIT 2</span>
+                        <h2 class="text-lg font-bold text-slate-200">Giving Information (20-25 July)</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Class 3 -->
+                        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-xs text-slate-500 font-semibold font-mono">CLASS 03</span>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-500 uppercase">Locked</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-400 mb-1">Giving Instructions & Aftercare</h4>
+                            <p class="text-xs text-slate-500 mb-3">Please don't move, wait a moment, sulfate-free shampoo.</p>
+                            <div class="bg-slate-950 p-3 rounded-lg text-xs mb-3 text-slate-600 border border-slate-900">
+                                <strong>Task:</strong> Give aftercare instructions to a partner.
+                            </div>
+                            <button disabled class="w-full py-2 bg-slate-950 border border-slate-800 text-xs font-medium rounded-lg text-slate-600 cursor-not-allowed">Starts July 20</button>
+                        </div>
+                        <!-- Class 4 -->
+                        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-xs text-slate-500 font-semibold font-mono">CLASS 04</span>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-500 uppercase">Locked</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-400 mb-1">Prices and Service Duration</h4>
+                            <p class="text-xs text-slate-500 mb-3">The price is $40. Pay by cash/card. Finish in 30 min.</p>
+                            <div class="bg-slate-950 p-3 rounded-lg text-xs mb-3 text-slate-600 border border-slate-900">
+                                <strong>Task:</strong> Simulate conversation about price & time.
+                            </div>
+                            <button disabled class="w-full py-2 bg-slate-950 border border-slate-800 text-xs font-medium rounded-lg text-slate-600 cursor-not-allowed">Starts July 20</button>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- UNIT 3 -->
+                <div class="mb-8">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="px-2.5 py-1 rounded bg-amber-500/10 text-amber-400 text-xs font-bold font-mono">UNIT 3</span>
+                        <h2 class="text-lg font-bold text-slate-200">Customer Interaction (27 July - 1 August)</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Class 5 -->
+                        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-xs text-slate-500 font-semibold font-mono">CLASS 05</span>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-500 uppercase">Locked</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-400 mb-1">Maintaining Simple Conversations</h4>
+                            <p class="text-xs text-slate-500 mb-3">Is this your first treatment? Any allergies? Hair colored?</p>
+                            <div class="bg-slate-950 p-3 rounded-lg text-xs mb-3 text-slate-600 border border-slate-900">
+                                <strong>Task:</strong> Practice Q&A common client dialogue.
+                            </div>
+                            <button disabled class="w-full py-2 bg-slate-950 border border-slate-800 text-xs font-medium rounded-lg text-slate-600 cursor-not-allowed">Starts July 27</button>
+                        </div>
+                        <!-- Class 6 -->
+                        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-xs text-slate-500 font-semibold font-mono">CLASS 06</span>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-500 uppercase">Locked</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-400 mb-1">Closing & Farewell</h4>
+                            <p class="text-xs text-slate-500 mb-3">Thank you for coming. Have a nice day. See you next time.</p>
+                            <div class="bg-slate-950 p-3 rounded-lg text-xs mb-3 text-slate-600 border border-slate-900">
+                                <strong>Task:</strong> Final Oral Performance: Complete interaction role-play.
+                            </div>
+                            <button disabled class="w-full py-2 bg-slate-950 border border-slate-800 text-xs font-medium rounded-lg text-slate-600 cursor-not-allowed">Starts July 27</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </main>
     </div>
 
-    <!-- SISTEMA INTERACTIVO DE PESTAÑAS (JAVASCRIPT) -->
+    <!-- JAVASCRIPT SYSTEM -->
     <script>
         function switchTab(tabId) {
-            // Ocultar todos los contenidos
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            
-            // Mostrar el seleccionado
             document.getElementById('tab-' + tabId).classList.remove('hidden');
 
-            // Limpiar estilos activos de todos los botones del menú
             const buttons = [
-                { id: 'btn-panel', icon: 'fa-chart-pie' },
-                { id: 'btn-modulos', icon: 'fa-graduation-cap' },
-                { id: 'btn-anuncios', icon: 'fa-bullhorn' }
+                { id: 'btn-panel' },
+                { id: 'btn-modulos' }
             ];
 
             buttons.forEach(btn => {
@@ -207,7 +265,6 @@
                 }
             });
 
-            // Darle estilo activo al botón presionado
             const activeEl = document.getElementById('btn-' + tabId);
             if (activeEl) {
                 activeEl.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-fuchsia-500/10 to-transparent border-l-2 border-fuchsia-500 text-fuchsia-400 font-medium transition text-sm text-left";
