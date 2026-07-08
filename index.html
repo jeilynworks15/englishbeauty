@@ -418,6 +418,15 @@
                 modal.classList.add('hidden');
                 document.body.style.overflow = 'auto'; // Restaura el scroll
             }
+    // Sistema Nativo de Pronunciación de Texto a Voz
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85; // Velocidad pausada ideal para aprender
+                window.speechSynthesis.speak(utterance);
+            }
         }
     </script>
 
