@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beauty English Course</title>
+    <!-- Tailwind CSS para los diseños hermosos -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para los íconos de bocinas y botones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex font-sans">
 
+    <!-- BARRA LATERAL (Sidebar) -->
     <aside class="w-64 bg-slate-900 border-r border-slate-800 p-6 flex flex-col justify-between shrink-0">
         <div class="space-y-6">
+            <!-- Logo -->
             <div class="flex items-center gap-2.5 px-2">
                 <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-fuchsia-500 to-purple-600 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-fuchsia-500/20">
                     BЕ
@@ -21,6 +25,7 @@
                 </div>
             </div>
 
+            <!-- Menú de Navegación Lateral -->
             <nav class="space-y-1">
                 <button id="btn-panel" onclick="switchTab('panel')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-fuchsia-500/10 to-transparent border-l-2 border-fuchsia-500 text-fuchsia-400 font-medium transition text-sm text-left">
                     <i class="fa-solid fa-chart-pie text-base"></i>
@@ -33,14 +38,17 @@
             </nav>
         </div>
 
+        <!-- Creadores -->
         <div class="p-4 bg-slate-950/50 border border-slate-800/60 rounded-xl">
             <span class="text-[10px] font-bold text-slate-500 block font-mono uppercase tracking-wider mb-1">Instructors</span>
             <p class="text-xs text-slate-400 font-medium truncate">M. Daniela, J. Josselyne, J. Jeilyn</p>
         </div>
     </aside>
 
+    <!-- CONTENIDO PRINCIPAL -->
     <main class="flex-1 p-10 overflow-y-auto max-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900/50 via-slate-950 to-slate-950">
         
+        <!-- PESTAÑA 1: PANEL DE INICIO -->
         <div id="tab-panel" class="tab-content space-y-8">
             <div>
                 <span class="text-xs font-bold text-fuchsia-400 font-mono tracking-wider uppercase block mb-1">Welcome Back</span>
@@ -48,12 +56,14 @@
                 <p class="text-sm text-slate-400 mt-1 max-w-xl">¡Bienvenida! Este portal interactivo te ayudará a dominar el vocabulario técnico en inglés para salones de belleza y estilistas profesionales.</p>
             </div>
 
+            <!-- CONTENEDOR DEL SYLLABUS COMPLETO -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-3xl">
                 <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-book-open text-fuchsia-400"></i> Programa de Estudios (Syllabus)
                 </h3>
                 
                 <div class="space-y-6">
+                    <!-- Bloque Unidad 1 -->
                     <div>
                         <h4 class="text-xs font-bold text-fuchsia-400 mb-2 tracking-wide uppercase">Unidad 1: Welcome to the Client & Keratin Process</h4>
                         <div class="space-y-3 pl-2 border-l border-slate-800">
@@ -68,12 +78,17 @@
                         </div>
                     </div>
 
+                    <!-- Bloque Unidad 2 -->
                     <div>
                         <h4 class="text-xs font-bold text-indigo-400 mb-2 tracking-wide uppercase">Unidad 2: Giving Information</h4>
                         <div class="space-y-3 pl-2 border-l border-slate-800">
                             <div class="py-1">
                                 <h5 class="text-sm font-bold text-slate-200">Clase 03 - Giving Information (During & After the Process)</h5>
-                                <p class="text-xs text-slate-400 mt-0.5">Aprenderemos a dar instrucciones y consejos de cuidado posterior en inglés para asegurar un resultado óptimo en el tratamiento.</p>
+                                <p class="text-xs text-slate-400 mt-0.5">Instrucciones sencillas de cuidado posterior (no lavarse por 3 días, usar shampoo sin sulfatos).</p>
+                            </div>
+                            <div class="py-1">
+                                <h5 class="text-sm font-bold text-slate-200">Clase 04 - Talking about Price and Time</h5>
+                                <p class="text-xs text-slate-400 mt-0.5">Informar adecuadamente sobre el costo del tratamiento, duración total y opciones de pago disponibles.</p>
                             </div>
                         </div>
                     </div>
@@ -81,8 +96,10 @@
             </div>
         </div>
 
+        <!-- PESTAÑA 2: MÓDULOS DE CLASE -->
         <div id="tab-modulos" class="tab-content hidden space-y-8">
             
+            <!-- CONTENEDOR DE LA UNIDAD 1 -->
             <div class="mb-8">
                 <div class="flex items-center gap-2 mb-4">
                     <span class="px-2.5 py-1 rounded bg-fuchsia-500/10 text-fuchsia-400 text-xs font-bold font-mono">UNIT 1</span>
@@ -90,6 +107,7 @@
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Tarjeta: CLASE 1 -->
                     <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
                         <div>
                             <div class="flex justify-between items-start mb-2">
@@ -105,6 +123,7 @@
                         <button onclick="openModal('modal-clase1')" class="w-full py-2 bg-gradient-to-r from-fuchsia-500 to-purple-600 text-xs font-bold rounded-lg text-white transition shadow-md shadow-fuchsia-500/10 hover:brightness-110">View Lesson Content</button>
                     </div>
 
+                    <!-- Tarjeta: CLASE 2 -->
                     <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
                         <div>
                             <div class="flex justify-between items-start mb-2">
@@ -122,6 +141,7 @@
                 </div>
             </div>
 
+            <!-- CONTENEDOR DE LA UNIDAD 2 -->
             <div class="mb-8">
                 <div class="flex items-center gap-2 mb-4">
                     <span class="px-2.5 py-1 rounded bg-indigo-500/10 text-indigo-400 text-xs font-bold font-mono">UNIT 2</span>
@@ -129,6 +149,7 @@
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Tarjeta: CLASE 3 -->
                     <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
                         <div>
                             <div class="flex justify-between items-start mb-2">
@@ -143,12 +164,31 @@
                         </div>
                         <button onclick="openModal('modal-clase3')" class="w-full py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-xs font-bold rounded-lg text-white transition shadow-md shadow-indigo-500/10 hover:brightness-110">View Lesson Content</button>
                     </div>
+
+                    <!-- Tarjeta: CLASE 4 -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-xs text-slate-500 font-semibold font-mono">CLASS 04</span>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 uppercase">Available</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-200 mb-1">Talking about Price and Time</h4>
+                            <p class="text-xs text-slate-400 mb-3">The price is $40, Around two hours, Pay by cash/card.</p>
+                            <div class="bg-slate-950 p-3 rounded-lg text-xs mb-4 text-slate-400 border border-slate-800">
+                                <strong>Task:</strong> Role-play interactivo de precio, tiempo y pago.
+                            </div>
+                        </div>
+                        <button onclick="openModal('modal-clase4')" class="w-full py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-xs font-bold rounded-lg text-white transition shadow-md shadow-purple-500/10 hover:brightness-110">View Lesson Content</button>
+                    </div>
                 </div>
             </div>
 
         </div>
     </main>
 
+    <!-- ==================== MODALES (VENTANAS MÁGICAS OCULTAS) ==================== -->
+
+    <!-- MODAL DE LA CLASE 1 -->
     <div id="modal-clase1" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-3xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
             <div class="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-900/50">
@@ -198,36 +238,9 @@
                             </div>
                             <span class="text-xs text-slate-400">¡Bienvenido(a)!</span>
                         </div>
-                        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
-                            <div class="flex items-center gap-2">
-                                <button onclick="speak('How are you?')" class="text-fuchsia-400 hover:text-fuchsia-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
-                                <span class="font-bold text-slate-200 text-xs">How are you?</span>
-                            </div>
-                            <span class="text-xs text-slate-400">¿Cómo está?</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
-                            <div class="flex items-center gap-2">
-                                <button onclick="speak('My name is')" class="text-fuchsia-400 hover:text-fuchsia-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
-                                <span class="font-bold text-slate-200 text-xs">My name is...</span>
-                            </div>
-                            <span class="text-xs text-slate-400">Mi nombre es...</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
-                            <div class="flex items-center gap-2">
-                                <button onclick="speak('Nice to meet you')" class="text-fuchsia-400 hover:text-fuchsia-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
-                                <span class="font-bold text-slate-200 text-xs">Nice to meet you.</span>
-                            </div>
-                            <span class="text-xs text-slate-400">Mucho gusto</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
-                            <div class="flex items-center gap-2">
-                                <button onclick="speak('Please, have a seat')" class="text-fuchsia-400 hover:text-fuchsia-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
-                                <span class="font-bold text-slate-200 text-xs">Please, have a seat.</span>
-                            </div>
-                            <span class="text-xs text-slate-400">Por favor, tome asiento</span>
-                        </div>
                     </div>
                 </div>
+                <!-- Wordwall Actividad -->
                 <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
                         <div class="h-10 w-10 bg-amber-500/10 text-amber-400 flex items-center justify-center rounded-xl text-lg shrink-0">
@@ -247,6 +260,7 @@
         </div>
     </div>
 
+    <!-- MODAL DE LA CLASE 2 -->
     <div id="modal-clase2" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-3xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
             <div class="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-900/50">
@@ -282,39 +296,7 @@
                             </div>
                             <span class="text-xs text-slate-400">Primero, lavamos tu cabello.</span>
                         </div>
-                        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
-                            <div class="flex items-center gap-2">
-                                <button onclick="speak('Then, we dry your hair.')" class="text-cyan-400 hover:text-cyan-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
-                                <span class="font-bold text-slate-200 text-xs"><span class="text-cyan-400">Then</span>, we dry your hair.</span>
-                            </div>
-                            <span class="text-xs text-slate-400">Luego, secamos tu cabello.</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
-                            <div class="flex items-center gap-2">
-                                <button onclick="speak('Next, we apply the keratin.')" class="text-cyan-400 hover:text-cyan-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
-                                <span class="font-bold text-slate-200 text-xs"><span class="text-cyan-400">Next</span>, we apply the keratin.</span>
-                            </div>
-                            <span class="text-xs text-slate-400">Después, aplicamos la keratina.</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
-                            <div class="flex items-center gap-2">
-                                <button onclick="speak('Finally, we use the flat iron.')" class="text-cyan-400 hover:text-cyan-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
-                                <span class="font-bold text-slate-200 text-xs"><span class="text-cyan-400">Finally</span>, we use the flat iron.</span>
-                            </div>
-                            <span class="text-xs text-slate-400">Finalmente, usamos la plancha.</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
-                            <div class="flex items-center gap-2">
-                                <button onclick="speak('The treatment takes about two hours.')" class="text-cyan-400 hover:text-cyan-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
-                                <span class="font-bold text-slate-200 text-xs">The treatment takes about two hours.</span>
-                            </div>
-                            <span class="text-xs text-slate-400">El tratamiento toma aprox. dos horas.</span>
-                        </div>
                     </div>
-                </div>
-                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
-                    <span class="text-[10px] font-bold text-amber-400 block"><i class="fa-solid fa-microphone-lines mr-1"></i> TAREA OFICIAL</span>
-                    <p class="text-xs text-slate-300">Graben un audio de 30 a 45 segundos explicando el proceso completo del tratamiento de keratina utilizando las expresiones aprendidas.</p>
                 </div>
             </div>
             <div class="p-4 border-t border-slate-800 bg-slate-950 flex justify-end">
@@ -323,6 +305,7 @@
         </div>
     </div>
 
+    <!-- MODAL DE LA CLASE 3 -->
     <div id="modal-clase3" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-3xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
             <div class="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-900/50">
@@ -337,7 +320,7 @@
             <div class="p-6 overflow-y-auto space-y-6 text-sm leading-relaxed text-slate-300">
                 <div class="p-4 bg-gradient-to-r from-indigo-500/10 to-transparent border-l-4 border-indigo-500 rounded-r-xl">
                     <h4 class="font-bold text-white mb-1"><i class="fa-solid fa-bullseye text-indigo-400 mr-2"></i>Objetivo de la clase</h4>
-                    <p class="text-xs text-slate-400">Al finalizar la clase, los estudiantes podrán dar instrucciones sencillas en inglés a un cliente durante y después de un tratamiento de keratina.</p>
+                    <p class="text-xs text-slate-400">Al finalizar la clase, los estudiantes podrán dar instrucciones sencillas en inglés a un cliente después de un tratamiento de keratina.</p>
                 </div>
                 <div>
                     <h4 class="font-bold text-white mb-3 flex items-center gap-2">
@@ -353,13 +336,6 @@
                         </div>
                         <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
                             <div class="flex items-center gap-2">
-                                <button onclick="speak('Please, wait a moment.')" class="text-indigo-400 hover:text-indigo-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
-                                <span class="font-bold text-slate-200 text-xs">Please, wait a moment.</span>
-                            </div>
-                            <span class="text-xs text-slate-400">Por favor, espere un momento.</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
-                            <div class="flex items-center gap-2">
                                 <button onclick="speak('Don\'t wash your hair for three days.')" class="text-indigo-400 hover:text-indigo-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
                                 <span class="font-bold text-slate-200 text-xs">Don't wash your hair for 3 days.</span>
                             </div>
@@ -370,27 +346,16 @@
                                 <button onclick="speak('Don\'t tie your hair.')" class="text-indigo-400 hover:text-indigo-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
                                 <span class="font-bold text-slate-200 text-xs">Don't tie your hair.</span>
                             </div>
-                            <span class="text-xs text-slate-400">No amarre su cabello.</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
-                            <div class="flex items-center gap-2">
-                                <button onclick="speak('Don\'t get your hair wet.')" class="text-indigo-400 hover:text-indigo-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
-                                <span class="font-bold text-slate-200 text-xs">Don't get your hair wet.</span>
-                            </div>
-                            <span class="text-xs text-slate-400">No moje su cabello.</span>
+                            <span class="text-xs text-slate-400">No se recoja el cabello.</span>
                         </div>
                         <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
                             <div class="flex items-center gap-2">
                                 <button onclick="speak('Use sulfate-free shampoo.')" class="text-indigo-400 hover:text-indigo-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
                                 <span class="font-bold text-slate-200 text-xs">Use sulfate-free shampoo.</span>
                             </div>
-                            <span class="text-xs text-slate-400">Use shampoo sin sulfato.</span>
+                            <span class="text-xs text-slate-400">Use un shampoo sin sulfatos.</span>
                         </div>
                     </div>
-                </div>
-                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
-                    <span class="text-[10px] font-bold text-amber-400 block"><i class="fa-solid fa-pen-to-square mr-1"></i> TIP PROFESIONAL / TAREA</span>
-                    <p class="text-xs text-slate-300">Practiquen dar estos 6 consejos clave fluidamente para que sus clientas mantengan un alisado perfecto y duradero.</p>
                 </div>
             </div>
             <div class="p-4 border-t border-slate-800 bg-slate-950 flex justify-end">
@@ -399,31 +364,110 @@
         </div>
     </div>
 
+    <!-- MODAL DE LA CLASE 4 (NUEVO) -->
+    <div id="modal-clase4" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-3xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
+            <div class="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-900/50">
+                <div>
+                    <span class="text-xs font-bold text-purple-400 font-mono tracking-wider uppercase">Unit 2 - Class 04</span>
+                    <h3 class="text-xl font-bold text-white">Talking about Price and Time</h3>
+                </div>
+                <button onclick="closeModal('modal-clase4')" class="h-8 w-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-6 text-sm leading-relaxed text-slate-300">
+                <div class="p-4 bg-gradient-to-r from-purple-500/10 to-transparent border-l-4 border-purple-500 rounded-r-xl">
+                    <h4 class="font-bold text-white mb-1"><i class="fa-solid fa-bullseye text-purple-400 mr-2"></i>Objetivo de la clase</h4>
+                    <p class="text-xs text-slate-400">Al finalizar la clase, los estudiantes podrán informar el precio, la duración del tratamiento y las formas de pago en una conversación sencilla con un cliente.</p>
+                </div>
+                
+                <!-- Vocabulario de la Clase 4 -->
+                <div>
+                    <h4 class="font-bold text-white mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-comment-dollar text-purple-400"></i> Vocabulary & Prices (Click 🔊 to listen)
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
+                            <div class="flex items-center gap-2">
+                                <button onclick="speak('The price is forty dollars.')" class="text-purple-400 hover:text-purple-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
+                                <span class="font-bold text-slate-200 text-xs">The price is $40.</span>
+                            </div>
+                            <span class="text-xs text-slate-400">El precio es $40.</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
+                            <div class="flex items-center gap-2">
+                                <button onclick="speak('The treatment takes around two hours.')" class="text-purple-400 hover:text-purple-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
+                                <span class="font-bold text-slate-200 text-xs">The treatment takes around 2 hours.</span>
+                            </div>
+                            <span class="text-xs text-slate-400">El tratamiento dura aprox. 2 horas.</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
+                            <div class="flex items-center gap-2">
+                                <button onclick="speak('We will finish in thirty minutes.')" class="text-purple-400 hover:text-purple-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
+                                <span class="font-bold text-slate-200 text-xs">We will finish in 30 minutes.</span>
+                            </div>
+                            <span class="text-xs text-slate-400">Terminaremos en 30 minutos.</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60">
+                            <div class="flex items-center gap-2">
+                                <button onclick="speak('You can pay by cash.')" class="text-purple-400 hover:text-purple-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
+                                <span class="font-bold text-slate-200 text-xs">You can pay by cash.</span>
+                            </div>
+                            <span class="text-xs text-slate-400">Puede pagar en efectivo.</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800/60 shadow-sm col-span-1 md:col-span-2">
+                            <div class="flex items-center gap-2">
+                                <button onclick="speak('You can pay by card.')" class="text-purple-400 hover:text-purple-300 transition text-xs"><i class="fa-solid fa-volume-high"></i></button>
+                                <span class="font-bold text-slate-200 text-xs">You can pay by card.</span>
+                            </div>
+                            <span class="text-xs text-slate-400">Puede pagar con tarjeta.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección Interactiva de Role-play -->
+                <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-4">
+                    <h4 class="font-bold text-amber-400 flex items-center gap-2 text-xs uppercase tracking-wider">
+                        <i class="fa-solid fa-people-arrows"></i> Role-Play Activity
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-slate-900 rounded-lg border-l-2 border-fuchsia-500">
+                            <span class="text-[10px] font-bold text-fuchsia-400 block uppercase">Client 👤</span>
+                            <p class="text-xs italic text-slate-200">"Hello! How much is the treatment? How long does it take? Can I pay by card?"</p>
+                            <button onclick="speak('Hello! How much is the treatment? How long does it take? Can I pay by card?')" class="mt-1 text-[11px] text-fuchsia-400 hover:underline flex items-center gap-1"><i class="fa-solid fa-volume-high text-[10px]"></i> Listen client</button>
+                        </div>
+                        <div class="p-3 bg-slate-900 rounded-lg border-l-2 border-purple-500">
+                            <span class="text-[10px] font-bold text-purple-400 block uppercase">Stylist ✂️</span>
+                            <p class="text-xs italic text-slate-200">"Hello! The price is $40. The treatment takes around two hours. Yes, you can pay by card."</p>
+                            <button onclick="speak('Hello! The price is forty dollars. The treatment takes around two hours. Yes, you can pay by card.')" class="mt-1 text-[11px] text-purple-400 hover:underline flex items-center gap-1"><i class="fa-solid fa-volume-high text-[10px]"></i> Listen stylist</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 border-t border-slate-800 bg-slate-950 flex justify-end">
+                <button onclick="closeModal('modal-clase4')" class="px-4 py-2 bg-slate-800 text-xs font-medium rounded-lg text-slate-300">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MOTORES DE CONTROL (JAVASCRIPT) ==================== -->
     <script>
-        // Control inteligente de Pestañas Laterales
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById('tab-' + tabId).classList.remove('hidden');
 
-            const buttons = [
-                { id: 'btn-panel' },
-                { id: 'btn-modulos' }
-            ];
-
+            const buttons = [{ id: 'btn-panel' }, { id: 'btn-modulos' }];
             buttons.forEach(btn => {
                 const el = document.getElementById(btn.id);
-                if (el) {
-                    el.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition text-sm text-left";
-                }
+                if (el) el.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition text-sm text-left";
             });
 
             const activeEl = document.getElementById('btn-' + tabId);
-            if (activeEl) {
-                activeEl.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-fuchsia-500/10 to-transparent border-l-2 border-fuchsia-500 text-fuchsia-400 font-medium transition text-sm text-left";
-            }
+            if (activeEl) activeEl.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-fuchsia-500/10 to-transparent border-l-2 border-fuchsia-500 text-fuchsia-400 font-medium transition text-sm text-left";
         }
 
-        // Motor de Audio de Texto a Voz (Speak)
+        // Motor de audio por voz (TTS)
         function speak(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
@@ -434,7 +478,6 @@
             }
         }
 
-        // Control de Apertura de Modales
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
@@ -443,7 +486,12 @@
             }
         }
 
-        // Control de Cierre de Modales
+        document.querySelectorAll('[id^="modal-"]').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) closeModal(this.id);
+            });
+        });
+
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
