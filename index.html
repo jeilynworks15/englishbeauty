@@ -31,6 +31,10 @@
 
     <aside class="w-64 bg-slate-900 border-r border-slate-800 p-6 flex flex-col justify-between shrink-0">
         <div class="space-y-6">
+            <button id="btn-flashcards" onclick="switchTab('flashcards')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition text-sm text-left">
+    <i class="fa-solid fa-clone text-base"></i>
+    <span>Flashcards</span>
+</button>
             <div class="flex items-center gap-2.5 px-2">
                 <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-fuchsia-500 to-purple-600 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-fuchsia-500/20">
                     BЕ
@@ -102,6 +106,17 @@
         </div>
 
         <div id="tab-modulos" class="tab-content hidden space-y-8">
+            <div id="tab-flashcards" class="tab-content hidden space-y-8">
+    <h2 class="text-2xl font-black text-white">Vocabulary Flashcards</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="group h-40 [perspective:1000px]">
+            <div class="relative h-full w-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                <div class="absolute inset-0 bg-slate-800 flex items-center justify-center rounded-xl font-bold text-lg">Keratin</div>
+                <div class="absolute inset-0 bg-fuchsia-600 flex items-center justify-center rounded-xl font-bold text-lg [transform:rotateY(180deg)]">Keratina</div>
+            </div>
+        </div>
+        </div>
+</div>
             
             <div class="mb-8">
                 <div class="flex items-center gap-2 mb-4">
