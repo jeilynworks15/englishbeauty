@@ -7,6 +7,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+    <div id="modal-registro" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 z-[100]">
+    <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-2xl p-6 text-center">
+        <h2 class="text-xl font-black text-white mb-2">Welcome to Beauty English</h2>
+        <p class="text-slate-400 text-xs mb-6">Por favor, ingresa tu nombre para comenzar la clase.</p>
+        <input type="text" id="nombre-estudiante" placeholder="Tu nombre" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-white mb-4 focus:border-fuchsia-500 outline-none">
+        <button onclick="registrarEstudiante()" class="w-full py-3 bg-fuchsia-600 rounded-lg text-white font-bold hover:bg-fuchsia-500 transition">Entrar al Campus</button>
+    </div>
+</div>
+
+<script>
+    function registrarEstudiante() {
+        const nombre = document.getElementById('nombre-estudiante').value;
+        if (nombre) {
+            localStorage.setItem('nombreEstudiante', nombre);
+            document.getElementById('modal-registro').classList.add('hidden');
+        } else {
+            alert("Por favor, ingresa tu nombre.");
+        }
+    }
+</script>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex font-sans">
 
     <aside class="w-64 bg-slate-900 border-r border-slate-800 p-6 flex flex-col justify-between shrink-0">
