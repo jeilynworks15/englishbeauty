@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beauty English - Virtual Campus</title>
-    <!-- Los estilos de Tailwind CSS -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Los íconos de FontAwesome -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen">
@@ -16,7 +16,7 @@
         <!-- BARRA LATERAL IZQUIERDA (MENÚ) -->
         <aside class="w-full md:w-64 bg-slate-900 border-b md:border-b-0 md:border-r border-slate-800 p-6 flex flex-col justify-between shrink-0">
             <div>
-                <!-- Logotipo / Título del negocio -->
+                <!-- Logotipo / Título -->
                 <div class="flex items-center gap-3 mb-8">
                     <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-fuchsia-500 to-cyan-400 flex items-center justify-center text-white shadow-md shadow-fuchsia-500/20">
                         <i class="fa-solid fa-sparkles text-lg"></i>
@@ -28,27 +28,19 @@
                 </div>
 
                 <!-- Opciones de Navegación -->
-                <nav class="space-y-1">
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-fuchsia-500/10 to-transparent border-l-2 border-fuchsia-500 text-fuchsia-400 font-medium transition text-sm">
+                <nav class="space-y-1" id="main-nav">
+                    <button onclick="switchTab('panel')" id="btn-panel" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-fuchsia-500/10 to-transparent border-l-2 border-fuchsia-500 text-fuchsia-400 font-medium transition text-sm text-left">
                         <i class="fa-solid fa-chart-pie w-5 text-center text-base"></i>
                         Panel Principal
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition text-sm">
+                    </button>
+                    <button onclick="switchTab('modulos')" id="btn-modulos" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition text-sm text-left">
                         <i class="fa-solid fa-graduation-cap w-5 text-center text-base"></i>
-                        Módules de Clase
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition text-sm">
+                        Módulos de Clase
+                    </button>
+                    <button onclick="switchTab('anuncios')" id="btn-anuncios" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition text-sm text-left">
                         <i class="fa-solid fa-bullhorn w-5 text-center text-base"></i>
                         Anuncios del Campus
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition text-sm">
-                        <i class="fa-solid fa-comments w-5 text-center text-base"></i>
-                        Foro de Debate
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition text-sm">
-                        <i class="fa-solid fa-gamepad w-5 text-center text-base"></i>
-                        Juego de Memoria
-                    </a>
+                    </button>
                 </nav>
             </div>
 
@@ -64,99 +56,164 @@
             </div>
         </aside>
 
-        <!-- CONTENIDO CENTRAL DE LA PLATAFORMA -->
+        <!-- CONTENIDO CENTRAL DINÁMICO -->
         <main class="flex-1 p-6 md:p-8 overflow-y-auto max-w-5xl mx-auto w-full">
             
-            <!-- Cabecera de bienvenida -->
-            <div class="mb-8">
-                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">¡Welcome back!</h1>
-                <p class="text-slate-400 text-sm mt-1">Aquí tienes las novedades de tu curso de inglés especializado en keratinas.</p>
-            </div>
+            <!-- PESTAÑA 1: PANEL PRINCIPAL -->
+            <div id="tab-panel" class="tab-content">
+                <div class="mb-8">
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">¡Welcome back!</h1>
+                    <p class="text-slate-400 text-sm mt-1">Aquí tienes las novedades de tu curso de inglés especializado en keratinas.</p>
+                </div>
 
-            <!-- PANELES DE ACTIVIDADES -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                
-                <!-- LABORATORIO DE PRONUNCIACIÓN -->
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="h-10 w-10 rounded-xl bg-fuchsia-500/10 flex items-center justify-center text-fuchsia-400">
-                            <i class="fa-solid fa-microphone-lines text-lg"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-slate-200">Pronunciation Lab</h3>
-                            <p class="text-xs text-slate-500">Términos técnicos de Salón</p>
-                        </div>
-                    </div>
-                    <p class="text-slate-400 text-sm mb-4">Practica la pronunciación correcta de los químicos y compuestos de la keratina.</p>
-                    
-                    <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 mb-4">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-xs font-mono text-fuchsia-400 uppercase tracking-wider block mb-1">Palabra Clave</span>
-                                <span class="text-base font-bold text-white">Formaldehyde</span>
-                                <span class="text-xs text-slate-500 block italic mt-0.5">/fɔːrˈmældəhaɪd/</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Laboratorio de Pronunciación -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="h-10 w-10 rounded-xl bg-fuchsia-500/10 flex items-center justify-center text-fuchsia-400">
+                                <i class="fa-solid fa-microphone-lines text-lg"></i>
                             </div>
-                            <button onclick="alert('Reproduciendo audio: Formaldehyde')" class="h-9 w-9 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition">
-                                <i class="fa-solid fa-volume-high text-sm"></i>
-                            </button>
+                            <div>
+                                <h3 class="font-bold text-slate-200">Pronunciation Lab</h3>
+                                <p class="text-xs text-slate-500">Términos técnicos de Salón</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-4">Practica la pronunciación correcta de los químicos de la keratina.</p>
+                        <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 mb-4">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <span class="text-xs font-mono text-fuchsia-400 uppercase tracking-wider block mb-1">Palabra Clave</span>
+                                    <span class="text-base font-bold text-white">Formaldehyde</span>
+                                    <span class="text-xs text-slate-500 block italic">/fɔːrˈmældəhaɪd/</span>
+                                </div>
+                                <button onclick="alert('Reproduciendo audio: Formaldehyde')" class="h-9 w-9 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition">
+                                    <i class="fa-solid fa-volume-high text-sm"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <button class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition flex items-center justify-center gap-2">
-                        Ver glosario completo <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                    </button>
-                </div>
 
-                <!-- JUEGO DE MEMORIA -->
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="h-10 w-10 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400">
-                            <i class="fa-solid fa-gamepad text-lg"></i>
-                        </div>
+                    <!-- Tarjeta informativa de progreso rápido -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
                         <div>
-                            <h3 class="font-bold text-slate-200">Vocabulary Flashcards</h3>
-                            <p class="text-xs text-slate-500">Práctica Interactiva</p>
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="h-10 w-10 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400">
+                                    <i class="fa-solid fa-graduation-cap text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-slate-200">Tu Progreso</h3>
+                                    <p class="text-xs text-slate-500">Curso en marcha</p>
+                                </div>
+                            </div>
+                            <p class="text-slate-400 text-sm mb-4">Tienes acceso completo a las lecciones técnicas de estilismo internacional.</p>
                         </div>
+                        <button onclick="switchTab('modulos')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-white text-xs font-bold transition text-center">
+                            Ir a mis clases
+                        </button>
                     </div>
-                    <p class="text-slate-400 text-sm mb-4">Relaciona los productos con su función correcta en inglés de estética.</p>
-                    
-                    <div class="grid grid-cols-2 gap-2 mb-4">
-                        <div class="p-3 bg-slate-950/40 border border-fuchsia-500/30 rounded-xl text-center cursor-pointer hover:bg-slate-800/30 transition">
-                            <p class="text-xs text-fuchsia-300 font-semibold">Clarifying Shampoo</p>
-                        </div>
-                        <div class="p-3 bg-slate-950/40 border border-slate-800 rounded-xl text-center cursor-pointer hover:bg-slate-800/30 transition">
-                            <p class="text-xs text-slate-400">Deep cleansing</p>
-                        </div>
-                    </div>
-                    <button class="w-full py-2.5 rounded-xl bg-gradient-to-r from-fuchsia-500 to-cyan-500 hover:opacity-90 text-white text-xs font-bold transition">
-                        ¡Iniciar Juego Diario!
-                    </button>
                 </div>
-
             </div>
 
-            <!-- FORO DE DISCUSIÓN -->
-            <div class="mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-3">
-                        <div class="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400">
-                            <i class="fa-solid fa-comments text-lg"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-slate-200">Discussion Forum</h3>
-                            <p class="text-xs text-slate-500">Último debate en el salón virtual</p>
-                        </div>
-                    </div>
-                    <span class="px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-400 text-[10px] font-bold tracking-wide uppercase">Activo</span>
+            <!-- PESTAÑA 2: MÓDULOS DE CLASE -->
+            <div id="tab-modulos" class="tab-content hidden">
+                <div class="mb-8">
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Módulos de Aprendizaje</h1>
+                    <p class="text-slate-400 text-sm mt-1 font-medium">Domina el vocabulario técnico de principio a fin.</p>
                 </div>
-                <div class="bg-slate-950/40 border border-slate-800/60 rounded-xl p-4">
-                    <p class="text-sm font-semibold text-slate-300 mb-1">"How do you explain the aftercare process to an American client?"</p>
-                    <p class="text-xs text-slate-500">Iniciado por Teacher Jeilyn • 3 comentarios nuevos</p>
+
+                <!-- Lista de Lecciones -->
+                <div class="space-y-4">
+                    <!-- Módulo 1 -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div class="flex items-start gap-4">
+                            <div class="h-12 w-12 rounded-xl bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-400 flex items-center justify-center shrink-0 font-bold font-mono">01</div>
+                            <div>
+                                <h3 class="font-bold text-slate-200 leading-snug">Hair Assessment & Consultation</h3>
+                                <p class="text-xs text-slate-400 mt-0.5 mb-2">Evaluación del cabello, tipos de daño y entrevista con el cliente en inglés.</p>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 uppercase tracking-wide">Disponible</span>
+                            </div>
+                        </div>
+                        <button onclick="alert('Abriendo lección 1...')" class="py-2 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition shrink-0 w-full sm:w-auto text-center">
+                            Estudiar Lección
+                        </button>
+                    </div>
+
+                    <!-- Módulo 2 -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div class="flex items-start gap-4">
+                            <div class="h-12 w-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 font-bold font-mono">02</div>
+                            <div>
+                                <h3 class="font-bold text-slate-200 leading-snug">Chemical Application & Processing</h3>
+                                <p class="text-xs text-slate-400 mt-0.5 mb-2">Instrucciones técnicas de aplicación, tiempos de pose y compuestos químicos.</p>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 uppercase tracking-wide">Disponible</span>
+                            </div>
+                        </div>
+                        <button onclick="alert('Abriendo lección 2...')" class="py-2 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition shrink-0 w-full sm:w-auto text-center">
+                            Estudiar Lección
+                        </button>
+                    </div>
+
+                    <!-- Módulo 3 -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div class="flex items-start gap-4">
+                            <div class="h-12 w-12 rounded-xl bg-slate-800 border border-slate-700 text-slate-500 flex items-center justify-center shrink-0 font-bold font-mono">03</div>
+                            <div>
+                                <h3 class="font-bold text-slate-400 leading-snug">Flat Ironing & Aftercare English</h3>
+                                <p class="text-xs text-slate-500 mt-0.5 mb-2">Sellado perfecto y recomendaciones post-tratamiento para el hogar en inglés.</p>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-500 uppercase tracking-wide">Próximamente</span>
+                            </div>
+                        </div>
+                        <button disabled class="py-2 px-4 rounded-xl bg-slate-900 border border-slate-800 text-xs font-semibold text-slate-600 cursor-not-allowed shrink-0 w-full sm:w-auto text-center">
+                            Bloqueado
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PESTAÑA 3: ANUNCIOS -->
+            <div id="tab-anuncios" class="tab-content hidden">
+                <div class="mb-8">
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Anuncios de la Academia</h1>
+                    <p class="text-slate-400 text-sm mt-1">Mantente al tanto de avisos importantes y sesiones en vivo.</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-center text-slate-500 text-sm">
+                    No hay anuncios nuevos por el momento. ¡Buen trabajo!
                 </div>
             </div>
 
         </main>
-
     </div>
+
+    <!-- SISTEMA INTERACTIVO DE PESTAÑAS (JAVASCRIPT) -->
+    <script>
+        function switchTab(tabId) {
+            // Ocultar todos los contenidos
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            
+            // Mostrar el seleccionado
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            // Limpiar estilos activos de todos los botones del menú
+            const buttons = [
+                { id: 'btn-panel', icon: 'fa-chart-pie' },
+                { id: 'btn-modulos', icon: 'fa-graduation-cap' },
+                { id: 'btn-anuncios', icon: 'fa-bullhorn' }
+            ];
+
+            buttons.forEach(btn => {
+                const el = document.getElementById(btn.id);
+                if (el) {
+                    el.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition text-sm text-left";
+                }
+            });
+
+            // Darle estilo activo al botón presionado
+            const activeEl = document.getElementById('btn-' + tabId);
+            if (activeEl) {
+                activeEl.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-fuchsia-500/10 to-transparent border-l-2 border-fuchsia-500 text-fuchsia-400 font-medium transition text-sm text-left";
+            }
+        }
+    </script>
 
 </body>
 </html>
