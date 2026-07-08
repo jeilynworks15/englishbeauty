@@ -380,7 +380,7 @@
     </div>
 
     <!-- JAVASCRIPT SYSTEM -->
-    <script>
+   <script>
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById('tab-' + tabId).classList.remove('hidden');
@@ -403,12 +403,23 @@
             }
         }
 
-        // Funciones para Modales
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85; 
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Tu navegador no soporta audio automático.");
+            }
+        }
+
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden'; // Detiene el scroll de fondo
+                document.body.style.overflow = 'hidden';
             }
         }
 
@@ -416,19 +427,13 @@
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.add('hidden');
-                document.body.style.overflow = 'auto'; // Restaura el scroll
-            }
-    // Sistema Nativo de Pronunciación de Texto a Voz
-        function speak(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-US';
-                utterance.rate = 0.85; // Velocidad pausada ideal para aprender
-                window.speechSynthesis.speak(utterance);
+                document.body.style.overflow = 'auto';
             }
         }
     </script>
+
+</body>
+</html>
 
 </body>
 </html>
