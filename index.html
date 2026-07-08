@@ -1,408 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beauty English Course</title>
-    <!-- Tailwind CSS -->
+    <title>Beauty English - Keratin Talk Course</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex font-sans">
+<body class="bg-slate-950 text-slate-200 min-h-screen p-4 md:p-8">
 
-    <!-- BARRA LATERAL (Sidebar) -->
-    <aside class="w-64 bg-slate-900 border-r border-slate-800 p-6 flex flex-col justify-between shrink-0">
-        <div class="space-y-6">
-            <div class="flex items-center gap-2.5 px-2">
-                <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-fuchsia-500 to-purple-600 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-fuchsia-500/20">
-                    BE
-                </div>
-                <div>
-                    <h1 class="font-black text-xs tracking-wider uppercase text-white">Beauty English</h1>
-                    <span class="text-[10px] text-slate-500 font-bold font-mono">v1.1.0</span>
-                </div>
+    <div class="max-w-4xl mx-auto space-y-8">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-black text-fuchsia-500 uppercase tracking-tighter">Beauty English: Keratin Talk</h1>
+            <p class="text-slate-400 mt-2">Curso interactivo de atención al cliente y técnicas de salón</p>
+        </header>
+
+        <div id="course-content" class="grid gap-6">
             </div>
-
-            <nav class="space-y-1">
-                <button id="btn-panel" onclick="switchTab('panel')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-fuchsia-500/10 to-transparent border-l-2 border-fuchsia-500 text-fuchsia-400 font-medium transition text-sm text-left">
-                    <i class="fa-solid fa-chart-pie text-base"></i>
-                    <span>Panel de Inicio</span>
-                </button>
-                <button id="btn-modulos" onclick="switchTab('modulos')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition text-sm text-left">
-                    <i class="fa-solid fa-graduation-cap text-base"></i>
-                    <span>Módulos de Clase</span>
-                </button>
-            </nav>
-        </div>
-
-        <div class="p-4 bg-slate-950/50 border border-slate-800/60 rounded-xl">
-            <span class="text-[10px] font-bold text-slate-500 block font-mono uppercase tracking-wider mb-1">Instructors</span>
-            <p class="text-xs text-slate-400 font-medium truncate">M. Daniela, J. Josselyne, J. Jeilyn</p>
-        </div>
-    </aside>
-
-    <!-- CONTENIDO PRINCIPAL -->
-    <main class="flex-1 p-10 overflow-y-auto max-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900/50 via-slate-950 to-slate-950">
-        
-        <!-- PESTAÑA 1: PANEL DE INICIO -->
-        <div id="tab-panel" class="tab-content space-y-8">
-            <div>
-                <span class="text-xs font-bold text-fuchsia-400 font-mono tracking-wider uppercase block mb-1">Welcome Back</span>
-                <h2 class="text-3xl font-black text-white tracking-tight">English for Hair Stylists</h2>
-                <p class="text-sm text-slate-400 mt-1 max-w-xl">Portal interactivo para el dominio de vocabulario técnico en inglés para la aplicación y consulta de tratamientos capilares.</p>
-            </div>
-
-            <!-- SYLLABUS CORREGIDO -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-3xl">
-                <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-book-open text-fuchsia-400"></i> Programa de Estudios Oficial
-                </h3>
-                
-                <div class="space-y-6">
-                    <!-- Unidad 1 -->
-                    <div>
-                        <h4 class="text-xs font-bold text-fuchsia-400 mb-2 tracking-wide uppercase">Unidad 1: Greetings and Welcome</h4>
-                        <div class="space-y-2 pl-2 border-l border-slate-800 text-xs text-slate-400">
-                            <p><strong class="text-slate-200">Clase 01:</strong> Welcoming the Customer (Saludos y bienvenida)</p>
-                            <p><strong class="text-slate-200">Clase 02:</strong> Personal Information (Datos del cliente)</p>
-                        </div>
-                    </div>
-
-                    <!-- Unidad 2 -->
-                    <div>
-                        <h4 class="text-xs font-bold text-cyan-400 mb-2 tracking-wide uppercase">Unidad 2: Giving Information</h4>
-                        <div class="space-y-2 pl-2 border-l border-slate-800 text-xs text-slate-400">
-                            <p><strong class="text-slate-200">Clase 03:</strong> Explaining the Process (Explicar el proceso técnico)</p>
-                            <p><strong class="text-slate-200">Clase 04:</strong> Talking about Price and Time (Precio y tiempo)</p>
-                        </div>
-                    </div>
-
-                    <!-- Unidad 3 -->
-                    <div>
-                        <h4 class="text-xs font-bold text-indigo-400 mb-2 tracking-wide uppercase">Unidad 3: Customer Interaction[cite: 6]</h4>
-                        <div class="space-y-2 pl-2 border-l border-slate-800 text-xs text-slate-400">
-                            <p><strong class="text-slate-200">Clase 05:</strong> Customer Consultation (Consulta y diagnóstico)</p>
-                            <p><strong class="text-slate-200">Clase 06:</strong> Saying Goodbye to the Client (Despedida y Evaluación)[cite: 6]</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- PESTAÑA 2: MÓDULOS DE CLASE -->
-        <div id="tab-modulos" class="tab-content hidden space-y-8">
-            
-            <!-- VISTA UNIDAD 1 -->
-            <div class="mb-6">
-                <div class="flex items-center gap-2 mb-4"><span class="px-2 py-0.5 rounded bg-fuchsia-500/10 text-fuchsia-400 text-xs font-bold">UNIT 1</span><h2 class="text-base font-bold text-slate-200">Greetings and Welcome</h2></div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
-                        <div><h4 class="font-bold text-sm text-slate-200 mb-1">01: Welcoming the Customer</h4><p class="text-xs text-slate-400 mb-3">Saludos de cortesía y recepción en el salón.</p></div>
-                        <button onclick="openModal('modal-clase1')" class="w-full py-2 bg-gradient-to-r from-fuchsia-500 to-purple-600 text-xs font-bold rounded-lg text-white">Ver Clase</button>
-                    </div>
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
-                        <div><h4 class="font-bold text-sm text-slate-200 mb-1">02: Personal Information</h4><p class="text-xs text-slate-400 mb-3">Toma de datos personales obligatorios.</p></div>
-                        <button onclick="openModal('modal-clase2')" class="w-full py-2 bg-gradient-to-r from-fuchsia-500 to-purple-600 text-xs font-bold rounded-lg text-white">Ver Clase</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- VISTA UNIDAD 2 -->
-            <div class="mb-6">
-                <div class="flex items-center gap-2 mb-4"><span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 text-xs font-bold">UNIT 2</span><h2 class="text-base font-bold text-slate-200">Giving Information</h2></div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
-                        <div><h4 class="font-bold text-sm text-slate-200 mb-1">03: Explaining the Process</h4><p class="text-xs text-slate-400 mb-3">Explicar los pasos de la keratina.</p></div>
-                        <button onclick="openModal('modal-clase3')" class="w-full py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-xs font-bold rounded-lg text-white">Ver Clase</button>
-                    </div>
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
-                        <div><h4 class="font-bold text-sm text-slate-200 mb-1">04: Talking about Price and Time</h4><p class="text-xs text-slate-400 mb-3">Gestión de tarifas, tiempos estimados y cobros.</p></div>
-                        <button onclick="openModal('modal-clase4')" class="w-full py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-xs font-bold rounded-lg text-white">Ver Clase</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- VISTA UNIDAD 3 -->
-            <div class="mb-6">
-                <div class="flex items-center gap-2 mb-4"><span class="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 text-xs font-bold">UNIT 3</span><h2 class="text-base font-bold text-slate-200">Customer Interaction[cite: 6]</h2></div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
-                        <div><h4 class="font-bold text-sm text-slate-200 mb-1">05: Customer Consultation</h4><p class="text-xs text-slate-400 mb-3">Preguntas de diagnóstico de salud capilar.</p></div>
-                        <button onclick="openModal('modal-clase5')" class="w-full py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-xs font-bold rounded-lg text-white">Ver Clase</button>
-                    </div>
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
-                        <div><h4 class="font-bold text-sm text-slate-200 mb-1">06: Saying Goodbye & Evaluation[cite: 6]</h4><p class="text-xs text-slate-400 mb-3">Cierre del servicio y rúbrica final del curso.[cite: 6]</p></div>
-                        <button onclick="openModal('modal-clase6')" class="w-full py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-xs font-bold rounded-lg text-white">Ver Clase</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </main>
-
-    <!-- ==================== MODALES COMPLETOS CON TRADUCCIONES CORREGIDAS ==================== -->
-
-    <!-- MODAL 1 -->
-    <div id="modal-clase1" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-3xl rounded-2xl flex flex-col max-h-[90vh] overflow-hidden">
-            <div class="p-6 border-b border-slate-800 flex justify-between items-center">
-                <div><span class="text-xs font-bold text-fuchsia-400 font-mono uppercase">Unit 1 - Class 01</span><h3 class="text-xl font-bold text-white">Welcoming the Customer</h3></div>
-                <button onclick="closeModal('modal-clase1')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="p-6 overflow-y-auto space-y-4 text-xs">
-                <div class="space-y-2">
-                    <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800"><div><p class="text-slate-200 font-bold">Good morning / Good afternoon.</p><p class="text-slate-400 text-[11px]">Buenos días / Buenas tardes.</p></div><button onclick="speak('Good morning, Good afternoon.')" class="text-fuchsia-400 text-sm"><i class="fa-solid fa-volume-high"></i></button></div>
-                    <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800"><div><p class="text-slate-200 font-bold">Welcome to the salon.</p><p class="text-slate-400 text-[11px]">Bienvenido/a al salón.</p></div><button onclick="speak('Welcome to the salon.')" class="text-fuchsia-400 text-sm"><i class="fa-solid fa-volume-high"></i></button></div>
-                    <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800"><div><p class="text-slate-200 font-bold">Please, take a seat.</p><p class="text-slate-400 text-[11px]">Por favor, tome asiento.</p></div><button onclick="speak('Please, take a seat.')" class="text-fuchsia-400 text-sm"><i class="fa-solid fa-volume-high"></i></button></div>
-                </div>
-                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
-                    <h5 class="font-bold text-fuchsia-400">🎙️ Práctica con Micrófono</h5>
-                    <div class="flex items-center gap-3">
-                        <button onclick="toggleRecording(this, 'audio-c1')" class="px-3 py-1.5 bg-red-600 text-white rounded-lg font-bold flex items-center gap-1"><i class="fa-solid fa-microphone"></i> <span>Grabar</span></button>
-                        <audio id="audio-c1" controls class="hidden"></audio>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <!-- MODAL 2 -->
-    <div id="modal-clase2" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-3xl rounded-2xl flex flex-col max-h-[90vh] overflow-hidden">
-            <div class="p-6 border-b border-slate-800 flex justify-between items-center">
-                <div><span class="text-xs font-bold text-fuchsia-400 font-mono uppercase">Unit 1 - Class 02</span><h3 class="text-xl font-bold text-white">Personal Information</h3></div>
-                <button onclick="closeModal('modal-clase2')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="p-6 overflow-y-auto space-y-4 text-xs">
-                <div class="space-y-2">
-                    <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800"><div><p class="text-slate-200 font-bold">What is your name?</p><p class="text-slate-400 text-[11px]">¿Cuál es su nombre?</p></div><button onclick="speak('What is your name?')" class="text-fuchsia-400 text-sm"><i class="fa-solid fa-volume-high"></i></button></div>
-                    <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800"><div><p class="text-slate-200 font-bold">Can you spell your last name?</p><p class="text-slate-400 text-[11px]">¿Puede deletrear su apellido?</p></div><button onclick="speak('Can you spell your last name?')" class="text-fuchsia-400 text-sm"><i class="fa-solid fa-volume-high"></i></button></div>
-                </div>
-                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
-                    <h5 class="font-bold text-fuchsia-400">🎙️ Práctica con Micrófono</h5>
-                    <div class="flex items-center gap-3">
-                        <button onclick="toggleRecording(this, 'audio-c2')" class="px-3 py-1.5 bg-red-600 text-white rounded-lg font-bold flex items-center gap-1"><i class="fa-solid fa-microphone"></i> <span>Grabar</span></button>
-                        <audio id="audio-c2" controls class="hidden"></audio>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 3 -->
-    <div id="modal-clase3" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-3xl rounded-2xl flex flex-col max-h-[90vh] overflow-hidden">
-            <div class="p-6 border-b border-slate-800 flex justify-between items-center">
-                <div><span class="text-xs font-bold text-cyan-400 font-mono uppercase">Unit 2 - Class 03</span><h3 class="text-xl font-bold text-white">Explaining the Process</h3></div>
-                <button onclick="closeModal('modal-clase3')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="p-6 overflow-y-auto space-y-4 text-xs">
-                <div class="space-y-2">
-                    <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800"><div><p class="text-slate-200 font-bold">First, we wash the hair.</p><p class="text-slate-400 text-[11px]">Primero, lavamos el cabello.</p></div><button onclick="speak('First, we wash the hair.')" class="text-cyan-400 text-sm"><i class="fa-solid fa-volume-high"></i></button></div>
-                    <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800"><div><p class="text-slate-200 font-bold">Then, we apply the product.</p><p class="text-slate-400 text-[11px]">Luego, aplicamos el producto.</p></div><button onclick="speak('Then, we apply the product.')" class="text-cyan-400 text-sm"><i class="fa-solid fa-volume-high"></i></button></div>
-                </div>
-                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
-                    <h5 class="font-bold text-cyan-400">🎙️ Práctica con Micrófono</h5>
-                    <div class="flex items-center gap-3">
-                        <button onclick="toggleRecording(this, 'audio-c3')" class="px-3 py-1.5 bg-red-600 text-white rounded-lg font-bold flex items-center gap-1"><i class="fa-solid fa-microphone"></i> <span>Grabar</span></button>
-                        <audio id="audio-c3" controls class="hidden"></audio>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 4 -->
-    <div id="modal-clase4" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-3xl rounded-2xl flex flex-col max-h-[90vh] overflow-hidden">
-            <div class="p-6 border-b border-slate-800 flex justify-between items-center">
-                <div><span class="text-xs font-bold text-cyan-400 font-mono uppercase">Unit 2 - Class 04</span><h3 class="text-xl font-bold text-white">Talking about Price and Time</h3></div>
-                <button onclick="closeModal('modal-clase4')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="p-6 overflow-y-auto space-y-4 text-xs">
-                <div class="space-y-2">
-                    <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800"><div><p class="text-slate-200 font-bold">The price is $40.</p><p class="text-slate-400 text-[11px]">El precio es $40.</p></div><button onclick="speak('The price is forty dollars.')" class="text-cyan-400 text-sm"><i class="fa-solid fa-volume-high"></i></button></div>
-                    <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800"><div><p class="text-slate-200 font-bold">The treatment takes around two hours.</p><p class="text-slate-400 text-[11px]">El tratamiento dura aproximadamente dos horas.</p></div><button onclick="speak('The treatment takes around two hours.')" class="text-cyan-400 text-sm"><i class="fa-solid fa-volume-high"></i></button></div>
-                </div>
-                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
-                    <h5 class="font-bold text-cyan-400">🎙️ Práctica con Micrófono</h5>
-                    <div class="flex items-center gap-3">
-                        <button onclick="toggleRecording(this, 'audio-c4')" class="px-3 py-1.5 bg-red-600 text-white rounded-lg font-bold flex items-center gap-1"><i class="fa-solid fa-microphone"></i> <span>Grabar</span></button>
-                        <audio id="audio-c4" controls class="hidden"></audio>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 5 -->
-    <div id="modal-clase5" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-3xl rounded-2xl flex flex-col max-h-[90vh] overflow-hidden">
-            <div class="p-6 border-b border-slate-800 flex justify-between items-center">
-                <div><span class="text-xs font-bold text-indigo-400 font-mono uppercase">Unit 3 - Class 05</span><h3 class="text-xl font-bold text-white">Customer Consultation</h3></div>
-                <button onclick="closeModal('modal-clase5')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="p-6 overflow-y-auto space-y-4 text-xs">
-                <div class="space-y-2">
-                    <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800"><div><p class="text-slate-200 font-bold">Is this your first keratin treatment?</p><p class="text-slate-400 text-[11px]">¿Es este su primer tratamiento de keratina?</p></div><button onclick="speak('Is this your first keratin treatment?')" class="text-indigo-400 text-sm"><i class="fa-solid fa-volume-high"></i></button></div>
-                    <div class="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800"><div><p class="text-slate-200 font-bold">Do you have any allergies?</p><p class="text-slate-400 text-[11px]">¿Tiene alguna alergia?</p></div><button onclick="speak('Do you have any allergies?')" class="text-indigo-400 text-sm"><i class="fa-solid fa-volume-high"></i></button></div>
-                </div>
-                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
-                    <h5 class="font-bold text-indigo-400">🎙️ Práctica con Micrófono</h5>
-                    <div class="flex items-center gap-3">
-                        <button onclick="toggleRecording(this, 'audio-c5')" class="px-3 py-1.5 bg-red-600 text-white rounded-lg font-bold flex items-center gap-1"><i class="fa-solid fa-microphone"></i> <span>Grabar</span></button>
-                        <audio id="audio-c5" controls class="hidden"></audio>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 6: DESPEDIDA Y RÚBRICA -->
-    <div id="modal-clase6" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-3xl rounded-2xl flex flex-col max-h-[90vh] overflow-hidden">
-            <div class="p-6 border-b border-slate-800 flex justify-between items-center">
-                <div><span class="text-xs font-bold text-indigo-400 font-mono uppercase">Unit 3 - Class 06</span><h3 class="text-xl font-bold text-white">Saying Goodbye & Rubric[cite: 6]</h3></div>
-                <button onclick="closeModal('modal-clase6')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="p-6 overflow-y-auto space-y-6 text-xs">
-                
-                <!-- Vocabulario de despedida con traducción -->
-                <div class="space-y-2">
-                    <h4 class="font-bold text-indigo-400 uppercase text-[11px] tracking-wider">Vocabulario de Despedida (Vocabulary)[cite: 6]</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        <div class="flex justify-between items-center bg-slate-950 p-2.5 rounded-lg border border-slate-800"><div><p class="text-slate-200 font-medium">Thank you for coming.[cite: 6]</p><p class="text-slate-500 text-[10px]">Gracias por venir.[cite: 6]</p></div><button onclick="speak('Thank you for coming.')" class="text-indigo-400"><i class="fa-solid fa-volume-high"></i></button></div>
-                        <div class="flex justify-between items-center bg-slate-950 p-2.5 rounded-lg border border-slate-800"><div><p class="text-slate-200 font-medium">Thank you for your visit.[cite: 6]</p><p class="text-slate-500 text-[10px]">Gracias por su visita.[cite: 6]</p></div><button onclick="speak('Thank you for your visit.')" class="text-indigo-400"><i class="fa-solid fa-volume-high"></i></button></div>
-                        <div class="flex justify-between items-center bg-slate-950 p-2.5 rounded-lg border border-slate-800"><div><p class="text-slate-200 font-medium">Have a nice day.[cite: 6]</p><p class="text-slate-500 text-[10px]">Que tenga un buen día.[cite: 6]</p></div><button onclick="speak('Have a nice day.')" class="text-indigo-400"><i class="fa-solid fa-volume-high"></i></button></div>
-                        <div class="flex justify-between items-center bg-slate-950 p-2.5 rounded-lg border border-slate-800"><div><p class="text-slate-200 font-medium">See you next time.[cite: 6]</p><p class="text-slate-500 text-[10px]">Hasta la próxima.[cite: 6]</p></div><button onclick="speak('See you next time.')" class="text-indigo-400"><i class="fa-solid fa-volume-high"></i></button></div>
-                    </div>
-                </div>
-
-                <!-- Rúbrica de evaluación integrada de la imagen -->
-                <div class="space-y-2">
-                    <h4 class="font-bold text-indigo-400 uppercase text-[11px] tracking-wider">📋 Rúbrica Oficial de Evaluación (Role-Play Evaluation)[cite: 6]</h4>
-                    <div class="overflow-x-auto border border-slate-800 rounded-xl">
-                        <table class="w-full text-left text-[11px]">
-                            <thead class="bg-slate-950 text-slate-400 uppercase font-mono border-b border-slate-800">
-                                <tr>
-                                    <th class="p-3">Criterio[cite: 6]</th>
-                                    <th class="p-3">Excelente (2 pts)[cite: 6]</th>
-                                    <th class="p-3">Necesita Mejorar (0 pts)[cite: 6]</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-800 bg-slate-950/40">
-                                <tr>
-                                    <td class="p-3 font-bold text-slate-300">1. Saludo[cite: 6]</td>
-                                    <td class="p-3 text-slate-400">Saluda de manera completa y adecuada.[cite: 6]</td>
-                                    <td class="p-3 text-slate-500">Saluda de forma incompleta o inadecuada.[cite: 6]</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 font-bold text-slate-300">2. Proceso[cite: 6]</td>
-                                    <td class="p-3 text-slate-400">Explica todos los pasos en el orden correcto.[cite: 6]</td>
-                                    <td class="p-3 text-slate-500">Explica pocos pasos o tiene muchos errores.[cite: 6]</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 font-bold text-slate-300">3. Instrucciones[cite: 6]</td>
-                                    <td class="p-3 text-slate-400">Da todas las instrucciones con claridad.[cite: 6]</td>
-                                    <td class="p-3 text-slate-500">Da pocas instrucciones o tiene muchos errores.[cite: 6]</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 font-bold text-slate-300">4. Precio / Tiempo[cite: 6]</td>
-                                    <td class="p-3 text-slate-400">Informa precio y/o tiempo de forma clara y correcta.[cite: 6]</td>
-                                    <td class="p-3 text-slate-500">No informa el precio o tiempo correctamente.[cite: 6]</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 font-bold text-slate-300">5. Despedida[cite: 6]</td>
-                                    <td class="p-3 text-slate-400">Se despide de manera completa y muy cortés.[cite: 6]</td>
-                                    <td class="p-3 text-slate-500">Se despide de forma incompleta o inadecuada.[cite: 6]</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Grabadora -->
-                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
-                    <h5 class="font-bold text-indigo-400">🎙️ Grabación de Role-Play Final (Máx. 10 Puntos)[cite: 6]</h5>
-                    <div class="flex items-center gap-3">
-                        <button onclick="toggleRecording(this, 'audio-c6')" class="px-3 py-1.5 bg-red-600 text-white rounded-lg font-bold flex items-center gap-1"><i class="fa-solid fa-microphone"></i> <span>Grabar Despedida</span></button>
-                        <audio id="audio-c6" controls class="hidden"></audio>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== CONTROLES DE INTERACCIÓN LOGICIAL ==================== -->
     <script>
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
-            ['btn-panel', 'btn-modulos'].forEach(id => {
-                document.getElementById(id).className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition text-sm text-left";
+        // Data del curso extraída de los documentos oficiales
+        const curso = [
+            {
+                unidad: "Unidad 1: Greetings & Welcome",
+                clases: [
+                    { id: 1, titulo: "Welcoming the Customer", vocab: [["Good morning", "Buenos días"], ["Welcome to the salon", "Bienvenido al salón"], ["Please, take a seat", "Por favor, tome asiento"]], link: "https://wordwall.net/es/resource/clase1-bienvenida" },
+                    { id: 2, titulo: "Personal Information", vocab: [["What is your name?", "¿Cuál es su nombre?"], ["Can you spell it?", "¿Puede deletrearlo?"]], link: "https://wordwall.net/es/resource/clase2-datos" }
+                ]
+            },
+            {
+                unidad: "Unidad 2: Giving Information",
+                clases: [
+                    { id: 3, titulo: "Explaining the Process", vocab: [["First, we wash hair", "Primero, lavamos el cabello"], ["Then, we dry it", "Luego, lo secamos"], ["We use the flat iron", "Usamos la plancha"]], link: "https://wordwall.net/es/resource/clase3-keratin-process" },
+                    { id: 4, titulo: "Talking about Price and Time", vocab: [["The price is $40", "El precio es $40"], ["It takes two hours", "Toma dos horas"], ["Pay by cash or card", "Pagar en efectivo o tarjeta"]], link: "https://wordwall.net/es/resource/clase4-price-time" }
+                ]
+            },
+            {
+                unidad: "Unidad 3: Customer Interaction",
+                clases: [
+                    { id: 5, titulo: "Customer Consultation", vocab: [["First keratin treatment?", "¿Primer tratamiento?"], ["Any allergies?", "¿Alguna alergia?"], ["Is hair colored?", "¿Cabello teñido?"]], link: "https://wordwall.net/es/resource/clase5-diagnostico" },
+                    { id: 6, titulo: "Saying Goodbye", vocab: [["Thank you for coming", "Gracias por venir"], ["Have a nice day", "Que tenga buen día"], ["See you next time", "Hasta la próxima"]], link: "https://wordwall.net/es/resource/clase6-despedida" }
+                ]
+            }
+        ];
+
+        function render() {
+            const container = document.getElementById('course-content');
+            curso.forEach(u => {
+                let html = `<section class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                    <h2 class="text-xl font-bold text-cyan-400 mb-4">${u.unidad}</h2>
+                    <div class="grid md:grid-cols-2 gap-4">`;
+                u.clases.forEach(c => {
+                    html += `
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                        <h3 class="font-bold text-white mb-2">Clase ${c.id}: ${c.titulo}</h3>
+                        <ul class="text-sm text-slate-400 mb-4 space-y-1">
+                            ${c.vocab.map(v => `<li><i class="fa-solid fa-check text-fuchsia-500 mr-2 text-[10px]"></i><strong>${v[0]}</strong>: ${v[1]}</li>`).join('')}
+                        </ul>
+                        <div class="flex gap-2">
+                            <button onclick="speak('${c.vocab.map(v => v[0]).join('. ')}')" class="bg-fuchsia-600 px-3 py-1 rounded text-xs font-bold text-white">Escuchar</button>
+                            <a href="${c.link}" target="_blank" class="bg-slate-700 px-3 py-1 rounded text-xs font-bold text-white">Juego</a>
+                        </div>
+                    </div>`;
+                });
+                html += `</div></section>`;
+                container.innerHTML += html;
             });
-            document.getElementById('btn-' + tabId).className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-fuchsia-500/10 to-transparent border-l-2 border-fuchsia-500 text-fuchsia-400 font-medium transition text-sm text-left";
         }
 
         function speak(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-US';
-                utterance.rate = 0.85;
-                window.speechSynthesis.speak(utterance);
-            }
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            window.speechSynthesis.speak(utterance);
         }
 
-        function openModal(modalId) { document.getElementById(modalId).classList.remove('hidden'); }
-        function closeModal(modalId) { document.getElementById(modalId).classList.add('hidden'); }
-
-        // --- SISTEMA DEL MICRÓFONO CORREGIDO ---
-        let mediaRecorder;
-        let audioChunks = [];
-
-        async function toggleRecording(button, audioId) {
-            const audioPlayer = document.getElementById(audioId);
-            const spanText = button.querySelector('span');
-
-            if (!mediaRecorder || mediaRecorder.state === "inactive") {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    
-                    // Detectar formato compatible con el navegador para evitar audios corruptos vacíos
-                    let options = { mimeType: 'audio/webm' };
-                    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-                        options = { mimeType: 'audio/ogg' };
-                    }
-
-                    mediaRecorder = new MediaRecorder(stream, options);
-                    audioChunks = [];
-
-                    mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
-                    
-                    mediaRecorder.onstop = () => {
-                        const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType });
-                        const audioUrl = URL.createObjectURL(audioBlob);
-                        
-                        audioPlayer.src = audioUrl;
-                        audioPlayer.classList.remove('hidden');
-                        audioPlayer.load(); // Fuerza al reproductor a cargar los datos binarios capturados
-                    };
-
-                    mediaRecorder.start(10); // Captura datos en intervalos de 10ms
-                    button.className = "px-3 py-1.5 bg-slate-700 text-white rounded-lg font-bold flex items-center gap-1 animate-pulse";
-                    spanText.innerText = "Detener";
-                } catch (err) {
-                    alert("Error crítico de acceso: Activa los permisos de micrófono de tu navegador.");
-                }
-            } else {
-                mediaRecorder.stop();
-                mediaRecorder.stream.getTracks().forEach(track => track.stop()); // Apaga el hardware
-                button.className = "px-3 py-1.5 bg-red-600 text-white rounded-lg font-bold flex items-center gap-1";
-                spanText.innerText = "Grabar";
-            }
-        }
+        render();
     </script>
 </body>
 </html>
