@@ -1,157 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beauty English: Keratin Talk</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-    <div id="ventana-clase" class="hidden fixed inset-0 bg-slate-950/90 flex items-center justify-center p-4 z-50">
-    <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-2xl p-6">
-        <h2 id="titulo-clase" class="text-2xl font-black text-fuchsia-500">Título</h2>
-        <p id="desc-clase" class="text-slate-400 mb-4">Descripción</p>
-        
-        <div id="vocabulario-clase" class="space-y-2 mb-6">
-            <!-- Aquí aparecerán las palabras -->
-        </div>
+<html lang="es" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#4f46e5" />
+    <meta name="description" content="Beauty English LMS: Plataforma de aprendizaje para el curso Keratin Talk con base de datos integrada." />
+    
+    <!-- Icono de la pestaña -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22 width=%22100%22 height=%22100%22><text y=%220.9em%22 font-size=%2290%22>✨</text></svg>" />
+    
+    <title>Beauty English: Keratin Talk LMS</title>
 
-        <button onclick="cerrarClase()" class="w-full py-2 bg-slate-800 rounded-lg text-white font-bold">Cerrar</button>
-    </div>
-</div>
+    <!-- Fuentes de Google: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-<script>
-    function abrirClase(titulo, desc, vocab) {
-        document.getElementById('titulo-clase').innerText = titulo;
-        document.getElementById('desc-clase').innerText = desc;
-        
-        // Creamos la lista de palabras
-        const lista = vocab.split(', ');
-        const contenedor = document.getElementById('vocabulario-clase');
-        contenedor.innerHTML = '';
-        
-        lista.forEach(item => {
-            contenedor.innerHTML += `
-                <div class="flex justify-between bg-slate-950 p-3 rounded-lg">
-                    <span>${item}</span>
-                    <button onclick="hablar('${item.split(': ')[0]}')" class="text-fuchsia-500"><i class="fa-solid fa-volume-high"></i></button>
-                </div>
-            `;
-        });
-        
-        document.getElementById('ventana-clase').classList.remove('hidden');
-    }
+    <style>
+      /* Estilos base para evitar parpadeos de carga */
+      body {
+        margin: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    </style>
+  </head>
+  <body class="h-full bg-slate-50 dark:bg-slate-950">
+    <!-- Contenedor raíz donde React renderizará el componente App.jsx -->
+    <div id="root" class="min-h-screen"></div>
 
-    function hablar(texto) {
-        const msg = new SpeechSynthesisUtterance(texto);
-        msg.lang = 'en-US';
-        window.speechSynthesis.speak(msg);
-    }
-
-    function cerrarClase() {
-        document.getElementById('ventana-clase').classList.add('hidden');
-    }
-</script>
-    <body class="bg-slate-950 text-slate-100 min-h-screen flex font-sans">
-
-    <div id="modal-registro" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 z-[100]">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-2xl p-6 text-center">
-            <h2 class="text-xl font-black text-white mb-2">Welcome to Beauty English</h2>
-            <p class="text-slate-400 text-xs mb-6">Ingresa tu nombre para comenzar.</p>
-            <input type="text" id="nombre-estudiante" placeholder="Tu nombre" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-white mb-4 outline-none focus:border-fuchsia-500">
-            <button onclick="registrarEstudiante()" class="w-full py-3 bg-fuchsia-600 rounded-lg text-white font-bold hover:bg-fuchsia-500 transition">Entrar al Campus</button>
-        </div>
-    </div>
-
-    <aside class="w-64 bg-slate-900 border-r border-slate-800 p-6 flex flex-col justify-between shrink-0">
-        <div class="space-y-6">
-            <div class="flex items-center gap-2.5 px-2">
-                <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-fuchsia-500 to-purple-600 flex items-center justify-center text-white font-black text-sm">BE</div>
-                <div>
-                    <h1 class="font-black text-xs uppercase">Beauty English</h1>
-                    <span class="text-[10px] text-slate-500">v1.0.0</span>
-                </div>
-            </div>
-            <nav class="space-y-1">
-                <button onclick="switchTab('panel')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-left text-sm transition"><i class="fa-solid fa-chart-pie"></i> Panel</button>
-                <button onclick="switchTab('modulos')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-left text-sm transition"><i class="fa-solid fa-graduation-cap"></i> Módulos</button>
-                <button onclick="switchTab('flashcards')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-left text-sm transition"><i class="fa-solid fa-clone"></i> Flashcards</button>
-            </nav>
-        </div>
-    </aside>
-
-    <main class="flex-1 p-10 overflow-y-auto">
-        <div id="tab-panel" class="tab-content">
-            <h2 class="text-3xl font-black">Dashboard</h2>
-            <p class="text-slate-400 mt-2">¡Bienvenida al curso de inglés para keratina!</p>
-        </div>
-
-      <!-- Módulos - Reemplaza esto en tu archivo -->
-<div id="tab-modulos" class="tab-content hidden space-y-10">
-    <h2 class="text-2xl font-black text-white">Course Syllabus</h2>
-
-    <!-- Unidad 1 -->
-    <div class="space-y-4">
-        <h3 class="text-fuchsia-500 font-bold tracking-widest text-xs uppercase">Unit 1: Welcome & Process</h3>
-        <div class="grid md:grid-cols-2 gap-4">
-            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
-                <button onclick="abrirClase('Class 1: Greetings', 'Saludos y presentaciones', 'Hello: Hola, Nice to meet you: Mucho gusto')" 
-        class="bg-slate-900 p-5 rounded-xl border border-slate-800 hover:border-fuchsia-500 transition text-left w-full">
-    <h4 class="font-bold text-white">Class 1: Greetings</h4>
-    <p class="text-slate-400 text-sm mt-1">Haz clic para aprender</p>
-</button>
-                <h4 class="font-bold text-white">Class 2: The Keratin Process</h4>
-                <p class="text-slate-400 text-sm mt-1">Vocabulario paso a paso del tratamiento.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Unidad 2 -->
-    <div class="space-y-4">
-        <h3 class="text-indigo-500 font-bold tracking-widest text-xs uppercase">Unit 2: Giving Information</h3>
-        <div class="grid md:grid-cols-2 gap-4">
-            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
-                <h4 class="font-bold text-white">Class 3: Giving Instructions</h4>
-                <p class="text-slate-400 text-sm mt-1">Cómo guiar al cliente durante el proceso.</p>
-            </div>
-            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
-                <h4 class="font-bold text-white">Class 4: Aftercare</h4>
-                <p class="text-slate-400 text-sm mt-1">Cuidados posteriores al tratamiento.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Unidad 3 -->
-    <div class="space-y-4">
-        <h3 class="text-emerald-500 font-bold tracking-widest text-xs uppercase">Unit 3: Customer Interaction</h3>
-        <div class="grid md:grid-cols-2 gap-4">
-            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
-                <h4 class="font-bold text-white">Class 5: Pricing & Time</h4>
-                <p class="text-slate-400 text-sm mt-1">Comunicar precios y duración del servicio.</p>
-            </div>
-            <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
-                <h4 class="font-bold text-white">Class 6: Closing the Service</h4>
-                <p class="text-slate-400 text-sm mt-1">Preguntas finales y despedida profesional.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-    <script>
-        // Lógica de cambio de pestañas
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
-        }
-
-        // Lógica de registro
-        function registrarEstudiante() {
-            const nombre = document.getElementById('nombre-estudiante').value;
-            if (nombre) {
-                localStorage.setItem('nombreEstudiante', nombre);
-                document.getElementById('modal-registro').classList.add('hidden');
-            }
-        }
-    </script>
-</body>
+    <!-- Enlace al archivo principal de inicialización de React (Vite estándar) -->
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
