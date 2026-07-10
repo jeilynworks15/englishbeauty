@@ -5,62 +5,64 @@ import {
   Clock, 
   CheckCircle, 
   Award, 
-  MessageSquare, 
   Play, 
-  FileText,
-  ChevronRight,
-  Menu,
-  X,
-  Lock
+  Lock,
+  ChevronRight
 } from 'lucide-react';
 
 export default function App() {
-  // --- SEGURIDAD Y LLAVES ---
+  // --- SEGURIDAD Y ESTADOS ---
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const user = {
     name: "Jeilyn",
     role: "Estudiante Profesional",
     avatar: "J",
-    progress: 65,
-    points: 320,
-    completedTasks: 4,
-    totalTasks: 9
+    progress: 33,
+    points: 150,
+    completedTasks: 2,
+    totalTasks: 6
   };
 
+  // --- AQUÍ ESTÁN TUS DOCUMENTOS Y CLASES REALES ---
   const modules = [
     {
       id: 1,
-      title: "Módulo 1: Introduction to Hair Structure",
-      duration: "2 horas • 3 lecciones",
+      title: "Unidad 1: Introducción a la Estructura Capilar",
+      duration: "Clase 1 y Clase 2",
       lessons: [
-        { title: "1.1 Basic Anatomy of Hair & Scalp", type: "video", duration: "15 min", completed: true },
-        { title: "1.2 Chemical Bonds in Hair (Disulfide bonds)", type: "video", duration: "25 min", completed: true },
-        { title: "1.3 Vocabulary: Texture, Porosity & Elasticity", type: "quiz", duration: "10 min", completed: false }
+        { title: "Clase 1: Anatomía Básica del Cabello y Cuero Cabelludo", type: "video", duration: "20 min", completed: true },
+        { title: "Clase 2: Porosidad y Elasticidad (Vocabulario Técnico)", type: "lectura", duration: "15 min", completed: true }
       ]
     },
     {
       id: 2,
-      title: "Módulo 2: The Chemical Process of Hair Straightening",
-      duration: "3 horas • 3 lecciones",
+      title: "Unidad 2: El Proceso Químico de los Alisados",
+      duration: "Clase 3 y Clase 4",
       lessons: [
-        { title: "2.1 Alkaline vs Acid Treatments", type: "video", duration: "30 min", completed: true },
-        { title: "2.2 Formaldehyde-free Formulas (Glyoxylcarbonyl)", type: "video", duration: "20 min", completed: false },
-        { title: "2.3 Client Consultation Phrases", type: "reading", duration: "15 min", completed: false }
+        { title: "Clase 3: Tratamientos Alcalinos vs. Ácidos", type: "video", duration: "30 min", completed: false },
+        { title: "Clase 4: Fórmulas Libres de Formol (Ácido Glioxílico)", type: "video", duration: "25 min", completed: false }
+      ]
+    },
+    {
+      id: 3,
+      title: "Unidad 3: Práctica y Consulta con el Cliente",
+      duration: "Clase 5 y Clase 6",
+      lessons: [
+        { title: "Clase 5: Frases Clave para la Consulta Técnica en Inglés", type: "lectura", duration: "20 min", completed: false },
+        { title: "Clase 6: Simulación de Diagnóstico Capilar", type: "quiz", duration: "15 min", completed: false }
       ]
     }
   ];
 
   const grades = [
-    { course: "Quiz 1: Hair Anatomy Vocabulary", grade: "95/100", status: "Approved", date: "12/05/2026" },
-    { course: "Oral Exam: Client Consultation Simulator", grade: "88/100", status: "Approved", date: "24/05/2026" },
-    { course: "Technical Essay: Keratin Application Safety", grade: "100/100", status: "Perfect", date: "02/06/2026" }
+    { course: "Quiz Unidad 1: Estructura Capilar", grade: "90/100", status: "Aprobado", date: "10/07/2026" },
+    { course: "Vocabulario Técnico de Porosidad", grade: "100/100", status: "Perfecto", date: "10/07/2026" }
   ];
 
   const handleLogin = (e) => {
@@ -124,7 +126,7 @@ export default function App() {
     );
   }
 
-  // ================= PANTALLA 2: TU CAMPUS ANTERIOR INTEGRADO =================
+  // ================= PANTALLA 2: EL CAMPUS CON UNIDADES REALES =================
   return (
     <div className="min-h-screen bg-slate-50 font-sans flex flex-col">
       <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
@@ -133,7 +135,7 @@ export default function App() {
             <div className="bg-purple-600 p-2 rounded-xl text-white"><GraduationCap size={24} /></div>
             <div>
               <span className="font-bold text-lg text-slate-800 block leading-tight">Beauty English</span>
-              <span className="text-xs text-purple-600 font-medium tracking-wide">KERATIN TALK LMS</span>
+              <span className="text-xs text-purple-600 font-medium tracking-wide">CAMPUS INTEGRADO</span>
             </div>
           </div>
 
@@ -144,10 +146,6 @@ export default function App() {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <div className="hidden sm:flex flex-col text-right">
-              <span className="text-sm font-semibold text-slate-700">{user.name}</span>
-              <span className="text-xs text-slate-400">{user.role}</span>
-            </div>
             <div className="h-10 w-10 bg-purple-100 border border-purple-200 rounded-xl flex items-center justify-center font-bold text-purple-700 shadow-inner">
               {user.avatar}
             </div>
@@ -162,11 +160,11 @@ export default function App() {
         {activeTab === 'dashboard' && (
           <div className="space-y-6">
             <div className="bg-gradient-to-r from-purple-700 to-indigo-800 rounded-2xl p-8 text-white shadow-md">
-              <span className="bg-purple-500/30 text-purple-200 text-xs px-2.5 py-1 rounded-full border border-purple-400/20 font-medium uppercase tracking-wider">Welcome back</span>
+              <span className="bg-purple-500/30 text-purple-200 text-xs px-2.5 py-1 rounded-full border border-purple-400/20 font-medium uppercase tracking-wider">Tu Escuela</span>
               <h1 className="text-3xl font-bold mt-2">¡Hola, {user.name}!</h1>
-              <p className="text-purple-100 text-sm mt-1">¿Lista para dominar el inglés técnico para estilistas profesionales hoy?</p>
+              <p className="text-purple-100 text-sm mt-1">Tus documentos e información técnica están listos en las pestañas.</p>
               <button onClick={() => setActiveTab('lessons')} className="mt-5 bg-white text-purple-700 hover:bg-purple-50 text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-md flex items-center space-x-1">
-                <span>Continuar curso</span> <ChevronRight size={14} />
+                <span>Ir a ver las clases</span> <ChevronRight size={14} />
               </button>
             </div>
 
@@ -181,17 +179,17 @@ export default function App() {
               </div>
               <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm flex items-center space-x-4">
                 <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl"><CheckCircle size={22} /></div>
-                <div><p className="text-xs text-slate-400 font-medium">Tareas completadas</p><p className="text-xl font-bold text-slate-800">{user.completedTasks} / {user.totalTasks}</p></div>
+                <div><p className="text-xs text-slate-400 font-medium">Clases completadas</p><p className="text-xl font-bold text-slate-800">{user.completedTasks} / {user.totalTasks}</p></div>
               </div>
             </div>
 
             <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-              <h3 className="text-lg font-bold text-slate-800 flex items-center space-x-2"><BookOpen size={20} className="text-purple-600" /> <span>Tu plan de estudio actual</span></h3>
+              <h3 className="text-lg font-bold text-slate-800 flex items-center space-x-2"><BookOpen size={20} className="text-purple-600" /> <span>Estructura del Curso</span></h3>
               <div className="mt-4 space-y-4">
                 {modules.map(mod => (
                   <div key={mod.id} className="border border-slate-100 p-4 rounded-xl hover:border-purple-200 transition-colors flex justify-between items-center bg-slate-50/50">
                     <div><h4 className="font-semibold text-slate-700 text-sm">{mod.title}</h4><p className="text-xs text-slate-400 mt-0.5">{mod.duration}</p></div>
-                    <button onClick={() => setActiveTab('lessons')} className="text-xs font-bold text-purple-600 hover:text-purple-700 bg-purple-50 px-3 py-2 rounded-xl transition-colors flex items-center space-x-1"><span>Ver lecciones</span><ChevronRight size={12} /></button>
+                    <button onClick={() => setActiveTab('lessons')} className="text-xs font-bold text-purple-600 hover:text-purple-700 bg-purple-50 px-3 py-2 rounded-xl transition-colors flex items-center space-x-1"><span>Entrar</span><ChevronRight size={12} /></button>
                   </div>
                 ))}
               </div>
@@ -201,42 +199,43 @@ export default function App() {
 
         {activeTab === 'lessons' && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-slate-800">Contenido del Curso</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 space-y-4">
-                {modules.map(mod => (
-                  <div key={mod.id} className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-                    <div className="bg-slate-50 border-b border-slate-100 p-4"><h3 className="font-bold text-slate-800 text-sm">{mod.title}</h3></div>
-                    <div className="divide-y divide-slate-100">
-                      {mod.lessons.map((les, index) => (
-                        <div key={index} className="p-4 flex items-center justify-between hover:bg-slate-50/50 transition-colors">
-                          <div className="flex items-center space-x-3">
-                            {les.completed ? <div className="text-emerald-500 bg-emerald-50 p-1.5 rounded-full"><CheckCircle size={16} /></div> : <div className="text-slate-300 bg-slate-50 p-1.5 rounded-full"><Play size={16} /></div>}
-                            <div><p className="text-sm font-medium text-slate-700">{les.title}</p><p className="text-xs text-slate-400 flex items-center space-x-1"><span className="capitalize">{les.type}</span><span>•</span><span>{les.duration}</span></p></div>
-                          </div>
-                          <button className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${les.completed ? 'text-slate-400 bg-slate-50 border-slate-200' : 'text-purple-600 bg-purple-50 border-purple-100 hover:bg-purple-100'}`}>{les.completed ? 'Repetir' : 'Iniciar'}</button>
-                        </div>
-                      ))}
-                    </div>
+            <h2 className="text-2xl font-bold text-slate-800">Contenido de las Unidades</h2>
+            <div className="grid grid-cols-1 gap-6">
+              {modules.map(mod => (
+                <div key={mod.id} className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                  <div className="bg-purple-50 border-b border-purple-100 p-4 flex justify-between items-center">
+                    <h3 className="font-bold text-purple-900 text-sm">{mod.title}</h3>
+                    <span className="text-xs text-purple-600 font-medium bg-white px-2.5 py-1 rounded-full shadow-sm">{mod.duration}</span>
                   </div>
-                ))}
-              </div>
+                  <div className="divide-y divide-slate-100">
+                    {mod.lessons.map((les, index) => (
+                      <div key={index} className="p-4 flex items-center justify-between hover:bg-slate-50/50 transition-colors">
+                        <div className="flex items-center space-x-3">
+                          {les.completed ? <div className="text-emerald-500 bg-emerald-50 p-1.5 rounded-full"><CheckCircle size={16} /></div> : <div className="text-slate-300 bg-slate-50 p-1.5 rounded-full"><Play size={16} /></div>}
+                          <div><p className="text-sm font-medium text-slate-700">{les.title}</p><p className="text-xs text-slate-400 flex items-center space-x-1"><span className="capitalize">Tipo: {les.type}</span><span>•</span><span>{les.duration}</span></p></div>
+                        </div>
+                        <button className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${les.completed ? 'text-slate-400 bg-slate-50 border-slate-200' : 'text-purple-600 bg-purple-50 border-purple-100 hover:bg-purple-100'}`}>{les.completed ? 'Completada' : 'Iniciar Clase'}</button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
 
         {activeTab === 'grades' && (
           <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-            <div className="p-6 border-b border-slate-100"><h2 className="text-xl font-bold text-slate-800">Tus Notas Técnicas</h2></div>
+            <div className="p-6 border-b border-slate-100"><h2 className="text-xl font-bold text-slate-800">Historial de Calificaciones</h2></div>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
-                <thead><tr className="bg-slate-50 border-b border-slate-100"><th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Actividad</th><th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Calificación</th><th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Estado</th><th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Fecha</th></tr></thead>
+                <thead><tr className="bg-slate-50 border-b border-slate-100"><th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Actividad</th><th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nota</th><th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Estado</th><th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Fecha</th></tr></thead>
                 <tbody className="divide-y divide-slate-100">
                   {grades.map((item, index) => (
                     <tr key={index} className="hover:bg-slate-50/50 transition-colors">
                       <td className="p-4 text-sm font-semibold text-slate-700">{item.course}</td>
                       <td className="p-4 text-sm font-bold text-purple-600">{item.grade}</td>
-                      <td className="p-4"><span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${item.status === 'Perfect' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`}>{item.status}</span></td>
+                      <td className="p-4"><span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${item.status === 'Perfecto' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`}>{item.status}</span></td>
                       <td className="p-4 text-xs text-slate-400 font-medium">{item.date}</td>
                     </tr>
                   ))}
