@@ -10,11 +10,11 @@ import {
   ChevronRight,
   Users,
   FileText,
-  Bookmark
+  Volume2
 } from 'lucide-react';
 
 export default function App() {
-  // --- ESTADOS DE CONTROL ---
+  // --- SEGURIDAD Y ESTADOS ---
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -23,14 +23,12 @@ export default function App() {
   
   const [activeTab, setActiveTab] = useState('dashboard');
 
-  // --- CUENTAS OFICIALES DE LA ESCUELA ---
+  // --- LAS MAESTRAS Y ESTUDIANTES REALES ---
   const accounts = {
-    // Profesores (Contraseña: prome)
     'daniela': { name: "Miss Manzaba Daniela", role: "Profesora", avatar: "MD", email: "dmanzaba4967@utm.edu.ec" },
     'josselyne': { name: "Miss Lucas Josselyne", role: "Profesora", avatar: "MJ", email: "jlucas9873@utm.edu.ec" },
     'jeilyn': { name: "Miss Gómez Jeilyn", role: "Profesora", avatar: "MG", email: "jgomez3878@utm.edu.ec" },
     
-    // Estudiantes (Contraseña: 1234)
     'jean': { name: "Jean", role: "Estudiante", avatar: "JN", progress: 33, points: 120 },
     'ricardo': { name: "Ricardo", role: "Estudiante", avatar: "RC", progress: 50, points: 180 },
     'victoria': { name: "Victoria", role: "Estudiante", avatar: "VC", progress: 100, points: 350 },
@@ -39,87 +37,56 @@ export default function App() {
     'melany': { name: "Melany", role: "Estudiante", avatar: "ML", progress: 85, points: 300 }
   };
 
-  // --- CONTENIDO REAL DEL SYLLABUS "BEAUTY ENGLISH: KERATIN TALK" ---
+  // --- CONTENIDO JUGUETÓN DE TU UNIDAD 1 ---
   const modules = [
     {
       id: 1,
-      title: "Unit 1: Welcome to the Client (13-18 July)",
-      duration: "Clase 1 y Clase 2 • Greetings and explanation",
+      title: "UNIDAD 1: WELCOME TO THE CLIENT (BIENVENIDA AL CLIENTE) 🚪",
+      duration: "Clase 1 y Clase 2 • Miss Daniela, Miss Josselyne, Miss Jeilyn",
       lessons: [
         { 
-          title: "Class 1: Greetings & Introduction", 
+          title: "CLASE 1: Greetings (Saludos para recibir al cliente) 👋", 
           type: "Speaking", 
-          duration: "35 min",
-          content: "Phrases: Hello! • Hi! • Good morning • Good afternoon • Welcome! • How are you? • My name is... • Nice to meet you • Please, have a seat • Thank you.",
-          task: "Task: Greeting and introduction in the online class."
+          duration: "30-40 min",
+          objective: "Objetivo: Al finalizar la clase, podrás saludar y recibir a un cliente en inglés utilizando expresiones básicas.",
+          content: [
+            { en: "Hello! / Hi!", es: "Hola" },
+            { en: "Good morning.", es: "Buenos días (9:00 AM)" },
+            { en: "Good afternoon.", es: "Buenas tardes" },
+            { en: "Welcome!", es: "¡Bienvenido(a)!" },
+            { en: "How are you?", es: "¿Cómo está?" },
+            { en: "My name is...", es: "Mi nombre es..." },
+            { en: "Nice to meet you.", es: "Mucho gusto." },
+            { en: "Please, have a seat. 🪑", es: "Por favor, tome asiento." },
+            { en: "Thank you. 🙏", es: "Gracias." }
+          ],
+          gameUrl: "https://wordwall.net/es/resource/115823970",
+          task: "Role-Play en Parejas: Estilista dice: 'Good morning! Welcome! My name is... Please, have a seat.' y el Cliente responde: 'Hello! My name is... Nice to meet you. Thank you!'"
         },
         { 
-          title: "Class 2: Explaining the Keratin Process", 
+          title: "CLASE 2: Explain the Keratin Process (Explicar el proceso) 🧪", 
           type: "Speaking", 
-          duration: "40 min",
-          content: "Phrases: Today, we will do a keratin treatment. • First, we wash your hair. • Then, we dry your hair. • Next, we apply the keratin. • Finally, we use the flat iron. • The treatment takes about two hours.",
-          task: "Task: Explain the keratin process in a voice recorder."
-        }
-      ]
-    },
-    {
-      id: 2,
-      title: "Unit 2: Giving Information (20-25 July)",
-      duration: "Clase 3 y Clase 4 • Instructions and simple questions",
-      lessons: [
-        { 
-          title: "Class 3: Giving Instructions & Aftercare", 
-          type: "Speaking", 
-          duration: "35 min",
-          content: "Phrases: Please, don't move. • Please, wait a moment. • Don't wash your hair for 3 days. • Don't tie your hair. • Don't get your hair wet. • Use sulfate-free shampoo.",
-          task: "Task: Give aftercare instructions to a partner in a voice recorder."
-        },
-        { 
-          title: "Class 4: Discussing Prices and Duration", 
-          type: "Speaking", 
-          duration: "40 min",
-          content: "Phrases: The price is $40. • The treatment takes around two hours. • We will finish in 30 minutes. • You can pay by cash. • You can pay by card.",
-          task: "Task: Simulate a conversation about the price and duration of the service with a partner."
-        }
-      ]
-    },
-    {
-      id: 3,
-      title: "Unit 3: Customer Interaction (27 July - 1 August)",
-      duration: "Clase 5 y Clase 6 • Maintaining a simple conversation",
-      lessons: [
-        { 
-          title: "Class 5: Client Questions & Answers", 
-          type: "Speaking", 
-          duration: "35 min",
-          content: "Phrases: Is this your first keratin treatment? • Do you have any allergies? • Is your hair colored? • No problem. • Of course.",
-          task: "Task: Practice a dialogue by asking and answering common questions in a voice recorder."
-        },
-        { 
-          title: "Class 6: Closing and Farewell", 
-          type: "Speaking", 
-          duration: "40 min",
-          content: "Phrases: Thank you for coming. • Thank you for your visit. • Have a nice day. • See you next time. • Take care. • Goodbye! • We hope to see you again.",
-          task: "Task: Final Assessment: Complete role-play of the interaction with a partner (Greetings, explanation, instructions, price and farewell)."
+          duration: "30-40 min",
+          objective: "Objetivo: Al finalizar la clase, podrás explicar de forma sencilla el proceso de un tratamiento de keratina utilizando conectores básicos.",
+          content: [
+            { en: "Today, we will do a keratin treatment.", es: "Hoy, haremos un tratamiento de keratina." },
+            { en: "First, we wash your hair. 🧼", es: "Primero, lavamos tu cabello." },
+            { en: "Then, we dry your hair. 💨", es: "Luego, secamos tu cabello." },
+            { en: "Next, we apply the keratin. 🧴", es: "Después, aplicamos la keratina." },
+            { en: "Finally, we use the flat iron. 💇‍♀️", es: "Finalmente, usamos la plancha." },
+            { en: "The treatment takes about two hours. ⏰", es: "El tratamiento toma aproximadamente dos horas." }
+          ],
+          gameUrl: "Ruleta de Palabras en Clase",
+          task: "🎤 TAREA OFICIAL: Grabar un audio de 30-45 segundos explicando el proceso completo en inglés usando First, Then, Next y Finally."
         }
       ]
     }
   ];
 
-  const gradingInfo = {
-    scale: "Pass 100% - 70% | Fail below 70%",
-    distribution: [
-      { name: "Participation", percentage: "30%" },
-      { name: "Assignments (Recordings, dialogues)", percentage: "40%" },
-      { name: "Final Oral Performance", percentage: "30%" }
-    ]
-  };
-
   const handleLogin = (e) => {
     e.preventDefault();
     const cleanUser = username.toLowerCase().trim();
     const account = accounts[cleanUser];
-
     if (account) {
       if ((account.role === "Profesora" && password === "prome") || (account.role !== "Profesora" && password === "1234")) {
         setCurrentUser(account);
@@ -128,206 +95,150 @@ export default function App() {
         return;
       }
     }
-    setError('¡Upps! Tu nombre o contraseña no están registrados en el aula virtual.');
+    setError('¡Upps! Ese nombre no está en mi lista del salón.');
   };
 
-  // ================= PANTALLA 1: LOGIN =================
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4 font-sans">
-        <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full border border-slate-200">
+      <div className="min-h-screen bg-pink-50 flex items-center justify-center p-4 font-sans">
+        <div className="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full border-4 border-purple-200">
           <div className="flex flex-col items-center mb-6">
-            <div className="bg-purple-600 p-3 rounded-2xl text-white mb-2 shadow-md">
-              <Lock size={28} />
+            <div className="bg-purple-600 p-4 rounded-2xl text-white mb-2 shadow-md animate-bounce">
+              <GraduationCap size={32} />
             </div>
-            <h2 className="text-2xl font-bold text-slate-800 text-center">Beauty English</h2>
-            <p className="text-xs text-purple-600 font-bold bg-purple-50 px-3 py-1 rounded-full mt-1">KERATIN TALK LMS</p>
+            <h2 className="text-2xl font-black text-purple-900 text-center">Beauty English ✨</h2>
+            <p className="text-xs text-purple-600 font-bold bg-purple-50 px-3 py-1 rounded-full mt-1">✨ CAMPUS DE JUGUETE ✨</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Nombre de Usuario</label>
-              <input 
-                type="text" 
-                placeholder="Ej: 'daniela', 'jeilyn', 'jean'..." 
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
-              />
+              <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Tu Nombre de Usuario</label>
+              <input type="text" placeholder="Ej: jeilyn, daniela, jean..." value={username} onChange={(e) => setUsername(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-purple-200 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" />
             </div>
-
             <div>
               <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Contraseña Secreta</label>
-              <input 
-                type="password" 
-                placeholder="Estudiantes: 1234 | Profesoras: prome" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
-              />
+              <input type="password" placeholder="Estudiantes: 1234 | Profes: prome" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-purple-200 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" />
             </div>
-
-            {error && (
-              <p className="text-rose-600 text-xs font-semibold bg-rose-50 p-2.5 rounded-lg border border-rose-100 text-center">{error}</p>
-            )}
-
-            <button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl text-sm shadow-md transition-colors">
-              Ingresar al Aula Virtual
-            </button>
+            {error && <p className="text-rose-600 text-xs font-bold bg-rose-50 p-2.5 rounded-lg text-center">{error}</p>}
+            <button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-black py-3 rounded-xl text-sm shadow-md transition-all transform hover:scale-105">¡Entrar a Jugar y Aprender! ➡️</button>
           </form>
         </div>
       </div>
     );
   }
 
-  // ================= PANTALLA 2: CAMPUS ADAPTADO AL SYLLABUS =================
   return (
     <div className="min-h-screen bg-slate-50 font-sans flex flex-col">
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <header className="bg-white border-b border-purple-100 sticky top-0 z-40 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="bg-purple-600 p-2 rounded-xl text-white"><GraduationCap size={24} /></div>
             <div>
-              <span className="font-bold text-lg text-slate-800 block leading-tight">Beauty English</span>
-              <span className="text-xs text-purple-600 font-medium tracking-wide">KERATIN TALK</span>
+              <span className="font-black text-lg text-purple-900 block leading-tight">Beauty English</span>
+              <span className="text-[10px] text-purple-600 font-bold tracking-wide uppercase">Keratin Talk 💇‍♀️</span>
             </div>
           </div>
 
-          <nav className="hidden md:flex space-x-1">
-            <button onClick={() => setActiveTab('dashboard')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'dashboard' ? 'bg-purple-50 text-purple-700' : 'text-slate-600 hover:text-purple-600'}`}>Inicio</button>
-            <button onClick={() => setActiveTab('lessons')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'lessons' ? 'bg-purple-50 text-purple-700' : 'text-slate-600 hover:text-purple-600'}`}>Syllabus (Clases)</button>
-            <button onClick={() => setActiveTab('grades')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'grades' ? 'bg-purple-50 text-purple-700' : 'text-slate-600 hover:text-purple-600'}`}>Calificaciones</button>
+          <nav className="flex space-x-1">
+            <button onClick={() => setActiveTab('dashboard')} className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${activeTab === 'dashboard' ? 'bg-purple-100 text-purple-700' : 'text-slate-600'}`}>Inicio</button>
+            <button onClick={() => setActiveTab('lessons')} className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${activeTab === 'lessons' ? 'bg-purple-100 text-purple-700' : 'text-slate-600'}`}>Clases Reales 📖</button>
           </nav>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             <div className="text-right hidden sm:block">
-              <p className="text-sm font-bold text-slate-700 leading-none">{currentUser.name}</p>
-              <p className="text-[11px] text-purple-600 font-medium mt-1">{currentUser.email || currentUser.role}</p>
+              <p className="text-xs font-black text-slate-700 leading-none">{currentUser.name}</p>
+              <p className="text-[10px] text-purple-600 font-bold mt-0.5">{currentUser.role}</p>
             </div>
-            <div className="h-10 w-10 bg-purple-100 border border-purple-200 rounded-xl flex items-center justify-center font-bold text-purple-700">
-              {currentUser.avatar}
-            </div>
-            <button onClick={() => { setIsLoggedIn(false); setCurrentUser(null); }} className="text-xs font-semibold text-rose-600 bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-100">
-              Salir
-            </button>
+            <div className="h-9 w-9 bg-purple-600 text-white rounded-xl flex items-center justify-center font-black text-sm">{currentUser.avatar}</div>
+            <button onClick={() => setIsLoggedIn(false)} className="text-[10px] font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded-lg">Salir</button>
           </div>
         </div>
       </header>
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-8">
+      <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
         {activeTab === 'dashboard' && (
-          <div className="space-y-6">
-            <div className="bg-gradient-to-r from-purple-700 to-indigo-800 rounded-2xl p-8 text-white shadow-md">
-              <span className="bg-purple-500/30 text-purple-200 text-xs px-2.5 py-1 rounded-full border border-purple-400/20 font-medium uppercase">Official Course</span>
-              <h1 className="text-3xl font-bold mt-2">¡Welcome, {currentUser.name}!</h1>
-              <p className="text-purple-100 text-sm mt-1">Course Modality: Online (Synchronous) | Goal: Master English for Keratin Treatments.</p>
+          <div className="space-y-6 animate-fadeIn">
+            <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl p-6 text-white shadow-md">
+              <h1 className="text-2xl font-black">¡Hola, {currentUser.name}! ✨</h1>
+              <p className="text-purple-100 text-xs mt-1">¡Bienvenida a tu aula virtual interactiva! Aquí tienes el contenido real de tus PDFs.</p>
             </div>
 
-            {/* Panel de Profesora */}
-            {currentUser.role === "Profesora" && (
-              <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
-                <div className="flex items-center space-x-3 text-purple-700 font-bold"><Users size={22} /> <h3>Listado Oficial de Estudiantes (6)</h3></div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {Object.values(accounts).filter(acc => acc.role === "Estudiante" || acc.role === "Estudiante Estrella").map((est, i) => (
-                    <div key={i} className="bg-slate-50 border border-slate-100 p-3 rounded-xl flex items-center space-x-3">
-                      <div className="h-8 w-8 bg-purple-600 rounded-lg text-white font-bold flex items-center justify-center text-xs">{est.avatar}</div>
-                      <div><p className="text-xs font-bold text-slate-700">{est.name}</p><p className="text-[10px] text-slate-400">Progreso: {est.progress}%</p></div>
+            {currentUser.role === "Profesora" ? (
+              <div className="bg-white border-2 border-purple-100 rounded-2xl p-4 shadow-sm">
+                <h3 className="text-xs font-black text-purple-900 uppercase tracking-wider mb-3 flex items-center space-x-1"><span>Mis 6 Estudiantes Estrellas:</span></h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {Object.values(accounts).filter(acc => acc.role === "Estudiante").map((est, i) => (
+                    <div key={i} className="bg-purple-50/50 p-2.5 rounded-xl flex items-center space-x-2 border border-purple-100">
+                      <div className="h-6 w-6 bg-pink-500 rounded-md text-white font-black flex items-center justify-center text-[10px]">{est.avatar}</div>
+                      <p className="text-xs font-bold text-slate-700">{est.name}</p>
                     </div>
                   ))}
                 </div>
               </div>
-            )}
-
-            {/* Panel de Estudiante */}
-            {currentUser.role !== "Profesora" && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm flex items-center space-x-4">
-                  <div className="p-3 bg-purple-50 text-purple-600 rounded-xl"><Clock size={22} /></div>
-                  <div><p className="text-xs text-slate-400 font-medium">Tu Progreso del Curso</p><p className="text-xl font-bold text-slate-800">{currentUser.progress}%</p></div>
-                </div>
-                <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm flex items-center space-x-4">
-                  <div className="p-3 bg-amber-50 text-amber-600 rounded-xl"><Award size={22} /></div>
-                  <div><p className="text-xs text-slate-400 font-medium">Puntos Ganados</p><p className="text-xl font-bold text-slate-800">{currentUser.points} XP</p></div>
+            ) : (
+              <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-amber-900 flex items-center space-x-3">
+                <div className="p-2 bg-white rounded-lg text-amber-600 font-bold text-xs">⭐</div>
+                <div>
+                  <p className="text-xs font-bold">¡Tu meta hoy!</p>
+                  <p className="text-[11px] text-amber-800">Estudia la Unidad 1 para ganar tus primeros 100 puntos de XP.</p>
                 </div>
               </div>
             )}
 
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-              <h3 className="text-base font-bold text-slate-800 flex items-center space-x-2"><BookOpen size={20} className="text-purple-600" /> <span>Estructura de Unidades del Syllabus</span></h3>
-              <div className="mt-4 space-y-3">
-                {modules.map(mod => (
-                  <div key={mod.id} className="border border-slate-100 p-4 rounded-xl flex justify-between items-center bg-slate-50/50">
-                    <div><h4 className="font-semibold text-slate-700 text-sm">{mod.title}</h4><p className="text-xs text-purple-600 font-medium mt-0.5">{mod.duration}</p></div>
-                    <button onClick={() => setActiveTab('lessons')} className="text-xs font-bold text-purple-600 bg-purple-50 px-3 py-2 rounded-xl flex items-center space-x-1"><span>Ver Unidades</span><ChevronRight size={12} /></button>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <button onClick={() => setActiveTab('lessons')} className="w-full bg-white border-2 border-dashed border-purple-300 hover:border-purple-500 p-6 rounded-2xl flex flex-col items-center justify-center text-center transition-all group">
+              <BookOpen size={32} className="text-purple-500 mb-2 group-hover:scale-110 transition-transform" />
+              <span className="text-sm font-black text-purple-900">¡Hacer clic aquí para abrir el libro de clases! 🎉</span>
+              <span className="text-xs text-slate-400 mt-0.5">Mira los diálogos y haz la tarea del audio.</span>
+            </button>
           </div>
         )}
 
         {activeTab === 'lessons' && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-slate-800">Syllabus Integrado (Clase 1 a 6)</h2>
-            <div className="grid grid-cols-1 gap-6">
-              {modules.map(mod => (
-                <div key={mod.id} className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-                  <div className="bg-purple-600 text-white p-4 flex justify-between items-center">
-                    <h3 className="font-bold text-sm">{mod.title}</h3>
-                    <span className="text-[11px] bg-purple-500/30 px-3 py-1 rounded-full font-medium border border-purple-400/20">{mod.duration}</span>
-                  </div>
-                  <div className="divide-y divide-slate-100">
-                    {mod.lessons.map((les, index) => (
-                      <div key={index} className="p-5 space-y-3 hover:bg-slate-50/50 transition-colors">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <h4 className="text-sm font-bold text-slate-800">{les.title}</h4>
-                            <p className="text-xs text-purple-600 font-semibold mt-0.5">Main Skill: {les.type} • Duration: {les.duration}</p>
-                          </div>
-                          <span className="text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-lg border border-purple-100">{les.task}</span>
-                        </div>
-                        <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-                          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Vocabulary & Expressions:</p>
-                          <p className="text-xs font-medium text-slate-600 italic bg-white p-2.5 rounded-lg border border-slate-200/60 leading-relaxed">{les.content}</p>
+            {modules.map(mod => (
+              <div key={mod.id} className="space-y-4">
+                <div className="bg-purple-900 text-white p-4 rounded-2xl shadow-sm">
+                  <h2 className="text-sm font-black uppercase tracking-wider">{mod.title}</h2>
+                  <p className="text-[11px] text-purple-200 font-medium mt-0.5">{mod.duration}</p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                  {mod.lessons.map((les, index) => (
+                    <div key={index} className="bg-white border-2 border-purple-100 rounded-2xl p-5 shadow-sm space-y-4">
+                      <div>
+                        <span className="bg-pink-100 text-pink-700 font-black text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wide">Clase Oficial</span>
+                        <h3 className="text-base font-black text-slate-800 mt-1">{les.title}</h3>
+                        <p className="text-xs text-purple-700 font-bold bg-purple-50 p-2 rounded-lg border border-purple-100/60 mt-2 italic">{les.objective}</p>
+                      </div>
+
+                      <div className="space-y-2">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Vocabulario y Frases del PDF:</p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {les.content.map((item, i) => (
+                            <div key={i} className="bg-slate-50 p-2.5 rounded-xl flex justify-between items-center border border-slate-100 hover:bg-purple-50/30 transition-colors">
+                              <span className="text-xs font-black text-purple-900">{item.en}</span>
+                              <span className="text-xs font-bold text-slate-400">🗣️ {item.es}</span>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    ))}
-                  </div>
+
+                      <div className="bg-amber-50 p-3.5 rounded-xl border border-amber-100 space-y-2">
+                        <div className="flex items-center space-x-2 text-amber-800 font-black text-xs">
+                          <span>🎯 ACTIVIDAD REQUERIDA:</span>
+                        </div>
+                        <p className="text-xs font-bold text-amber-900 leading-relaxed">{les.task}</p>
+                        {les.gameUrl.startsWith("http") ? (
+                          <a href={les.gameUrl} target="_blank" rel="noreferrer" className="inline-block mt-2 text-xs font-black bg-purple-600 text-white px-3 py-1.5 rounded-lg shadow-sm hover:bg-purple-700">🕹️ ¡Hacer Clic para Jugar Wordwall!</a>
+                        ) : (
+                          <span className="inline-block mt-2 text-xs font-black bg-amber-200 text-amber-800 px-3 py-1.5 rounded-lg">🎲 Actividad: {les.gameUrl}</span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'grades' && (
-          <div className="space-y-6">
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-              <h3 className="text-base font-bold text-slate-800 flex items-center space-x-2"><FileText size={20} className="text-purple-600" /> <span>Course Grading Rules</span></h3>
-              <p className="text-xs text-slate-500 mt-1">Scale: {gradingInfo.scale}</p>
-              <div className="grid grid-cols-3 gap-3 mt-4">
-                {gradingInfo.distribution.map((dist, i) => (
-                  <div key={i} className="bg-slate-50 border border-slate-100 p-3 rounded-xl text-center">
-                    <p className="text-lg font-bold text-purple-600">{dist.percentage}</p>
-                    <p className="text-[10px] text-slate-500 font-semibold mt-0.5">{dist.name}</p>
-                  </div>
-                ))}
               </div>
-            </div>
-
-            <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-              <div className="p-5 border-b border-slate-100"><h3 className="font-bold text-slate-800 text-sm">Control de Rendimiento</h3></div>
-              <div className="p-4 bg-slate-50 text-slate-600 text-xs text-center border-b border-slate-100 font-medium">
-                {currentUser.role === "Profesora" ? "Como Profesora, aquí verás la libreta general de las 6 estudiantes." : `Libreta personal de: ${currentUser.name}`}
-              </div>
-              <table className="w-full text-left border-collapse text-xs">
-                <thead><tr className="bg-slate-100 border-b border-slate-200"><th className="p-3 font-bold text-slate-500">Componente</th><th className="p-3 font-bold text-slate-500">Peso</th><th className="p-3 font-bold text-slate-500">Estado</th></tr></thead>
-                <tbody className="divide-y divide-slate-100">
-                  <tr><td className="p-3 font-medium">Participation</td><td className="p-3 font-bold text-purple-600">30%</td><td className="p-3"><span className="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 rounded-md">Activo</span></td></tr>
-                  <tr><td className="p-3 font-medium">Assignments (recordings, dialogues)</td><td className="p-3 font-bold text-purple-600">40%</td><td className="p-3"><span className="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 rounded-md">En Progreso</span></td></tr>
-                  <tr><td className="p-3 font-medium">Final oral performance</td><td className="p-3 font-bold text-purple-600">30%</td><td className="p-3"><span className="bg-amber-50 text-amber-700 border border-amber-100 px-2 py-0.5 rounded-md">Pendiente</span></td></tr>
-                </tbody>
-              </table>
-            </div>
+            ))}
           </div>
         )}
       </main>
