@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 
 export default function App() {
-  // --- LLAVES MÁGICAS (ESTADO) ---
+  // --- SEGURIDAD Y LLAVES ---
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -24,24 +24,47 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Datos simulados
-  const user = { name: "Jeilyn", role: "Estudiante", progress: 65, points: 320 };
+  const user = {
+    name: "Jeilyn",
+    role: "Estudiante Profesional",
+    avatar: "J",
+    progress: 65,
+    points: 320,
+    completedTasks: 4,
+    totalTasks: 9
+  };
+
   const modules = [
     {
       id: 1,
       title: "Módulo 1: Introduction to Hair Structure",
-      duration: "2 horas",
+      duration: "2 horas • 3 lecciones",
       lessons: [
-        { title: "1.1 Basic Anatomy of Hair", type: "video", duration: "15 min", completed: true },
-        { title: "1.2 What is Keratin?", type: "video", duration: "20 min", completed: true }
+        { title: "1.1 Basic Anatomy of Hair & Scalp", type: "video", duration: "15 min", completed: true },
+        { title: "1.2 Chemical Bonds in Hair (Disulfide bonds)", type: "video", duration: "25 min", completed: true },
+        { title: "1.3 Vocabulary: Texture, Porosity & Elasticity", type: "quiz", duration: "10 min", completed: false }
+      ]
+    },
+    {
+      id: 2,
+      title: "Módulo 2: The Chemical Process of Hair Straightening",
+      duration: "3 horas • 3 lecciones",
+      lessons: [
+        { title: "2.1 Alkaline vs Acid Treatments", type: "video", duration: "30 min", completed: true },
+        { title: "2.2 Formaldehyde-free Formulas (Glyoxylcarbonyl)", type: "video", duration: "20 min", completed: false },
+        { title: "2.3 Client Consultation Phrases", type: "reading", duration: "15 min", completed: false }
       ]
     }
   ];
 
-  // --- FUNCIÓN PARA REVISAR LA CONTRASEÑA ---
+  const grades = [
+    { course: "Quiz 1: Hair Anatomy Vocabulary", grade: "95/100", status: "Approved", date: "12/05/2026" },
+    { course: "Oral Exam: Client Consultation Simulator", grade: "88/100", status: "Approved", date: "24/05/2026" },
+    { course: "Technical Essay: Keratin Application Safety", grade: "100/100", status: "Perfect", date: "02/06/2026" }
+  ];
+
   const handleLogin = (e) => {
     e.preventDefault();
-    // La contraseña secreta será: 1234
     if (username.toLowerCase() === 'jeilyn' && password === '1234') {
       setIsLoggedIn(true);
       setError('');
@@ -50,13 +73,11 @@ export default function App() {
     }
   };
 
-  // ================= PANTALLA 1: EL LOGIN (LA PUERTA) =================
+  // ================= PANTALLA 1: EL LOGIN =================
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4 font-sans">
         <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full border border-slate-200">
-          
-          {/* Logo */}
           <div className="flex flex-col items-center mb-8">
             <div className="bg-purple-600 p-3 rounded-2xl text-white mb-3 shadow-md">
               <Lock size={28} />
@@ -65,7 +86,6 @@ export default function App() {
             <p className="text-sm text-purple-600 font-medium mt-1">Ingresa a tu Campus Virtual</p>
           </div>
 
-          {/* Formulario */}
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
               <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Tu Nombre</label>
@@ -95,20 +115,16 @@ export default function App() {
               </p>
             )}
 
-            <button 
-              type="submit" 
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-xl text-sm shadow-md transition-colors"
-            >
+            <button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-xl text-sm shadow-md transition-colors">
               Abrir Puerta Virtual
             </button>
           </form>
-
         </div>
       </div>
     );
   }
 
-  // ================= PANTALLA 2: EL CAMPUS (ADENTRO) =================
+  // ================= PANTALLA 2: TU CAMPUS ANTERIOR INTEGRADO =================
   return (
     <div className="min-h-screen bg-slate-50 font-sans flex flex-col">
       <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
@@ -117,20 +133,25 @@ export default function App() {
             <div className="bg-purple-600 p-2 rounded-xl text-white"><GraduationCap size={24} /></div>
             <div>
               <span className="font-bold text-lg text-slate-800 block leading-tight">Beauty English</span>
-              <span className="text-xs text-purple-600 font-medium tracking-wide">CAMPUS INTEGRADO</span>
+              <span className="text-xs text-purple-600 font-medium tracking-wide">KERATIN TALK LMS</span>
             </div>
           </div>
 
           <nav className="hidden md:flex space-x-1">
-            <button onClick={() => setActiveTab('dashboard')} className={`px-4 py-2 rounded-lg text-sm font-medium ${activeTab === 'dashboard' ? 'bg-purple-50 text-purple-700' : 'text-slate-600'}`}>Inicio</button>
-            <button onClick={() => setActiveTab('lessons')} className={`px-4 py-2 rounded-lg text-sm font-medium ${activeTab === 'lessons' ? 'bg-purple-50 text-purple-700' : 'text-slate-600'}`}>Clases</button>
+            <button onClick={() => setActiveTab('dashboard')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'dashboard' ? 'bg-purple-50 text-purple-700' : 'text-slate-600 hover:text-purple-600'}`}>Inicio</button>
+            <button onClick={() => setActiveTab('lessons')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'lessons' ? 'bg-purple-50 text-purple-700' : 'text-slate-600 hover:text-purple-600'}`}>Clases</button>
+            <button onClick={() => setActiveTab('grades')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'grades' ? 'bg-purple-50 text-purple-700' : 'text-slate-600 hover:text-purple-600'}`}>Calificaciones</button>
           </nav>
 
           <div className="flex items-center space-x-4">
-            <button 
-              onClick={() => setIsLoggedIn(false)} 
-              className="text-xs font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-100 transition-colors"
-            >
+            <div className="hidden sm:flex flex-col text-right">
+              <span className="text-sm font-semibold text-slate-700">{user.name}</span>
+              <span className="text-xs text-slate-400">{user.role}</span>
+            </div>
+            <div className="h-10 w-10 bg-purple-100 border border-purple-200 rounded-xl flex items-center justify-center font-bold text-purple-700 shadow-inner">
+              {user.avatar}
+            </div>
+            <button onClick={() => setIsLoggedIn(false)} className="text-xs font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-100 transition-colors">
               Cerrar Llave
             </button>
           </div>
@@ -141,8 +162,86 @@ export default function App() {
         {activeTab === 'dashboard' && (
           <div className="space-y-6">
             <div className="bg-gradient-to-r from-purple-700 to-indigo-800 rounded-2xl p-8 text-white shadow-md">
-              <h1 className="text-3xl font-bold">¡Bienvenida de vuelta, {user.name}!</h1>
-              <p className="text-purple-100 text-sm mt-1">Has pasado la seguridad con éxito usando tu contraseña secreta.</p>
+              <span className="bg-purple-500/30 text-purple-200 text-xs px-2.5 py-1 rounded-full border border-purple-400/20 font-medium uppercase tracking-wider">Welcome back</span>
+              <h1 className="text-3xl font-bold mt-2">¡Hola, {user.name}!</h1>
+              <p className="text-purple-100 text-sm mt-1">¿Lista para dominar el inglés técnico para estilistas profesionales hoy?</p>
+              <button onClick={() => setActiveTab('lessons')} className="mt-5 bg-white text-purple-700 hover:bg-purple-50 text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-md flex items-center space-x-1">
+                <span>Continuar curso</span> <ChevronRight size={14} />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm flex items-center space-x-4">
+                <div className="p-3 bg-purple-50 text-purple-600 rounded-xl"><Clock size={22} /></div>
+                <div><p className="text-xs text-slate-400 font-medium">Progreso general</p><p className="text-xl font-bold text-slate-800">{user.progress}%</p></div>
+              </div>
+              <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm flex items-center space-x-4">
+                <div className="p-3 bg-amber-50 text-amber-600 rounded-xl"><Award size={22} /></div>
+                <div><p className="text-xs text-slate-400 font-medium">Puntos ganados</p><p className="text-xl font-bold text-slate-800">{user.points} XP</p></div>
+              </div>
+              <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm flex items-center space-x-4">
+                <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl"><CheckCircle size={22} /></div>
+                <div><p className="text-xs text-slate-400 font-medium">Tareas completadas</p><p className="text-xl font-bold text-slate-800">{user.completedTasks} / {user.totalTasks}</p></div>
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <h3 className="text-lg font-bold text-slate-800 flex items-center space-x-2"><BookOpen size={20} className="text-purple-600" /> <span>Tu plan de estudio actual</span></h3>
+              <div className="mt-4 space-y-4">
+                {modules.map(mod => (
+                  <div key={mod.id} className="border border-slate-100 p-4 rounded-xl hover:border-purple-200 transition-colors flex justify-between items-center bg-slate-50/50">
+                    <div><h4 className="font-semibold text-slate-700 text-sm">{mod.title}</h4><p className="text-xs text-slate-400 mt-0.5">{mod.duration}</p></div>
+                    <button onClick={() => setActiveTab('lessons')} className="text-xs font-bold text-purple-600 hover:text-purple-700 bg-purple-50 px-3 py-2 rounded-xl transition-colors flex items-center space-x-1"><span>Ver lecciones</span><ChevronRight size={12} /></button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'lessons' && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-slate-800">Contenido del Curso</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2 space-y-4">
+                {modules.map(mod => (
+                  <div key={mod.id} className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                    <div className="bg-slate-50 border-b border-slate-100 p-4"><h3 className="font-bold text-slate-800 text-sm">{mod.title}</h3></div>
+                    <div className="divide-y divide-slate-100">
+                      {mod.lessons.map((les, index) => (
+                        <div key={index} className="p-4 flex items-center justify-between hover:bg-slate-50/50 transition-colors">
+                          <div className="flex items-center space-x-3">
+                            {les.completed ? <div className="text-emerald-500 bg-emerald-50 p-1.5 rounded-full"><CheckCircle size={16} /></div> : <div className="text-slate-300 bg-slate-50 p-1.5 rounded-full"><Play size={16} /></div>}
+                            <div><p className="text-sm font-medium text-slate-700">{les.title}</p><p className="text-xs text-slate-400 flex items-center space-x-1"><span className="capitalize">{les.type}</span><span>•</span><span>{les.duration}</span></p></div>
+                          </div>
+                          <button className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${les.completed ? 'text-slate-400 bg-slate-50 border-slate-200' : 'text-purple-600 bg-purple-50 border-purple-100 hover:bg-purple-100'}`}>{les.completed ? 'Repetir' : 'Iniciar'}</button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'grades' && (
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+            <div className="p-6 border-b border-slate-100"><h2 className="text-xl font-bold text-slate-800">Tus Notas Técnicas</h2></div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead><tr className="bg-slate-50 border-b border-slate-100"><th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Actividad</th><th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Calificación</th><th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Estado</th><th className="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Fecha</th></tr></thead>
+                <tbody className="divide-y divide-slate-100">
+                  {grades.map((item, index) => (
+                    <tr key={index} className="hover:bg-slate-50/50 transition-colors">
+                      <td className="p-4 text-sm font-semibold text-slate-700">{item.course}</td>
+                      <td className="p-4 text-sm font-bold text-purple-600">{item.grade}</td>
+                      <td className="p-4"><span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${item.status === 'Perfect' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`}>{item.status}</span></td>
+                      <td className="p-4 text-xs text-slate-400 font-medium">{item.date}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         )}
