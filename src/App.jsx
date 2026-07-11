@@ -528,29 +528,28 @@ export default function App() {
                     const taskData = allStudentsTasks[targetStudent]?.[les.taskKey];
                     const recordCalificacion = grades[targetStudent]?.[les.taskKey];
                     return (
-                      <div key={index} className={`border rounded-2xl p-5 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-300'}`}>
+                      <div key={index} className={`border rounded-2xl p-5 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-400'}`}>
                         <h3 className="text-base font-black text-slate-900 dark:text-white">{les.title}</h3>
                         
-                        {/* --- OBJETIVO REFORZADO EN MODO CLARO --- */}
                         <p className="text-xs font-black p-3 bg-slate-50 dark:bg-slate-800 text-indigo-950 dark:text-slate-100 rounded-lg italic border border-slate-300 dark:border-slate-700 leading-relaxed">{les.objective}</p>
 
+                        {/* --- 🌟 REVISIÓN MÉDICA DEL VOCABULARIO INTERNO DE LAS UNIDADES --- */}
                         <div className="grid grid-cols-1 gap-1.5">
                           {les.content.map((item, i) => (
-                            <div key={i} className={`p-2.5 rounded-xl flex justify-between items-center border shadow-sm transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/40' : 'border-slate-400 bg-white'}`}>
+                            <div key={i} className={`p-2.5 rounded-xl flex justify-between items-center border shadow-md transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/40 text-white' : 'border-slate-500 bg-white text-black'}`}>
                               <div className="flex items-center space-x-2">
                                 <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"><Volume2 size={14} /></button>
-                                <span className="text-xs font-black text-slate-900 dark:text-white">{item.en}</span>
+                                <span className="text-xs font-black text-black dark:text-white">{item.en}</span>
                               </div>
-                              {/* --- CUADRO DE TRADUCCIÓN SÓLIDO Y OSCURO --- */}
-                              <span className="text-[12px] font-black text-slate-900 dark:text-purple-300 bg-slate-100 dark:bg-purple-950 px-2 py-0.5 rounded border border-slate-300 dark:border-purple-900">🗣 {item.es}</span>
+                              <span className="text-[12px] font-black text-black dark:text-purple-300 bg-slate-100 dark:bg-purple-950 px-2.5 py-1 rounded border border-slate-400 dark:border-purple-900 shadow-sm">🗣 {item.es}</span>
                             </div>
                           ))}
                         </div>
 
-                        {/* --- CONTENEDOR DE ACTIVIDADES TOTALMENTE LEIBLE --- */}
-                        <div className={`p-4 rounded-xl border text-xs font-bold transition-colors ${darkMode ? 'bg-purple-950/40 border-purple-950 text-amber-200' : 'bg-slate-50 border-slate-350 text-slate-900'}`}>
+                        {/* --- CONTENEDOR DE ACTIVIDADES --- */}
+                        <div className={`p-4 rounded-xl border text-xs font-bold transition-colors ${darkMode ? 'bg-purple-950/40 border-purple-950 text-amber-200' : 'bg-slate-100 border-slate-400 text-slate-900'}`}>
                           <p className="font-black text-indigo-700 dark:text-purple-400 uppercase tracking-wide">🎯 Actividad Obligatoria:</p>
-                          <p className="my-1.5 text-slate-900 dark:text-purple-100 font-black leading-relaxed">{les.task}</p>
+                          <p className="my-1.5 text-black dark:text-purple-100 font-black leading-relaxed">{les.task}</p>
                           
                           {les.gameUrl && (
                             <div className="mt-2">
@@ -559,7 +558,7 @@ export default function App() {
                           )}
 
                           {les.taskKey && (
-                            <div className="mt-3 pt-3 border-t border-slate-300 dark:border-purple-900 space-y-2">
+                            <div className="mt-3 pt-3 border-t border-slate-400 dark:border-purple-900 space-y-2">
                               <div className="p-1.5 bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-200 rounded-lg text-[10px] font-black border border-slate-300 dark:border-none">
                                 👀 Viendo la mochila de: <b className="text-indigo-950 dark:text-white">{targetStudent.toUpperCase()}</b>
                               </div>
@@ -579,7 +578,7 @@ export default function App() {
                               </div>
                               <p className="text-[11px] font-black text-indigo-700 dark:text-purple-400 mt-1">⭐ Calificación: {recordCalificacion?.nota || '-'} / 10</p>
                               {recordCalificacion?.comentario && (
-                                <p className="text-[10px] text-slate-900 dark:text-purple-200 bg-white dark:bg-purple-950 p-2 rounded-md mt-1 border border-slate-300 dark:border-purple-900 leading-relaxed">💬 <b>Comentario Miss:</b> {recordCalificacion.comentario}</p>
+                                <p className="text-[10px] text-black dark:text-purple-200 bg-white dark:bg-purple-950 p-2 rounded-md mt-1 border border-slate-400 dark:border-purple-900 leading-relaxed">💬 <b>Comentario Miss:</b> {recordCalificacion.comentario}</p>
                               )}
                             </div>
                           )}
@@ -593,13 +592,13 @@ export default function App() {
           )}
 
           {activeTab === 'activities' && (
-            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-300'}`}>
-              <div className="flex items-center space-x-2 border-b border-slate-300 dark:border-purple-900 pb-3">
+            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-400'}`}>
+              <div className="flex items-center space-x-2 border-b border-slate-400 dark:border-purple-900 pb-3">
                 <Activity className="text-indigo-600" size={24} />
-                <h2 className="text-xl font-black text-slate-900 dark:text-white">CENTRO DE TAREAS GENERAL 🎒👁️</h2>
+                <h2 className="text-xl font-black text-slate-900 dark:text-black">CENTRO DE TAREAS GENERAL 🎒👁️</h2>
               </div>
               
-              <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-300 dark:border-slate-700 space-y-3">
+              <div className="p-4 bg-slate-200 dark:bg-slate-800 rounded-2xl border border-slate-400 dark:border-slate-700 space-y-3">
                 {esProfesora ? (
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <span className="text-xs font-black text-slate-900 dark:text-slate-300">Selecciona un alumno para revisar:</span>
@@ -612,19 +611,20 @@ export default function App() {
                 )}
               </div>
 
+              {/* --- 🎒 REVISIÓN CRÍTICA DE LA MOCHILA DE TAREAS --- */}
               <div className="space-y-4 mt-2">
                 {['clase2', 'clase3', 'clase5', 'clase6'].map((key) => {
                   const currentTask = allStudentsTasks[targetStudent]?.[key];
 
                   return (
-                    <div key={key} className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/20 text-white' : 'border-slate-400 bg-white text-slate-900'}`}>
+                    <div key={key} className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/20 text-white' : 'border-slate-400 bg-white text-black'}`}>
                       <div className="text-xs max-w-md">
-                        <span className="font-black text-slate-900 dark:text-purple-400 block leading-relaxed">{infoTareas[key]}</span>
-                        <span className="text-slate-800 dark:text-slate-400 font-bold block mt-1">Mochila de: <b className="text-indigo-950 dark:text-slate-300 font-black">{targetStudent.toUpperCase()}</b></span>
+                        <span className="font-black text-black dark:text-purple-400 block leading-relaxed text-sm">{infoTareas[key]}</span>
+                        <span className="text-slate-900 dark:text-slate-400 font-bold block mt-1.5">Mochila de: <b className="text-indigo-950 dark:text-slate-300 font-black">{targetStudent.toUpperCase()}</b></span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         {!esProfesora && (
-                          <label className="bg-indigo-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl cursor-pointer hover:bg-indigo-700">
+                          <label className="bg-indigo-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl cursor-pointer hover:bg-indigo-700 shadow-sm">
                             📄 {currentTask ? "Cambiar" : "Elegir PDF"}
                             <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, key, currentUser.username)} className="hidden" />
                           </label>
@@ -634,7 +634,7 @@ export default function App() {
                             <Eye size={12} /> Ver PDF 👁️
                           </a>
                         ) : (
-                          <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-300 px-2 py-1 rounded-lg font-black border border-slate-300 dark:border-slate-700">Sin entregar todavía 🎒</span>
+                          <span className="text-[10px] bg-slate-200 dark:bg-slate-800 text-black dark:text-slate-300 px-2.5 py-1.5 rounded-lg font-black border border-slate-400 dark:border-slate-700">Sin entregar todavía 🎒</span>
                         )}
                       </div>
                     </div>
@@ -645,8 +645,8 @@ export default function App() {
           )}
 
           {activeTab === 'gradesTab' && (
-            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-300'}`}>
-              <div className="flex items-center space-x-2 border-b border-slate-300 dark:border-purple-900 pb-3">
+            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-400'}`}>
+              <div className="flex items-center space-x-2 border-b border-slate-400 dark:border-purple-900 pb-3">
                 <Star className="text-amber-500 fill-amber-500" size={24} />
                 <h2 className="text-xl font-black text-slate-900 dark:text-white">SISTEMA DE CALIFICACIONES ⭐</h2>
               </div>
@@ -656,7 +656,7 @@ export default function App() {
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
                     const currentRecord = grades[selectedStudent]?.[key] || { nota: '-', comentario: '' };
                     return (
-                      <div key={key} className="p-4 border border-slate-300 dark:border-slate-800 rounded-2xl flex flex-col gap-3 text-xs bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold shadow-sm">
+                      <div key={key} className="p-4 border border-slate-400 dark:border-slate-800 rounded-2xl flex flex-col gap-3 text-xs bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold shadow-sm">
                         <span className="text-slate-900 dark:text-purple-400 font-black block text-sm leading-relaxed">{infoTareas[key]}</span>
                         
                         <div className="flex items-center space-x-2">
@@ -678,7 +678,7 @@ export default function App() {
                             value={currentRecord.comentario || ''} 
                             onChange={(e) => asignarComentario(selectedStudent, key, e.target.value)}
                             placeholder="Añade un comentario sobre el desempeño..." 
-                            className="w-full p-3 text-xs text-slate-900 dark:text-white font-black border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 outline-none focus:border-indigo-500 leading-relaxed"
+                            className="w-full p-3 text-xs text-slate-900 dark:text-white font-black border border-slate-400 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 outline-none focus:border-indigo-500 leading-relaxed"
                             rows={2}
                           />
                         </div>
@@ -691,13 +691,13 @@ export default function App() {
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
                     const studentRecord = grades[currentUser.username]?.[key] || { nota: '-', comentario: '' };
                     return (
-                      <div key={key} className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl text-xs font-bold flex flex-col gap-2 text-slate-900 dark:text-white border border-slate-300 dark:border-slate-700 shadow-sm">
+                      <div key={key} className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl text-xs font-bold flex flex-col gap-2 text-slate-900 dark:text-white border border-slate-400 dark:border-slate-700 shadow-sm">
                         <div className="flex justify-between items-start gap-4">
                           <span className="text-slate-900 dark:text-slate-300 font-black leading-relaxed">{infoTareas[key]}</span>
                           <span className="bg-indigo-600 text-white font-black px-2.5 py-1 rounded-lg text-xs shrink-0 shadow-sm">Nota: {studentRecord.nota} / 10</span>
                         </div>
                         {studentRecord.comentario && (
-                          <div className="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-[11px] text-slate-900 dark:text-slate-300 mt-1 leading-relaxed">
+                          <div className="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-400 dark:border-slate-700 text-[11px] text-slate-900 dark:text-slate-300 mt-1 leading-relaxed">
                             📢 <b>Comentario de la Miss:</b> {studentRecord.comentario}
                           </div>
                         )}
@@ -710,23 +710,25 @@ export default function App() {
           )}
 
           {activeTab === 'vocabulary' && (
-            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-300'}`}>
-              <div className="flex items-center space-x-2 border-b border-slate-300 dark:border-purple-900 pb-3">
+            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-400'}`}>
+              <div className="flex items-center space-x-2 border-b border-slate-400 dark:border-purple-900 pb-3">
                 <Volume2 className="text-indigo-600" size={24} />
-                <h2 className="text-xl font-black text-slate-900 dark:text-white">DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
+                <h2 className="text-xl font-black text-slate-900 dark:text-black">DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
               </div>
-              <div className="space-y-4 pt-2">
+              
+              {/* --- 🔊 REVISIÓN EXHAUSTIVA DE LA PESTAÑA DICCIONARIO GENERAL --- */}
+              <div className="space-y-6 pt-2">
                 {modules.map(mod => (
-                  <div key={mod.id} className="border-l-4 border-indigo-500 pl-3 py-1">
-                    <h3 className="text-xs font-black text-indigo-700 dark:text-purple-400 uppercase mb-2">{mod.title.split(":")[0]}</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div key={mod.id} className="border-l-4 border-indigo-600 pl-3 py-1 bg-slate-50 dark:bg-transparent rounded-r-xl p-2">
+                    <h3 className="text-xs font-black text-indigo-700 dark:text-purple-400 uppercase mb-3 tracking-wider">{mod.title}</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                       {mod.lessons.flatMap(l => l.content).map((item, idx) => (
-                        <div key={idx} className={`p-2 rounded-xl flex justify-between items-center border shadow-sm transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/40 text-white' : 'border-slate-400 bg-white text-slate-900'}`}>
+                        <div key={idx} className={`p-3 rounded-xl flex justify-between items-center border shadow-md transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/40 text-white' : 'border-slate-500 bg-white text-black'}`}>
                           <div className="flex items-center space-x-2">
-                            <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"><Volume2 size={12} /></button>
-                            <span className="text-[12px] font-black">{item.en}</span>
+                            <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 shrink-0"><Volume2 size={12} /></button>
+                            <span className="text-[12px] font-black text-black dark:text-white leading-tight">{item.en}</span>
                           </div>
-                          <span className="text-[11px] font-black text-slate-900 dark:text-purple-300 bg-slate-100 dark:bg-purple-950 px-2 py-0.5 rounded border border-slate-300 dark:border-purple-900">🗣️ {item.es}</span>
+                          <span className="text-[11px] font-black text-black dark:text-purple-300 bg-slate-100 dark:bg-purple-950 px-2.5 py-1 rounded border border-slate-400 dark:border-purple-900 shadow-sm shrink-0 text-right">🗣️ {item.es}</span>
                         </div>
                       ))}
                     </div>
@@ -737,25 +739,25 @@ export default function App() {
           )}
 
           {activeTab === 'games' && (
-            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-300'}`}>
+            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-400'}`}>
               <h2 className="text-xl font-black text-center text-indigo-700 dark:text-purple-400">🎡 LA FERIA DE JUEGOS DE VOCABULARIO 🕹️</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
-                <div className="border border-slate-300 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
+                <div className="border border-slate-400 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">🎯</span>
                   <h4 className="text-xs font-black text-slate-900 dark:text-white">Saludos (Clase 1)</h4>
                   <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-indigo-600 text-white py-1.5 rounded-xl hover:bg-indigo-700">¡Jugar Wordwall!</a>
                 </div>
-                <div className="border border-slate-300 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
+                <div className="border border-slate-400 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">🧪</span>
                   <h4 className="text-xs font-black text-slate-900 dark:text-white">Proceso (Clase 2)</h4>
                   <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-indigo-600 text-white py-1.5 rounded-xl hover:bg-indigo-700">¡Jugar Interacty!</a>
                 </div>
-                <div className="border border-slate-300 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
+                <div className="border border-slate-400 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">🧴</span>
                   <h4 className="text-xs font-black text-slate-900 dark:text-white">Cuidado (Clase 3)</h4>
                   <a href="https://wordwall.net/resource/116065664" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-indigo-600 text-white py-1.5 rounded-xl hover:bg-indigo-700">¡Jugar Wordwall!</a>
                 </div>
-                <div className="border border-slate-300 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
+                <div className="border border-slate-400 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">💰</span>
                   <h4 className="text-xs font-black text-slate-900 dark:text-white">Precios (Clase 4)</h4>
                   <a href="https://create.kahoot.it/share/class-5/16e72ba0-e8fc-4910-9400-b7a3c94c3586" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-indigo-600 text-white py-1.5 rounded-xl hover:bg-indigo-700">¡Jugar Kahoot!</a>
