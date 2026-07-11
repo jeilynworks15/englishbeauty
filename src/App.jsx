@@ -288,11 +288,11 @@ export default function App() {
           content: [
             { en: "The price is $40.", es: "El precio es $40." },
             { en: "The treatment takes around two hours.", es: "El tratamiento dura aproximadamente dos horas." },
-            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutos." },
+            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutes." },
             { en: "You can pay by cash.", es: "Puede pagar en efectivo." },
             { en: "You can pay by card.", es: "Puede pagar con tarjeta." }
           ],
-          gameUrl: "https://wordwall.net/resource/116065924",
+          gameUrl: "https://create.kahoot.it/share/class-5/16e72ba0-e8fc-4910-9400-b7a3c94c3586",
           task: "ROLE-PLAY: Jugar con un compañero a preguntar precios, tiempos y formas de pago."
         }
       ]
@@ -706,9 +706,9 @@ export default function App() {
                   <a href="https://wordwall.net/resource/116065664" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-amber-500 text-white py-1.5 rounded-xl">¡Jugar!</a>
                 </div>
                 <div className="border-2 p-4 rounded-2xl bg-emerald-50 text-center space-y-2">
-                  <span className="text-2xl">💰</span>
-                  <h4 className="text-xs font-black">Precios (Clase 4)</h4>
-                  <a href="https://wordwall.net/resource/116065924" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-emerald-600 text-white py-1.5 rounded-xl">¡Jugar!</a>
+                  <span className="text-2xl">🎉</span>
+                  <h4 className="text-xs font-black">Kahoot (Clase 5)</h4>
+                  <a href="https://create.kahoot.it/share/class-5/16e72ba0-e8fc-4910-9400-b7a3c94c3586" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-emerald-600 text-white py-1.5 rounded-xl">¡Jugar!</a>
                 </div>
               </div>
             </div>
