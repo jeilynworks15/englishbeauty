@@ -55,7 +55,7 @@ export default function App() {
     return localStorage.getItem('beauty_salon_video_url') || null;
   });
 
-  // --- 📄 COFRE REFORZADO DE TAREAS (COMPARTIDO ENTRE ALUMNOS Y PROFESORAS) ---
+  // --- 📄 COFRE REFORZADO DE TAREAS ---
   const [allStudentsTasks, setAllStudentsTasks] = useState(() => {
     try {
       const savedTasks = localStorage.getItem('beauty_salon_tasks_final_v2');
@@ -83,35 +83,35 @@ export default function App() {
     localStorage.setItem('beauty_salon_tasks_final_v2', JSON.stringify(allStudentsTasks));
   }, [allStudentsTasks]);
 
-  // --- 📊 BASE DE DATOS DE CALIFICACIONES ---
+  // --- 📊 BASE DE DATOS DE CALIFICACIONES Y COMENTARIOS REFORZADA ---
   const [grades, setGrades] = useState(() => {
     try {
-      const savedGrades = localStorage.getItem('beauty_salon_grades_final');
+      const savedGrades = localStorage.getItem('beauty_salon_grades_final_v3');
       return savedGrades ? JSON.parse(savedGrades) : {
-        jean: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
-        ricardo: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
-        victoria: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
-        yaritza: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
-        annelys: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
-        melany: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' }
+        jean: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+        ricardo: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+        victoria: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+        yaritza: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+        annelys: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+        melany: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } }
       };
     } catch (e) {
+      // Migración amigable por si existían notas en el formato antiguo
       return {
-        jean: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
-        ricardo: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
-        victoria: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
-        yaritza: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
-        annelys: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
-        melany: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' }
+        jean: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+        ricardo: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+        victoria: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+        yaritza: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+        annelys: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+        melany: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } }
       };
     }
   });
 
   useEffect(() => {
-    localStorage.setItem('beauty_salon_grades_final', JSON.stringify(grades));
+    localStorage.setItem('beauty_salon_grades_final_v3', JSON.stringify(grades));
   }, [grades]);
 
-  // Alumno que la profesora está revisando actualmente
   const [selectedStudent, setSelectedStudent] = useState('jean');
 
   const escucharPalabra = (textoEnIngles) => {
@@ -137,7 +137,6 @@ export default function App() {
     }
   };
 
-  // --- 🛠️ SUBIDA CORREGIDA: Guarda en el casillero correcto del alumno ---
   const handlePdfUpload = (e, claseKey, studentUser) => {
     const file = e.target.files[0];
     if (file) {
@@ -170,12 +169,29 @@ export default function App() {
     }
   };
 
+  // --- Funciones de Asignación Actualizadas ---
   const asignarNota = (estudiante, claseKey, nota) => {
     setGrades(prev => ({
       ...prev,
       [estudiante]: {
         ...prev[estudiante],
-        [claseKey]: nota
+        [claseKey]: {
+          ...prev[estudiante]?.[claseKey],
+          nota: nota
+        }
+      }
+    }));
+  };
+
+  const asignarComentario = (estudiante, claseKey, comentario) => {
+    setGrades(prev => ({
+      ...prev,
+      [estudiante]: {
+        ...prev[estudiante],
+        [claseKey]: {
+          ...prev[estudiante]?.[claseKey],
+          comentario: comentario
+        }
       }
     }));
   };
@@ -200,6 +216,14 @@ export default function App() {
     { id: 'annelys', name: 'Annelys' },
     { id: 'melany', name: 'Melany' }
   ];
+
+  // Estructura de nombres/detalles estables de tareas para el módulo de notas
+  const infoTareas = {
+    clase2: "Tarea 1: Graben un audio de 30-45 segundos explicando el proceso completo del tratamiento de keratina.",
+    clase3: "Tarea 2: Graben un audio dando las instrucciones de cuidado posterior al tratamiento de keratina.",
+    clase5: "Tarea 3: Graben un audio practicando las expresiones y preguntas de alergias aprendidas.",
+    clase6: "Evaluación Final: Juego de Rol (Role-Play) completo con un compañero aplicando todo lo aprendido."
+  };
 
   const modules = [
     {
@@ -236,7 +260,7 @@ export default function App() {
             { en: "The treatment takes about two hours.", es: "The treatment takes about two hours." }
           ],
           gameUrl: "https://interacty.me/projects/e502cc8626a13026",
-          task: "Grabar un audio explicando el proceso completo usando First, Then, Next y Finally.",
+          task: "Grabar un audio de 30-45 segundos explicando el proceso completo del tratamiento de keratina.",
           taskKey: "clase2"
         }
       ]
@@ -267,7 +291,7 @@ export default function App() {
           content: [
             { en: "The price is $40.", es: "El precio es $40." },
             { en: "The treatment takes around two hours.", es: "El tratamiento dura aproximadamente dos horas." },
-            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutos." },
+            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutes." },
             { en: "You can pay by cash.", es: "Puede pagar en efectivo." },
             { en: "You can pay by card.", es: "Puede pagar con tarjeta." }
           ],
@@ -360,8 +384,6 @@ export default function App() {
   }
 
   const esProfesora = currentUser.role === "Profesora";
-  // --- 🛠️ INTERRUPTOR DE VISTA DINÁMICA ---
-  // Si eres Miss, miras al alumno de la lista desplegable. Si eres alumno, ves tus tareas.
   const targetStudent = esProfesora ? selectedStudent : currentUser.username;
 
   return (
@@ -459,6 +481,7 @@ export default function App() {
 
                   {mod.lessons.map((les, index) => {
                     const taskData = allStudentsTasks[targetStudent]?.[les.taskKey];
+                    const recordCalificacion = grades[targetStudent]?.[les.taskKey];
                     return (
                       <div key={index} className={`border-2 rounded-2xl p-5 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-100'}`}>
                         <h3 className="text-base font-black">{les.title}</h3>
@@ -510,7 +533,10 @@ export default function App() {
                               ) : (
                                 <p className="text-[10px] text-rose-500 font-bold mt-1">❌ Sin entregar todavía.</p>
                               )}
-                              <p className="text-[11px] font-black text-purple-600 mt-1">⭐ Calificación: {grades[targetStudent]?.[les.taskKey] || '-'} / 10</p>
+                              <p className="text-[11px] font-black text-purple-600 mt-1">⭐ Calificación: {recordCalificacion?.nota || '-'} / 10</p>
+                              {recordCalificacion?.comentario && (
+                                <p className="text-[10px] text-purple-950 dark:text-purple-300 bg-purple-100/50 p-1.5 rounded-md mt-1">💬 <b>Comentario Miss:</b> {recordCalificacion.comentario}</p>
+                              )}
                             </div>
                           )}
                         </div>
@@ -540,21 +566,15 @@ export default function App() {
 
               <div className="space-y-4">
                 {['clase2', 'clase3', 'clase5', 'clase6'].map((key) => {
-                  const names = {
-                    clase2: "🔹 Clase 2: Explicación del Proceso (Keratina)",
-                    clase3: "🔹 Clase 3: Instrucciones de Cuidado Posterior",
-                    clase5: "🔹 Clase 5: Conversación / Preguntas de Alergias",
-                    clase6: "🏆 Clase 6: Despedida y Evaluación Final"
-                  };
                   const currentTask = allStudentsTasks[targetStudent]?.[key];
 
                   return (
                     <div key={key} className="p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50 dark:bg-slate-800/40 text-slate-900 dark:text-white">
-                      <div className="text-xs">
-                        <span className="font-black text-purple-500 block">{names[key]}</span>
+                      <div className="text-xs max-w-md">
+                        <span className="font-black text-purple-500 block">{infoTareas[key]}</span>
                         <span className="text-slate-400 font-bold">Mochila actual de: <b className="text-pink-500 font-black">{targetStudent.toUpperCase()}</b></span>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 shrink-0">
                         {!esProfesora && (
                           <label className="bg-purple-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl cursor-pointer">
                             📄 {currentTask ? "Cambiar" : "Elegir PDF Real"}
@@ -584,30 +604,59 @@ export default function App() {
               </div>
               {esProfesora ? (
                 <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-black">Elegir alumno para poner nota:</span>
+                  <div className="flex items-center gap-2 p-2 bg-purple-50 dark:bg-slate-800 rounded-xl">
+                    <span className="text-xs font-black">Elegir alumno para calificar y comentar:</span>
                     <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border text-slate-900 bg-white">
                       {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                     </select>
                   </div>
-                  {['clase2', 'clase3', 'clase5', 'clase6'].map(key => (
-                    <div key={key} className="p-3 border rounded-xl flex justify-between items-center text-xs text-slate-900 dark:text-white font-bold">
-                      <span>{key.toUpperCase()}</span>
-                      <select value={grades[selectedStudent]?.[key] || '-'} onChange={(e) => asignarNota(selectedStudent, key, e.target.value)} className="border p-1 rounded bg-white text-slate-900">
-                        <option value="-">-</option>
-                        {[10,9,8,7,6,5,4,3,2,1].map(n => <option key={n} value={n}>{n}</option>)}
-                      </select>
-                    </div>
-                  ))}
+                  
+                  {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
+                    const currentRecord = grades[selectedStudent]?.[key] || { nota: '-', comentario: '' };
+                    return (
+                      <div key={key} className="p-4 border rounded-2xl flex flex-col gap-2 text-xs bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold shadow-sm">
+                        <span className="text-purple-600 font-black block text-sm">{infoTareas[key]}</span>
+                        
+                        <div className="flex items-center gap-3 mt-1">
+                          <span className="text-slate-500">Calificación:</span>
+                          <select value={currentRecord.nota || '-'} onChange={(e) => asignarNota(selectedStudent, key, e.target.value)} className="border p-1 rounded bg-white text-slate-900 font-black">
+                            <option value="-">-</option>
+                            {[10,9,8,7,6,5,4,3,2,1].map(n => <option key={n} value={n}>{n}</option>)}
+                          </select>
+                        </div>
+
+                        <div className="flex flex-col gap-1 mt-2">
+                          <span className="text-slate-500 text-[11px]">Escribir Comentario / Retroalimentación (Opcional):</span>
+                          <textarea 
+                            value={currentRecord.comentario || ''} 
+                            onChange={(e) => asignarComentario(selectedStudent, key, e.target.value)}
+                            placeholder="¡Buen trabajo! O detalla qué mejorar aquí..." 
+                            className="w-full p-2 text-xs text-slate-900 font-medium border rounded-xl outline-none focus:border-pink-400 bg-white"
+                            rows={2}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               ) : (
-                <div className="space-y-2">
-                  {['clase2', 'clase3', 'clase5', 'clase6'].map(key => (
-                    <div key={key} className="p-3 bg-purple-50 dark:bg-slate-800/60 rounded-xl text-xs font-bold flex justify-between text-slate-900 dark:text-white">
-                      <span>{key.toUpperCase()}</span>
-                      <span className="bg-purple-600 text-white px-2 py-0.5 rounded-md">{grades[currentUser.username]?.[key] || '-'} / 10</span>
-                    </div>
-                  ))}
+                <div className="space-y-3">
+                  {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
+                    const studentRecord = grades[currentUser.username]?.[key] || { nota: '-', comentario: '' };
+                    return (
+                      <div key={key} className="p-4 bg-purple-50 dark:bg-slate-800/60 rounded-2xl text-xs font-bold flex flex-col gap-2 text-slate-900 dark:text-white border border-purple-100">
+                        <div className="flex justify-between items-start gap-4">
+                          <span className="text-purple-700 dark:text-purple-300 font-black">{infoTareas[key]}</span>
+                          <span className="bg-purple-600 text-white px-2.5 py-1 rounded-lg text-xs font-black whitespace-nowrap shrink-0">{studentRecord.nota || '-'} / 10</span>
+                        </div>
+                        {studentRecord.comentario && (
+                          <div className="bg-white/80 dark:bg-slate-900/50 p-2.5 rounded-xl border text-[11px] text-slate-700 dark:text-slate-200 mt-1">
+                            📢 <b>Comentario de la Miss:</b> {studentRecord.comentario}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
