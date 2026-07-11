@@ -325,7 +325,7 @@ export default function App() {
             { en: "No problem.", es: "No hay problema." },
             { en: "Of course.", es: "Por supuesto." }
           ],
-          gameUrl: "",
+          gameUrl: "https://wordwall.net/es/resource/115823970",
           task: "Grabar un audio practicando las expresiones y preguntas que aprendieron en esta clase.",
           taskKey: "clase5"
         },
@@ -341,7 +341,7 @@ export default function App() {
             { en: "Goodbye!", es: "¡Adiós!" },
             { en: "We hope to see you again.", es: "Esperamos verla nuevamente." }
           ],
-          gameUrl: "",
+          gameUrl: "https://interacty.me/projects/e502cc8626a13026",
           task: "EVALUACIÓN FINAL (ROLE-PLAY): Hacer un juego completo con un compañero que incluya todo lo aprendido. ¡Se calificará sobre 10 puntos!",
           taskKey: "clase6"
         }
@@ -375,19 +375,19 @@ export default function App() {
 
   if (!isLoggedIn || !currentUser) {
     return (
-      <div className="min-h-screen bg-sky-300 flex flex-col items-center justify-center p-4">
-        <form onSubmit={handleLogin} className="bg-amber-200 p-8 rounded-3xl shadow-xl max-w-sm w-full space-y-4 border-4 border-pink-500">
+      <div className="min-h-screen bg-slate-300 flex flex-col items-center justify-center p-4">
+        <form onSubmit={handleLogin} className="bg-white p-8 rounded-3xl shadow-xl max-w-sm w-full space-y-4 border-4 border-indigo-600">
           <div className="text-center">
             <span className="text-5xl">💇‍♀️✨</span>
-            <h2 className="text-2xl font-black text-indigo-950 mt-2">Beauty English Salón</h2>
-            <p className="text-xs text-teal-800 font-bold">¡Pon tu nombre y tu código mágico!</p>
+            <h2 className="text-2xl font-black text-slate-900 mt-2">Beauty English Salón</h2>
+            <p className="text-xs text-slate-600 font-bold">¡Pon tu nombre y tu código mágico!</p>
           </div>
           <div className="space-y-2">
-            <input type="text" placeholder="Tu nombre (ej. isabel)" value={username} onChange={e => setUsername(e.target.value)} className="w-full p-3 border-2 border-pink-400 rounded-xl text-xs text-indigo-950 font-bold focus:border-teal-500 bg-cyan-100 outline-none" />
-            <input type="password" placeholder="Tu Clave Mágica" value={password} onChange={e => setPassword(e.target.value)} className="w-full p-3 border-2 border-pink-400 rounded-xl text-xs text-indigo-950 font-bold focus:border-teal-500 bg-cyan-100 outline-none" />
+            <input type="text" placeholder="Tu nombre (ej. isabel)" value={username} onChange={e => setUsername(e.target.value)} className="w-full p-3 border-2 border-slate-300 rounded-xl text-xs text-slate-900 font-bold bg-slate-50 outline-none focus:border-indigo-500" />
+            <input type="password" placeholder="Tu Clave Mágica" value={password} onChange={e => setPassword(e.target.value)} className="w-full p-3 border-2 border-slate-300 rounded-xl text-xs text-slate-900 font-bold bg-slate-50 outline-none focus:border-indigo-500" />
           </div>
-          {error && <p className="text-pink-600 text-xs font-black text-center bg-pink-100 p-2 rounded-xl">❌ {error}</p>}
-          <button type="submit" className="w-full bg-teal-500 hover:bg-teal-600 active:scale-95 text-white font-black p-3.5 rounded-xl text-xs shadow-md transition-all">¡Entrar al Salón! 🚀</button>
+          {error && <p className="text-red-600 text-xs font-black text-center bg-red-50 p-2 rounded-xl">❌ {error}</p>}
+          <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-black p-3.5 rounded-xl text-xs shadow-md transition-all">¡Entrar al Salón! 🚀</button>
         </form>
       </div>
     );
@@ -398,30 +398,30 @@ export default function App() {
   const progresoActual = calcularProgreso(targetStudent);
 
   return (
-    // --- 🎨 FONDO CELESTE DEFINIDO PARA QUE RESALTE TODO ---
-    <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-sky-200/80 text-indigo-950'}`}>
+    // --- 🎨 FONDO CLARO CORREGIDO A SLATE-100 (AZUL GRISÁCEO LIMPIO Y PROFESIONAL) ---
+    <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-slate-100 text-slate-900'}`}>
       
-      <header className={`border-b stream-header sticky top-0 z-40 shadow-sm transition-colors ${darkMode ? 'bg-slate-900 border-purple-950 text-white' : 'bg-amber-200 border-pink-400'}`}>
+      <header className={`border-b sticky top-0 z-40 shadow-sm transition-colors ${darkMode ? 'bg-slate-900 border-purple-950 text-white' : 'bg-white border-slate-200'}`}>
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="bg-teal-500 p-2 rounded-xl text-white"><GraduationCap size={24} /></div>
+            <div className="bg-indigo-600 p-2 rounded-xl text-white"><GraduationCap size={24} /></div>
             <div>
-              <span className={`font-black text-base block leading-tight ${darkMode ? 'text-purple-300' : 'text-indigo-950'}`}>Beauty English</span>
-              <span className="text-[11px] text-pink-700 font-black tracking-wide block">Keratin talk course 💬✨</span>
+              <span className={`font-black text-base block leading-tight ${darkMode ? 'text-purple-300' : 'text-slate-900'}`}>Beauty English</span>
+              <span className="text-[11px] text-indigo-600 dark:text-purple-400 font-black tracking-wide block">Course System 💬✨</span>
             </div>
           </div>
 
           <div className="flex items-center space-x-4">
-            <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-xl transition-all ${darkMode ? 'bg-slate-800 text-amber-400' : 'bg-pink-300 text-indigo-950'}`}>
+            <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-xl transition-all ${darkMode ? 'bg-slate-800 text-amber-400' : 'bg-slate-200 text-slate-900'}`}>
               {darkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
 
             <div className="flex items-center space-x-2">
               <div className="text-right hidden sm:block">
-                <p className={`text-xs font-black ${darkMode ? 'text-cyan-300' : 'text-indigo-950'}`}>{currentUser.name}</p>
-                <p className="text-[9px] text-pink-700 font-bold uppercase">{currentUser.role}</p>
+                <p className={`text-xs font-black ${darkMode ? 'text-cyan-300' : 'text-slate-900'}`}>{currentUser.name}</p>
+                <p className="text-[9px] text-slate-500 font-bold uppercase">{currentUser.role}</p>
               </div>
-              <button onClick={handleLogout} className="text-[10px] font-bold text-pink-800 bg-pink-100 hover:bg-pink-200 px-2.5 py-1.5 rounded-lg transition-all">Salir</button>
+              <button onClick={handleLogout} className="text-[10px] font-bold text-slate-700 bg-slate-200 hover:bg-slate-300 px-2.5 py-1.5 rounded-lg transition-all">Salir</button>
             </div>
           </div>
         </div>
@@ -429,18 +429,18 @@ export default function App() {
 
       <div className="flex flex-1 flex-col md:flex-row">
         
-        <aside className={`w-full md:w-56 p-4 flex flex-col gap-1.5 md:min-h-[calc(100vh-4rem)] md:sticky md:top-16 z-30 shadow-inner ${darkMode ? 'bg-slate-900 text-cyan-100' : 'bg-cyan-200 text-indigo-950 border-r border-pink-300'}`}>
-          <p className={`text-[10px] uppercase font-black tracking-wider mb-2 px-2 hidden md:block ${darkMode ? 'text-purple-300' : 'text-teal-800'}`}>Navegación Salón</p>
-          <button onClick={() => setActiveTab('dashboard')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'dashboard' ? 'bg-teal-500 text-white' : 'hover:bg-amber-200 text-indigo-950'}`}><span>🏠</span> Inicio</button>
-          <button onClick={() => setActiveTab('unit1')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit1' ? 'bg-teal-500 text-white' : 'hover:bg-amber-200 text-indigo-950'}`}><span>📦</span> Unit 1</button>
-          <button onClick={() => setActiveTab('unit2')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit2' ? 'bg-teal-500 text-white' : 'hover:bg-amber-200 text-indigo-950'}`}><span>🛍️</span> Unit 2</button>
-          <button onClick={() => setActiveTab('unit3')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit3' ? 'bg-teal-500 text-white' : 'hover:bg-amber-200 text-indigo-950'}`}><span>💬</span> Unit 3</button>
-          <button onClick={() => setActiveTab('activities')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'activities' ? 'bg-teal-500 text-white' : 'hover:bg-amber-200 text-indigo-950'}`}><span>🎒</span> Mochila de Tareas</button>
-          <button onClick={() => setActiveTab('gradesTab')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'gradesTab' ? 'bg-teal-500 text-white' : 'hover:bg-amber-200 text-indigo-950'}`}><span>⭐</span> Calificaciones</button>
-          <button onClick={() => setActiveTab('vocabulary')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'vocabulary' ? 'bg-teal-500 text-white' : 'hover:bg-amber-200 text-indigo-950'}`}><span>🔊</span> Vocabulario</button>
+        <aside className={`w-full md:w-56 p-4 flex flex-col gap-1.5 md:min-h-[calc(100vh-4rem)] md:sticky md:top-16 z-30 shadow-sm ${darkMode ? 'bg-slate-900 text-cyan-100' : 'bg-white text-slate-900 border-r border-slate-200'}`}>
+          <p className={`text-[10px] uppercase font-black tracking-wider mb-2 px-2 hidden md:block ${darkMode ? 'text-purple-300' : 'text-slate-400'}`}>Menú Principal</p>
+          <button onClick={() => setActiveTab('dashboard')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'dashboard' ? 'bg-indigo-600 text-white' : 'hover:bg-slate-100 text-slate-700 dark:hover:bg-slate-800 dark:text-slate-200'}`}><span>🏠</span> Inicio</button>
+          <button onClick={() => setActiveTab('unit1')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit1' ? 'bg-indigo-600 text-white' : 'hover:bg-slate-100 text-slate-700 dark:hover:bg-slate-800 dark:text-slate-200'}`}><span>📦</span> Unit 1</button>
+          <button onClick={() => setActiveTab('unit2')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit2' ? 'bg-indigo-600 text-white' : 'hover:bg-slate-100 text-slate-700 dark:hover:bg-slate-800 dark:text-slate-200'}`}><span>🛍️</span> Unit 2</button>
+          <button onClick={() => setActiveTab('unit3')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit3' ? 'bg-indigo-600 text-white' : 'hover:bg-slate-100 text-slate-700 dark:hover:bg-slate-800 dark:text-slate-200'}`}><span>💬</span> Unit 3</button>
+          <button onClick={() => setActiveTab('activities')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'activities' ? 'bg-indigo-600 text-white' : 'hover:bg-slate-100 text-slate-700 dark:hover:bg-slate-800 dark:text-slate-200'}`}><span>🎒</span> Mochila de Tareas</button>
+          <button onClick={() => setActiveTab('gradesTab')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'gradesTab' ? 'bg-indigo-600 text-white' : 'hover:bg-slate-100 text-slate-700 dark:hover:bg-slate-800 dark:text-slate-200'}`}><span>⭐</span> Calificaciones</button>
+          <button onClick={() => setActiveTab('vocabulary')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'vocabulary' ? 'bg-indigo-600 text-white' : 'hover:bg-slate-100 text-slate-700 dark:hover:bg-slate-800 dark:text-slate-200'}`}><span>🔊</span> Vocabulario</button>
           
-          <div className="border-t border-pink-300 dark:border-purple-900 my-2 pt-2">
-            <button onClick={() => setActiveTab('games')} className={`w-full text-left px-4 py-3 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'games' ? 'bg-amber-400 text-indigo-950' : 'bg-pink-300 text-pink-800 hover:bg-pink-400'}`}><span>🕹️</span> Área de Juegos</button>
+          <div className="border-t border-slate-200 dark:border-slate-800 my-2 pt-2">
+            <button onClick={() => setActiveTab('games')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'games' ? 'bg-emerald-600 text-white' : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400'}`}><span>🕹️</span> Área de Juegos</button>
           </div>
         </aside>
 
@@ -448,43 +448,43 @@ export default function App() {
           
           {activeTab === 'dashboard' && (
             <div className="space-y-6">
-              <div className="bg-gradient-to-r from-teal-400 via-sky-400 to-pink-400 rounded-3xl p-6 text-white shadow-xl text-center">
+              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-6 text-white shadow-md text-center">
                 <h1 className="text-2xl font-black">¡Hola, {currentUser.name}! ✨</h1>
-                <p className="font-black text-xs mt-1.5 bg-white/30 inline-block px-4 py-1.5 rounded-full text-indigo-950">
-                  Disfruta de tu aprendizaje con juegos interactivos 🎮🎨
+                <p className="font-bold text-xs mt-1.5 bg-white/20 inline-block px-4 py-1.5 rounded-full">
+                  Bienvenido al panel interactivo de aprendizaje
                 </p>
               </div>
 
               {!esProfesora && (
-                <div className={`border-2 rounded-3xl p-5 shadow-sm space-y-3 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-amber-300 border-amber-400'}`}>
+                <div className={`border rounded-3xl p-5 shadow-sm space-y-3 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-200'}`}>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs font-black flex items-center gap-1 text-teal-800">📊 ¡Tu progreso de tareas!</span>
-                    <span className="text-xs font-black text-pink-700 bg-pink-100 dark:bg-purple-950 px-2 py-0.5 rounded-md">{progresoActual}%</span>
+                    <span className="text-xs font-black flex items-center gap-1 text-slate-700 dark:text-slate-300">📊 Progreso de tus Tareas</span>
+                    <span className="text-xs font-black text-indigo-600 bg-indigo-50 dark:bg-purple-950 px-2 py-0.5 rounded-md">{progresoActual}%</span>
                   </div>
-                  <div className="w-full bg-cyan-100 dark:bg-purple-950 rounded-full h-3.5 overflow-hidden p-0.5 border border-pink-300">
+                  <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3.5 overflow-hidden p-0.5 border border-slate-200 dark:border-slate-700">
                     <div 
-                      className="bg-gradient-to-r from-teal-400 to-emerald-400 h-2.5 rounded-full transition-all duration-500 ease-out"
+                      className="bg-gradient-to-r from-indigo-500 to-indigo-600 h-2.5 rounded-full transition-all duration-500 ease-out"
                       style={{ width: `${progresoActual}%` }}
                     />
                   </div>
                 </div>
               )}
 
-              <div className={`border-2 rounded-3xl p-6 shadow-sm text-center space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-amber-300 border-amber-400'}`}>
+              <div className={`border rounded-3xl p-6 shadow-sm text-center space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-200'}`}>
                 <div className="flex flex-col items-center justify-center">
-                  <Video className="text-pink-600 mb-2" size={32} />
-                  <h3 className={`text-sm font-black ${darkMode ? 'text-purple-300' : 'text-indigo-950'}`}>📺 Welcoming video</h3>
+                  <Video className="text-indigo-600 mb-2" size={32} />
+                  <h3 className={`text-sm font-black ${darkMode ? 'text-purple-300' : 'text-slate-900'}`}>📺 Welcoming video</h3>
                 </div>
                 {!videoUrl ? (
-                  <label className="mx-auto max-w-xs flex flex-col items-center justify-center border-2 border-dashed p-4 rounded-xl cursor-pointer bg-cyan-100 border-teal-500">
-                    <Upload size={24} className="text-teal-500 mb-1" />
-                    <span className="text-xs font-black text-indigo-950">Seleccionar mi video</span>
+                  <label className="mx-auto max-w-xs flex flex-col items-center justify-center border-2 border-dashed p-4 rounded-xl cursor-pointer bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700">
+                    <Upload size={24} className="text-slate-400 mb-1" />
+                    <span className="text-xs font-black text-slate-600 dark:text-slate-400">Seleccionar mi video</span>
                     <input type="file" accept="video/*" onChange={handleVideoUpload} className="hidden" />
                   </label>
                 ) : (
                   <div className="space-y-2">
-                    <video src={videoUrl} controls className="w-full max-w-md mx-auto rounded-xl border-4 border-teal-500 bg-amber-100" />
-                    <button onClick={() => { setVideoUrl(null); localStorage.removeItem('beauty_salon_video_url'); }} className="text-[10px] font-black text-pink-700 bg-pink-100 px-3 py-1 rounded-lg">❌ Quitar video</button>
+                    <video src={videoUrl} controls className="w-full max-w-md mx-auto rounded-xl border border-slate-200 dark:border-slate-800 bg-black" />
+                    <button onClick={() => { setVideoUrl(null); localStorage.removeItem('beauty_salon_video_url'); }} className="text-[10px] font-black text-red-600 bg-red-50 px-3 py-1 rounded-lg">❌ Quitar video</button>
                   </div>
                 )}
               </div>
@@ -494,10 +494,10 @@ export default function App() {
           {['unit1', 'unit2', 'unit3'].includes(activeTab) && (
             <div className="space-y-4">
               {esProfesora && (
-                <div className="p-4 bg-teal-500 text-white rounded-2xl flex flex-col gap-2 shadow-md mb-2">
+                <div className="p-4 bg-indigo-600 text-white rounded-2xl flex flex-col gap-2 shadow-md mb-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-black">Revisando las unidades del alumno:</span>
-                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border text-indigo-950 bg-amber-100">
+                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border text-slate-900 bg-white">
                       {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                     </select>
                   </div>
@@ -506,7 +506,7 @@ export default function App() {
 
               {modules.filter((_, idx) => (activeTab === 'unit1' && idx === 0) || (activeTab === 'unit2' && idx === 1) || (activeTab === 'unit3' && idx === 2)).map(mod => (
                 <div key={mod.id} className="space-y-4">
-                  <div className="bg-gradient-to-r from-teal-500 to-sky-500 text-white p-4 rounded-2xl shadow-sm">
+                  <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-4 rounded-2xl shadow-sm">
                     <h2 className="text-xs font-black uppercase tracking-wider">{mod.title}</h2>
                   </div>
 
@@ -514,56 +514,56 @@ export default function App() {
                     const taskData = allStudentsTasks[targetStudent]?.[les.taskKey];
                     const recordCalificacion = grades[targetStudent]?.[les.taskKey];
                     return (
-                      <div key={index} className={`border-2 rounded-2xl p-5 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-pink-200 border-pink-400'}`}>
-                        <h3 className="text-base font-black text-indigo-950 dark:text-white">{les.title}</h3>
-                        <p className="text-xs font-bold p-2.5 bg-teal-300 text-indigo-950 rounded-lg italic border border-teal-500 shadow-sm">{les.objective}</p>
+                      <div key={index} className={`border rounded-2xl p-5 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-200'}`}>
+                        <h3 className="text-base font-black text-slate-900 dark:text-white">{les.title}</h3>
+                        <p className="text-xs font-bold p-2.5 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg italic border border-slate-200 dark:border-slate-700">{les.objective}</p>
 
                         <div className="grid grid-cols-1 gap-1.5">
                           {les.content.map((item, i) => (
-                            // --- 🌟 VOCABULARIO INTERNO: AMARILLO FUERTE CON BORDES NARANJAS ---
-                            <div key={i} className={`p-2.5 rounded-xl flex justify-between items-center border-2 transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/40' : 'border-orange-400 bg-amber-300'}`}>
+                            // --- 🌟 VOCABULARIO INTERNO: CON BORDES DEFINIDOS OSCUROS TOTALMENTE LEÍBLES ---
+                            <div key={i} className={`p-2.5 rounded-xl flex justify-between items-center border shadow-sm transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/40' : 'border-slate-400/80 bg-white'}`}>
                               <div className="flex items-center space-x-2">
-                                <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700"><Volume2 size={14} /></button>
-                                <span className="text-xs font-black text-indigo-950 dark:text-white">{item.en}</span>
+                                <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"><Volume2 size={14} /></button>
+                                <span className="text-xs font-black text-slate-900 dark:text-white">{item.en}</span>
                               </div>
-                              {/* --- 🗣️ TRADUCCIÓN: ROJO FRESA FUERTE --- */}
-                              <span className="text-[12px] font-black text-red-700 dark:text-purple-300 bg-amber-100 px-2 py-0.5 rounded border border-orange-300">🗣️ {item.es}</span>
+                              {/* --- 🗣️ TRADUCCIÓN: TEXT-SLATE-900 (TOTALMENTE VISIBLE) --- */}
+                              <span className="text-[12px] font-black text-slate-900 dark:text-purple-300 bg-slate-100 dark:bg-purple-950 px-2 py-0.5 rounded border border-slate-200 dark:border-purple-900">🗣️ {item.es}</span>
                             </div>
                           ))}
                         </div>
 
-                        <div className={`p-4 rounded-xl border-2 text-xs font-bold transition-colors ${darkMode ? 'bg-purple-950/40 border-purple-950 text-amber-200' : 'bg-cyan-300 border-cyan-400 text-indigo-950'}`}>
-                          <p className="font-black text-teal-900">🎯 Actividad Obligatoria:</p>
-                          <p className="my-1 text-indigo-950 dark:text-purple-100">{les.task}</p>
+                        <div className={`p-4 rounded-xl border text-xs font-bold transition-colors ${darkMode ? 'bg-purple-950/40 border-purple-950 text-amber-200' : 'bg-slate-50 border-slate-200 text-slate-800'}`}>
+                          <p className="font-black text-indigo-600 dark:text-purple-400">🎯 Actividad Obligatoria:</p>
+                          <p className="my-1 text-slate-700 dark:text-purple-100">{les.task}</p>
                           
                           {les.gameUrl && (
                             <div className="mt-2">
-                              <a href={les.gameUrl} target="_blank" rel="noreferrer" className="inline-block text-[10px] font-black bg-teal-600 text-white px-3 py-1.5 rounded-xl hover:bg-teal-700 transition-all">🕹️ Abrir Juego</a>
+                              <a href={les.gameUrl} target="_blank" rel="noreferrer" className="inline-block text-[10px] font-black bg-indigo-600 text-white px-3 py-1.5 rounded-xl hover:bg-indigo-700 transition-all">🕹️ Abrir Juego</a>
                             </div>
                           )}
 
                           {les.taskKey && (
-                            <div className="mt-3 pt-3 border-t border-cyan-500 dark:border-purple-900 space-y-2">
-                              <div className="p-1.5 bg-amber-300 border border-amber-400 text-indigo-950 rounded-lg text-[10px] font-black">
+                            <div className="mt-3 pt-3 border-t border-slate-200 dark:border-purple-900 space-y-2">
+                              <div className="p-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-[10px] font-black">
                                 👀 Viendo la mochila de: <b>{targetStudent.toUpperCase()}</b>
                               </div>
                               
                               <div className="flex flex-wrap items-center gap-2">
                                 {!esProfesora && (
-                                  <label className="bg-teal-600 hover:bg-teal-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1">
+                                  <label className="bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1">
                                     <Upload size={12} /> {taskData ? "Cambiar mi PDF" : "Subir Tarea PDF"}
                                     <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, les.taskKey, currentUser.username)} className="hidden" />
                                   </label>
                                 )}
                                 {taskData && (
-                                  <a href={taskData.url} download={taskData.name} target="_blank" rel="noreferrer" className="bg-pink-600 hover:bg-pink-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg inline-flex items-center gap-1 shadow-sm">
+                                  <a href={taskData.url} download={taskData.name} target="_blank" rel="noreferrer" className="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg inline-flex items-center gap-1 shadow-sm">
                                     <Eye size={12} /> Descargar / Ver PDF Real 👁️
                                   </a>
                                 )}
                               </div>
-                              <p className="text-[11px] font-black text-teal-900 dark:text-purple-400 mt-1">⭐ Calificación: {recordCalificacion?.nota || '-'} / 10</p>
+                              <p className="text-[11px] font-black text-indigo-600 dark:text-purple-400 mt-1">⭐ Calificación: {recordCalificacion?.nota || '-'} / 10</p>
                               {recordCalificacion?.comentario && (
-                                <p className="text-[10px] text-indigo-950 dark:text-purple-200 bg-amber-300 p-2 rounded-md mt-1 border border-amber-400">💬 <b>Comentario Miss:</b> {recordCalificacion.comentario}</p>
+                                <p className="text-[10px] text-slate-600 dark:text-purple-200 bg-slate-100 dark:bg-purple-950 p-2 rounded-md mt-1 border border-slate-200 dark:border-purple-900">💬 <b>Comentario Miss:</b> {recordCalificacion.comentario}</p>
                               )}
                             </div>
                           )}
@@ -576,24 +576,23 @@ export default function App() {
             </div>
           )}
 
-          {/* --- 🎒 PESTAÑA MOCHILA DE TAREAS CORREGIDA (FONDO ROSADO CHICLE) --- */}
           {activeTab === 'activities' && (
-            <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-pink-300 border-pink-400'}`}>
-              <div className="flex items-center space-x-2 border-b-2 border-pink-400 dark:border-purple-900 pb-3">
-                <Activity className="text-teal-700" size={24} />
-                <h2 className="text-xl font-black text-indigo-950 dark:text-white">CENTRO DE TAREAS GENERAL 🎒👁️</h2>
+            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-200'}`}>
+              <div className="flex items-center space-x-2 border-b border-slate-200 dark:border-purple-900 pb-3">
+                <Activity className="text-indigo-600" size={24} />
+                <h2 className="text-xl font-black text-slate-900 dark:text-white">CENTRO DE TAREAS GENERAL 🎒👁️</h2>
               </div>
               
-              <div className="p-4 bg-amber-300 rounded-2xl border-2 border-amber-400 space-y-3">
+              <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
                 {esProfesora ? (
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <span className="text-xs font-black text-indigo-950">Selecciona un alumno para revisar:</span>
-                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border bg-amber-100 text-indigo-950">
+                    <span className="text-xs font-black text-slate-700 dark:text-slate-300">Selecciona un alumno para revisar:</span>
+                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border bg-white text-slate-900">
                       {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                     </select>
                   </div>
                 ) : (
-                  <span className="text-xs font-black text-indigo-950 block">Tu Progreso de Entregas:</span>
+                  <span className="text-xs font-black text-slate-700 dark:text-slate-300 block">Tu Progreso de Entregas:</span>
                 )}
               </div>
 
@@ -602,25 +601,25 @@ export default function App() {
                   const currentTask = allStudentsTasks[targetStudent]?.[key];
 
                   return (
-                    // --- 🌟 CAJITAS DE CADA TAREA CON FONDO CELESTE AGUA FUERTE ---
-                    <div key={key} className={`p-4 rounded-2xl border-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/20 text-white' : 'border-cyan-400 bg-cyan-200 text-indigo-950'}`}>
+                    // --- 🌟 BORDES DEFINIDOS EN LA MOCHILA DE TAREAS CONTRA EL FONDO CLARO ---
+                    <div key={key} className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/20 text-white' : 'border-slate-400/80 bg-white text-slate-900'}`}>
                       <div className="text-xs max-w-md">
-                        <span className="font-black text-teal-900 block">{infoTareas[key]}</span>
-                        <span className="text-pink-800 font-bold">Mochila de: <b className="text-pink-900 font-black">{targetStudent.toUpperCase()}</b></span>
+                        <span className="font-black text-indigo-900 dark:text-purple-400 block">{infoTareas[key]}</span>
+                        <span className="text-slate-500 font-bold">Mochila de: <b className="text-slate-700 dark:text-slate-300 font-black">{targetStudent.toUpperCase()}</b></span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         {!esProfesora && (
-                          <label className="bg-teal-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl cursor-pointer hover:bg-teal-700">
+                          <label className="bg-indigo-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl cursor-pointer hover:bg-indigo-700">
                             📄 {currentTask ? "Cambiar" : "Elegir PDF"}
                             <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, key, currentUser.username)} className="hidden" />
                           </label>
                         )}
                         {currentTask ? (
-                          <a href={currentTask.url} download={currentTask.name} target="_blank" rel="noreferrer" className="bg-pink-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-md">
+                          <a href={currentTask.url} download={currentTask.name} target="_blank" rel="noreferrer" className="bg-emerald-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-sm">
                             <Eye size={12} /> Ver PDF 👁️
                           </a>
                         ) : (
-                          <span className="text-[10px] bg-amber-300 text-orange-800 px-2 py-1 rounded-lg font-black border border-orange-400">Sin entregar todavía 🎒</span>
+                          <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-1 rounded-lg font-black border border-slate-200 dark:border-slate-700">Sin entregar todavía 🎒</span>
                         )}
                       </div>
                     </div>
@@ -630,12 +629,11 @@ export default function App() {
             </div>
           )}
 
-          {/* --- ⭐ PESTAÑA CALIFICACIONES --- */}
           {activeTab === 'gradesTab' && (
-            <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-pink-200 border-pink-400'}`}>
-              <div className="flex items-center space-x-2 border-b-2 border-pink-400 dark:border-purple-900 pb-3">
+            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-200'}`}>
+              <div className="flex items-center space-x-2 border-b border-slate-200 dark:border-purple-900 pb-3">
                 <Star className="text-amber-500 fill-amber-500" size={24} />
-                <h2 className="text-xl font-black text-indigo-950 dark:text-white">SISTEMA DE CALIFICACIONES ⭐</h2>
+                <h2 className="text-xl font-black text-slate-900 dark:text-white">SISTEMA DE CALIFICACIONES ⭐</h2>
               </div>
               
               {esProfesora ? (
@@ -643,14 +641,29 @@ export default function App() {
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
                     const currentRecord = grades[selectedStudent]?.[key] || { nota: '-', comentario: '' };
                     return (
-                      <div key={key} className="p-4 border-2 border-amber-400 rounded-2xl flex flex-col gap-2 text-xs bg-amber-300 text-indigo-950 font-bold shadow-sm">
-                        <span className="text-teal-900 font-black block text-sm">{infoTareas[key]}</span>
-                        <div className="flex flex-col gap-1 mt-2">
+                      <div key={key} className="p-4 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col gap-2 text-xs bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold shadow-sm">
+                        <span className="text-indigo-600 dark:text-purple-400 font-black block text-sm">{infoTareas[key]}</span>
+                        
+                        {/* --- 🔘 REGRESA EL BOTON DE CALIFICAR DEL 1 AL 10 --- */}
+                        <div className="flex flex-wrap gap-1 my-2">
+                          {[1,2,3,4,5,6,7,8,9,10].map(num => (
+                            <button 
+                              key={num} 
+                              type="button"
+                              onClick={() => asignarNota(selectedStudent, key, String(num))}
+                              className={`px-2.5 py-1.5 rounded-lg text-[11px] font-black transition-all ${String(num) === currentRecord.nota ? 'bg-indigo-600 text-white scale-115 shadow-sm' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200 hover:bg-slate-300'}`}
+                            >
+                              {num}
+                            </button>
+                          ))}
+                        </div>
+
+                        <div className="flex flex-col gap-1 mt-1">
                           <textarea 
                             value={currentRecord.comentario || ''} 
                             onChange={(e) => asignarComentario(selectedStudent, key, e.target.value)}
-                            placeholder="¡Buen trabajo!..." 
-                            className="w-full p-2 text-xs text-indigo-950 font-medium border border-pink-400 rounded-xl bg-amber-100"
+                            placeholder="Añade un comentario sobre el desempeño..." 
+                            className="w-full p-2 text-xs text-slate-900 dark:text-white font-medium border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 outline-none focus:border-indigo-500"
                             rows={2}
                           />
                         </div>
@@ -663,12 +676,13 @@ export default function App() {
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
                     const studentRecord = grades[currentUser.username]?.[key] || { nota: '-', comentario: '' };
                     return (
-                      <div key={key} className="p-4 bg-cyan-200 rounded-2xl text-xs font-bold flex flex-col gap-2 text-indigo-950 border-2 border-cyan-400">
+                      <div key={key} className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl text-xs font-bold flex flex-col gap-2 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 shadow-sm">
                         <div className="flex justify-between items-start gap-4">
-                          <span className="text-teal-900 font-black">{infoTareas[key]}</span>
+                          <span className="text-slate-700 dark:text-slate-300 font-black">{infoTareas[key]}</span>
+                          <span className="bg-indigo-600 text-white font-black px-2.5 py-1 rounded-lg text-xs shrink-0 shadow-sm">Nota: {studentRecord.nota} / 10</span>
                         </div>
                         {studentRecord.comentario && (
-                          <div className="bg-amber-300 p-2.5 rounded-xl border-2 border-orange-400 text-[11px] text-indigo-950 mt-1">
+                          <div className="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-[11px] text-slate-600 dark:text-slate-400 mt-1">
                             📢 <b>Comentario de la Miss:</b> {studentRecord.comentario}
                           </div>
                         )}
@@ -680,27 +694,26 @@ export default function App() {
             </div>
           )}
 
-          {/* --- 🔊 PESTAÑA DICCIONARIO COMPLETO (RE-HIGHLIGHTED) --- */}
           {activeTab === 'vocabulary' && (
-            <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-pink-200 border-pink-400'}`}>
-              <div className="flex items-center space-x-2 border-b-2 border-pink-400 dark:border-purple-900 pb-3">
-                <Volume2 className="text-teal-700" size={24} />
-                <h2 className="text-xl font-black text-indigo-950 dark:text-white">DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
+            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-200'}`}>
+              <div className="flex items-center space-x-2 border-b border-slate-200 dark:border-purple-900 pb-3">
+                <Volume2 className="text-indigo-600" size={24} />
+                <h2 className="text-xl font-black text-slate-900 dark:text-white">DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
               </div>
               <div className="space-y-4 pt-2">
                 {modules.map(mod => (
-                  <div key={mod.id} className="border-l-4 border-teal-500 pl-3 py-1">
-                    <h3 className="text-xs font-black text-teal-800 uppercase mb-2">{mod.title.split(":")[0]}</h3>
+                  <div key={mod.id} className="border-l-4 border-indigo-500 pl-3 py-1">
+                    <h3 className="text-xs font-black text-indigo-600 dark:text-purple-400 uppercase mb-2">{mod.title.split(":")[0]}</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {mod.lessons.flatMap(l => l.content).map((item, idx) => (
-                        // --- 🌟 EL DICCIONARIO AHORA TIENE FONDOS AMARILLOS POLLITO EXTRA FUERTES CON BORDES ---
-                        <div key={idx} className={`p-2 rounded-xl flex justify-between items-center border-2 transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/40 text-white' : 'border-orange-400 bg-amber-300 text-indigo-950'}`}>
+                        // --- 🌟 EL DICCIONARIO AHORA TIENE FONDOS BLANCOS CON BORDES GRISES BIEN MARCADOS ---
+                        <div key={idx} className={`p-2 rounded-xl flex justify-between items-center border shadow-sm transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/40 text-white' : 'border-slate-400/80 bg-white text-slate-900'}`}>
                           <div className="flex items-center space-x-2">
-                            <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700"><Volume2 size={12} /></button>
+                            <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"><Volume2 size={12} /></button>
                             <span className="text-[12px] font-black">{item.en}</span>
                           </div>
-                          {/* --- 🗣️ TRADUCCIÓN: ROJO FRESA BRILLANTE EN CAJITA PROTECTORA --- */}
-                          <span className="text-[11px] font-black text-red-700 dark:text-purple-300 bg-amber-100 px-2 py-0.5 rounded border border-orange-300">🗣️ {item.es}</span>
+                          {/* --- 🗣️ TRADUCCIÓN COMPLETAMENTE LEÍBLE Y SIN AMARILLO --- */}
+                          <span className="text-[11px] font-black text-slate-900 dark:text-purple-300 bg-slate-100 dark:bg-purple-950 px-2 py-0.5 rounded border border-slate-200 dark:border-purple-900">🗣️ {item.es}</span>
                         </div>
                       ))}
                     </div>
@@ -710,20 +723,30 @@ export default function App() {
             </div>
           )}
 
-          {/* --- 🕹️ ÁREA DE JUEGOS --- */}
+          {/* --- 🕹️ ÁREA DE JUEGOS RECUPERADA CON SUS 4 LINKS --- */}
           {activeTab === 'games' && (
-            <div className="bg-amber-200 border-2 border-pink-400 rounded-3xl p-6 text-center text-indigo-900 space-y-4">
-              <h2 className="text-xl font-black text-pink-700">🎡 LA FERIA DE JUEGOS DE VOCABULARIO 🕹️</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="border-2 border-pink-300 p-4 rounded-2xl bg-cyan-200 text-center space-y-2">
+            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-200'}`}>
+              <h2 className="text-xl font-black text-center text-indigo-600 dark:text-purple-400">🎡 LA FERIA DE JUEGOS DE VOCABULARIO 🕹️</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+                <div className="border border-slate-200 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">🎯</span>
-                  <h4 className="text-xs font-black text-indigo-950">Saludos (Clase 1)</h4>
-                  <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-teal-600 text-white py-1.5 rounded-xl">¡Jugar!</a>
+                  <h4 className="text-xs font-black text-slate-900 dark:text-white">Saludos (Clase 1)</h4>
+                  <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-indigo-600 text-white py-1.5 rounded-xl hover:bg-indigo-700">¡Jugar Wordwall!</a>
                 </div>
-                <div className="border-2 border-pink-300 p-4 rounded-2xl bg-pink-300 text-center space-y-2">
+                <div className="border border-slate-200 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">🧪</span>
-                  <h4 className="text-xs font-black text-indigo-950">Keratina (Clase 2)</h4>
-                  <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-pink-600 text-white py-1.5 rounded-xl">¡Jugar!</a>
+                  <h4 className="text-xs font-black text-slate-900 dark:text-white">Proceso (Clase 2)</h4>
+                  <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-indigo-600 text-white py-1.5 rounded-xl hover:bg-indigo-700">¡Jugar Interacty!</a>
+                </div>
+                <div className="border border-slate-200 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
+                  <span className="text-2xl">🧴</span>
+                  <h4 className="text-xs font-black text-slate-900 dark:text-white">Cuidado (Clase 3)</h4>
+                  <a href="https://wordwall.net/resource/116065664" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-indigo-600 text-white py-1.5 rounded-xl hover:bg-indigo-700">¡Jugar Wordwall!</a>
+                </div>
+                <div className="border border-slate-200 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
+                  <span className="text-2xl">💰</span>
+                  <h4 className="text-xs font-black text-slate-900 dark:text-white">Precios (Clase 4)</h4>
+                  <a href="https://create.kahoot.it/share/class-5/16e72ba0-e8fc-4910-9400-b7a3c94c3586" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-indigo-600 text-white py-1.5 rounded-xl hover:bg-indigo-700">¡Jugar Kahoot!</a>
                 </div>
               </div>
             </div>
