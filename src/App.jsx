@@ -349,7 +349,7 @@ export default function App() {
     }
   ];
 
-  // Inyectar traducciones reales de Clases 5 y 6 para asegurar consistencia
+  // Inyectar traducciones de Clases 5 y 6
   modules[2].lessons[0].content[0].es = "¿Es este su primer tratamiento de keratina?";
   modules[2].lessons[0].content[1].es = "¿Tiene alguna alergia?";
   modules[2].lessons[0].content[2].es = "¿Su cabello está teñido?";
@@ -528,28 +528,28 @@ export default function App() {
                     const taskData = allStudentsTasks[targetStudent]?.[les.taskKey];
                     const recordCalificacion = grades[targetStudent]?.[les.taskKey];
                     return (
-                      <div key={index} className={`border rounded-2xl p-5 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-400'}`}>
-                        <h3 className="text-base font-black text-slate-900 dark:text-white">{les.title}</h3>
+                      <div key={index} className={`border rounded-2xl p-5 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-900'}`}>
+                        <h3 className={`text-base font-black ${darkMode ? 'text-white' : 'text-slate-900'}`}>{les.title}</h3>
                         
-                        <p className="text-xs font-black p-3 bg-slate-50 dark:bg-slate-800 text-indigo-950 dark:text-slate-100 rounded-lg italic border border-slate-300 dark:border-slate-700 leading-relaxed">{les.objective}</p>
+                        <p className={`text-xs font-black p-3 rounded-lg italic border leading-relaxed ${darkMode ? 'bg-slate-800 text-slate-100 border-slate-700' : 'bg-slate-200 text-slate-950 border-slate-400'}`}>{les.objective}</p>
 
-                        {/* --- 🌟 REVISIÓN MÉDICA DEL VOCABULARIO INTERNO DE LAS UNIDADES --- */}
-                        <div className="grid grid-cols-1 gap-1.5">
+                        {/* --- 🌟 REFUERZO DE VOCABULARIO DENTRO DE LAS UNIDADES --- */}
+                        <div className="grid grid-cols-1 gap-2">
                           {les.content.map((item, i) => (
-                            <div key={i} className={`p-2.5 rounded-xl flex justify-between items-center border shadow-md transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/40 text-white' : 'border-slate-500 bg-white text-black'}`}>
+                            <div key={i} className={`p-3 rounded-xl flex justify-between items-center border-2 shadow-md transition-all ${darkMode ? 'border-purple-950 bg-slate-900 text-white' : 'border-slate-900 bg-white text-black'}`}>
                               <div className="flex items-center space-x-2">
                                 <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"><Volume2 size={14} /></button>
-                                <span className="text-xs font-black text-black dark:text-white">{item.en}</span>
+                                <span className={`text-xs font-extrabold ${darkMode ? 'text-white' : 'text-black'}`}>{item.en}</span>
                               </div>
-                              <span className="text-[12px] font-black text-black dark:text-purple-300 bg-slate-100 dark:bg-purple-950 px-2.5 py-1 rounded border border-slate-400 dark:border-purple-900 shadow-sm">🗣 {item.es}</span>
+                              <span className={`text-[12px] font-black px-3 py-1 rounded-md border-2 shadow-sm ${darkMode ? 'text-purple-300 bg-purple-950 border-purple-900' : 'text-black bg-slate-100 border-slate-900'}`}>🗣 {item.es}</span>
                             </div>
                           ))}
                         </div>
 
-                        {/* --- CONTENEDOR DE ACTIVIDADES --- */}
-                        <div className={`p-4 rounded-xl border text-xs font-bold transition-colors ${darkMode ? 'bg-purple-950/40 border-purple-950 text-amber-200' : 'bg-slate-100 border-slate-400 text-slate-900'}`}>
-                          <p className="font-black text-indigo-700 dark:text-purple-400 uppercase tracking-wide">🎯 Actividad Obligatoria:</p>
-                          <p className="my-1.5 text-black dark:text-purple-100 font-black leading-relaxed">{les.task}</p>
+                        {/* --- 🎒 REFUERZO COMPONENTE DE ACTIVIDADES EN UNIDADES --- */}
+                        <div className={`p-4 rounded-xl border-2 text-xs transition-all ${darkMode ? 'bg-slate-900 border-purple-950 text-amber-200' : 'bg-amber-50 border-slate-900 text-black'}`}>
+                          <p className={`font-black uppercase tracking-wide text-sm ${darkMode ? 'text-purple-400' : 'text-indigo-900'}`}>🎯 Actividad Obligatoria:</p>
+                          <p className={`my-2 font-extrabold text-xs leading-relaxed ${darkMode ? 'text-purple-100' : 'text-black'}`}>{les.task}</p>
                           
                           {les.gameUrl && (
                             <div className="mt-2">
@@ -558,9 +558,9 @@ export default function App() {
                           )}
 
                           {les.taskKey && (
-                            <div className="mt-3 pt-3 border-t border-slate-400 dark:border-purple-900 space-y-2">
-                              <div className="p-1.5 bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-200 rounded-lg text-[10px] font-black border border-slate-300 dark:border-none">
-                                👀 Viendo la mochila de: <b className="text-indigo-950 dark:text-white">{targetStudent.toUpperCase()}</b>
+                            <div className={`mt-3 pt-3 border-t-2 space-y-2 ${darkMode ? 'border-purple-950' : 'border-slate-900'}`}>
+                              <div className={`p-2 rounded-lg text-[10px] font-black border ${darkMode ? 'bg-slate-800 text-slate-200 border-slate-700' : 'bg-slate-200 text-black border-slate-400'}`}>
+                                👀 Viendo la mochila de: <b className="font-black text-indigo-950 dark:text-white">{targetStudent.toUpperCase()}</b>
                               </div>
                               
                               <div className="flex flex-wrap items-center gap-2">
@@ -576,9 +576,9 @@ export default function App() {
                                   </a>
                                 )}
                               </div>
-                              <p className="text-[11px] font-black text-indigo-700 dark:text-purple-400 mt-1">⭐ Calificación: {recordCalificacion?.nota || '-'} / 10</p>
+                              <p className={`text-xs font-black mt-1 ${darkMode ? 'text-purple-400' : 'text-indigo-900'}`}>⭐ Calificación: {recordCalificacion?.nota || '-'} / 10</p>
                               {recordCalificacion?.comentario && (
-                                <p className="text-[10px] text-black dark:text-purple-200 bg-white dark:bg-purple-950 p-2 rounded-md mt-1 border border-slate-400 dark:border-purple-900 leading-relaxed">💬 <b>Comentario Miss:</b> {recordCalificacion.comentario}</p>
+                                <p className={`text-[11px] font-bold p-2.5 rounded-md mt-1 border-2 leading-relaxed ${darkMode ? 'text-purple-200 bg-purple-950 border-purple-900' : 'text-black bg-white border-slate-900'}`}>💬 <b>Comentario Miss:</b> {recordCalificacion.comentario}</p>
                               )}
                             </div>
                           )}
@@ -592,35 +592,35 @@ export default function App() {
           )}
 
           {activeTab === 'activities' && (
-            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-400'}`}>
-              <div className="flex items-center space-x-2 border-b border-slate-400 dark:border-purple-900 pb-3">
+            <div className={`border-2 rounded-3xl p-6 shadow-xl space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-900'}`}>
+              <div className={`flex items-center space-x-2 border-b-2 pb-3 ${darkMode ? 'border-purple-950' : 'border-slate-900'}`}>
                 <Activity className="text-indigo-600" size={24} />
-                <h2 className="text-xl font-black text-slate-900 dark:text-black">CENTRO DE TAREAS GENERAL 🎒👁️</h2>
+                <h2 className={`text-xl font-black ${darkMode ? 'text-white' : 'text-black'}`}>CENTRO DE TAREAS GENERAL 🎒👁️</h2>
               </div>
               
-              <div className="p-4 bg-slate-200 dark:bg-slate-800 rounded-2xl border border-slate-400 dark:border-slate-700 space-y-3">
+              <div className={`p-4 rounded-2xl border-2 space-y-3 ${darkMode ? 'bg-slate-800 border-slate-700 text-slate-300' : 'bg-slate-100 border-slate-900 text-black'}`}>
                 {esProfesora ? (
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <span className="text-xs font-black text-slate-900 dark:text-slate-300">Selecciona un alumno para revisar:</span>
-                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1.5 rounded border border-slate-400 bg-white text-slate-900 outline-none">
+                    <span className="text-xs font-black">Selecciona un alumno para revisar:</span>
+                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-black p-1.5 rounded border-2 border-slate-900 bg-white text-slate-900 outline-none">
                       {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                     </select>
                   </div>
                 ) : (
-                  <span className="text-xs font-black text-slate-900 dark:text-slate-300 block">Tu Progreso de Entregas:</span>
+                  <span className="text-xs font-black block">Tu Progreso de Entregas:</span>
                 )}
               </div>
 
-              {/* --- 🎒 REVISIÓN CRÍTICA DE LA MOCHILA DE TAREAS --- */}
+              {/* --- 🎒 REFUERZO DE LA MOCHILA DE TAREAS GENERAL --- */}
               <div className="space-y-4 mt-2">
                 {['clase2', 'clase3', 'clase5', 'clase6'].map((key) => {
                   const currentTask = allStudentsTasks[targetStudent]?.[key];
 
                   return (
-                    <div key={key} className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/20 text-white' : 'border-slate-400 bg-white text-black'}`}>
-                      <div className="text-xs max-w-md">
-                        <span className="font-black text-black dark:text-purple-400 block leading-relaxed text-sm">{infoTareas[key]}</span>
-                        <span className="text-slate-900 dark:text-slate-400 font-bold block mt-1.5">Mochila de: <b className="text-indigo-950 dark:text-slate-300 font-black">{targetStudent.toUpperCase()}</b></span>
+                    <div key={key} className={`p-4 rounded-2xl border-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md transition-all ${darkMode ? 'border-purple-950 bg-purple-950/20 text-white' : 'border-slate-900 bg-slate-50 text-black'}`}>
+                      <div className="text-xs max-w-md space-y-1">
+                        <span className={`font-black block leading-relaxed text-sm ${darkMode ? 'text-purple-300' : 'text-black'}`}>{infoTareas[key]}</span>
+                        <span className={`font-extrabold block text-xs ${darkMode ? 'text-slate-400' : 'text-slate-800'}`}>Mochila de: <b className="text-indigo-950 dark:text-slate-300 font-black">{targetStudent.toUpperCase()}</b></span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         {!esProfesora && (
@@ -634,7 +634,7 @@ export default function App() {
                             <Eye size={12} /> Ver PDF 👁️
                           </a>
                         ) : (
-                          <span className="text-[10px] bg-slate-200 dark:bg-slate-800 text-black dark:text-slate-300 px-2.5 py-1.5 rounded-lg font-black border border-slate-400 dark:border-slate-700">Sin entregar todavía 🎒</span>
+                          <span className={`text-[10px] px-2.5 py-1.5 rounded-lg font-black border-2 ${darkMode ? 'bg-slate-800 text-slate-300 border-slate-700' : 'bg-slate-200 text-black border-slate-900'}`}>Sin entregar todavía 🎒</span>
                         )}
                       </div>
                     </div>
@@ -645,10 +645,10 @@ export default function App() {
           )}
 
           {activeTab === 'gradesTab' && (
-            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-400'}`}>
-              <div className="flex items-center space-x-2 border-b border-slate-400 dark:border-purple-900 pb-3">
+            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-900'}`}>
+              <div className={`flex items-center space-x-2 border-b-2 pb-3 ${darkMode ? 'border-purple-950' : 'border-slate-900'}`}>
                 <Star className="text-amber-500 fill-amber-500" size={24} />
-                <h2 className="text-xl font-black text-slate-900 dark:text-white">SISTEMA DE CALIFICACIONES ⭐</h2>
+                <h2 className={`text-xl font-black ${darkMode ? 'text-white' : 'text-black'}`}>SISTEMA DE CALIFICACIONES ⭐</h2>
               </div>
               
               {esProfesora ? (
@@ -656,15 +656,15 @@ export default function App() {
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
                     const currentRecord = grades[selectedStudent]?.[key] || { nota: '-', comentario: '' };
                     return (
-                      <div key={key} className="p-4 border border-slate-400 dark:border-slate-800 rounded-2xl flex flex-col gap-3 text-xs bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold shadow-sm">
-                        <span className="text-slate-900 dark:text-purple-400 font-black block text-sm leading-relaxed">{infoTareas[key]}</span>
+                      <div key={key} className={`p-4 border-2 rounded-2xl flex flex-col gap-3 text-xs font-bold shadow-sm ${darkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-slate-50 border-slate-900 text-black'}`}>
+                        <span className="font-black block text-sm leading-relaxed">{infoTareas[key]}</span>
                         
                         <div className="flex items-center space-x-2">
-                          <label className="text-xs font-black text-slate-900 dark:text-slate-300">Asignar Nota:</label>
+                          <label className="text-xs font-black">Asignar Nota:</label>
                           <select 
                             value={currentRecord.nota} 
                             onChange={(e) => asignarNota(selectedStudent, key, e.target.value)}
-                            className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-3 py-1.5 rounded-xl text-xs font-black border-2 border-indigo-600 outline-none shadow-sm cursor-pointer transition-all focus:ring-2 focus:ring-indigo-400"
+                            className="bg-white text-slate-900 px-3 py-1.5 rounded-xl text-xs font-black border-2 border-indigo-600 outline-none cursor-pointer"
                           >
                             <option value="-">Sin Calificar (-)</option>
                             {[1,2,3,4,5,6,7,8,9,10].map(num => (
@@ -678,7 +678,7 @@ export default function App() {
                             value={currentRecord.comentario || ''} 
                             onChange={(e) => asignarComentario(selectedStudent, key, e.target.value)}
                             placeholder="Añade un comentario sobre el desempeño..." 
-                            className="w-full p-3 text-xs text-slate-900 dark:text-white font-black border border-slate-400 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 outline-none focus:border-indigo-500 leading-relaxed"
+                            className="w-full p-3 text-xs text-slate-900 font-black border-2 border-slate-900 rounded-xl bg-white outline-none focus:border-indigo-500"
                             rows={2}
                           />
                         </div>
@@ -691,13 +691,13 @@ export default function App() {
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
                     const studentRecord = grades[currentUser.username]?.[key] || { nota: '-', comentario: '' };
                     return (
-                      <div key={key} className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl text-xs font-bold flex flex-col gap-2 text-slate-900 dark:text-white border border-slate-400 dark:border-slate-700 shadow-sm">
+                      <div key={key} className={`p-4 rounded-2xl text-xs font-bold flex flex-col gap-2 border-2 shadow-sm ${darkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-slate-50 border-slate-900 text-black'}`}>
                         <div className="flex justify-between items-start gap-4">
-                          <span className="text-slate-900 dark:text-slate-300 font-black leading-relaxed">{infoTareas[key]}</span>
+                          <span className="font-black leading-relaxed">{infoTareas[key]}</span>
                           <span className="bg-indigo-600 text-white font-black px-2.5 py-1 rounded-lg text-xs shrink-0 shadow-sm">Nota: {studentRecord.nota} / 10</span>
                         </div>
                         {studentRecord.comentario && (
-                          <div className="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-400 dark:border-slate-700 text-[11px] text-slate-900 dark:text-slate-300 mt-1 leading-relaxed">
+                          <div className={`p-2.5 rounded-xl border-2 text-[11px] mt-1 leading-relaxed ${darkMode ? 'bg-slate-900 border-slate-700 text-slate-300' : 'bg-white border-slate-900 text-black'}`}>
                             📢 <b>Comentario de la Miss:</b> {studentRecord.comentario}
                           </div>
                         )}
@@ -710,25 +710,25 @@ export default function App() {
           )}
 
           {activeTab === 'vocabulary' && (
-            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-400'}`}>
-              <div className="flex items-center space-x-2 border-b border-slate-400 dark:border-purple-900 pb-3">
+            <div className={`border-2 rounded-3xl p-6 shadow-xl space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-900'}`}>
+              <div className={`flex items-center space-x-2 border-b-2 pb-3 ${darkMode ? 'border-purple-950' : 'border-slate-900'}`}>
                 <Volume2 className="text-indigo-600" size={24} />
-                <h2 className="text-xl font-black text-slate-900 dark:text-black">DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
+                <h2 className={`text-xl font-black ${darkMode ? 'text-white' : 'text-black'}`}>DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
               </div>
               
-              {/* --- 🔊 REVISIÓN EXHAUSTIVA DE LA PESTAÑA DICCIONARIO GENERAL --- */}
+              {/* --- 🔊 REFUERZO DE LA PESTAÑA DICCIONARIO GENERAL --- */}
               <div className="space-y-6 pt-2">
                 {modules.map(mod => (
-                  <div key={mod.id} className="border-l-4 border-indigo-600 pl-3 py-1 bg-slate-50 dark:bg-transparent rounded-r-xl p-2">
-                    <h3 className="text-xs font-black text-indigo-700 dark:text-purple-400 uppercase mb-3 tracking-wider">{mod.title}</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <div key={mod.id} className={`border-l-4 border-indigo-600 pl-3 py-1 rounded-r-xl p-2 ${darkMode ? 'bg-transparent' : 'bg-slate-50'}`}>
+                    <h3 className={`text-xs font-black uppercase mb-3 tracking-wider ${darkMode ? 'text-purple-400' : 'text-indigo-900'}`}>{mod.title}</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {mod.lessons.flatMap(l => l.content).map((item, idx) => (
-                        <div key={idx} className={`p-3 rounded-xl flex justify-between items-center border shadow-md transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/40 text-white' : 'border-slate-500 bg-white text-black'}`}>
+                        <div key={idx} className={`p-3 rounded-xl flex justify-between items-center border-2 shadow-md transition-all ${darkMode ? 'border-purple-950 bg-slate-900 text-white' : 'border-slate-900 bg-white text-black'}`}>
                           <div className="flex items-center space-x-2">
                             <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 shrink-0"><Volume2 size={12} /></button>
-                            <span className="text-[12px] font-black text-black dark:text-white leading-tight">{item.en}</span>
+                            <span className={`text-[12px] font-extrabold leading-tight ${darkMode ? 'text-white' : 'text-black'}`}>{item.en}</span>
                           </div>
-                          <span className="text-[11px] font-black text-black dark:text-purple-300 bg-slate-100 dark:bg-purple-950 px-2.5 py-1 rounded border border-slate-400 dark:border-purple-900 shadow-sm shrink-0 text-right">🗣️ {item.es}</span>
+                          <span className={`text-[11px] font-black px-2.5 py-1 rounded border-2 shadow-sm shrink-0 text-right ${darkMode ? 'text-purple-300 bg-purple-950 border-purple-900' : 'text-black bg-slate-100 border-slate-900'}`}>🗣️ {item.es}</span>
                         </div>
                       ))}
                     </div>
@@ -739,7 +739,7 @@ export default function App() {
           )}
 
           {activeTab === 'games' && (
-            <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-400'}`}>
+            <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-900'}`}>
               <h2 className="text-xl font-black text-center text-indigo-700 dark:text-purple-400">🎡 LA FERIA DE JUEGOS DE VOCABULARIO 🕹️</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
                 <div className="border border-slate-400 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
