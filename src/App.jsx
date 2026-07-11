@@ -301,7 +301,7 @@ export default function App() {
           content: [
             { en: "The price is $40.", es: "El precio es $40." },
             { en: "The treatment takes around two hours.", es: "El tratamiento dura aproximadamente dos horas." },
-            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutos." },
+            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutes." },
             { en: "You can pay by cash.", es: "Puede pagar en efectivo." },
             { en: "You can pay by card.", es: "Puede pagar con tarjeta." }
           ],
@@ -313,7 +313,7 @@ export default function App() {
     {
       id: 3,
       title: "UNIDAD 3: CUSTOMER INTERACTION (INTERACTUAR CON EL CLIENTE) 💬",
-      duration: "Clase 5 y Clase 6 • Profesoras del Curso",
+      duration: "Clase 3 y Clase 4 • Profesoras del Curso",
       lessons: [
         {
           title: "CLASE 5: Conversar con el Cliente (Preguntas previas) 💇‍♂️",
@@ -397,7 +397,6 @@ export default function App() {
   const targetStudent = esProfesora ? selectedStudent : currentUser.username;
   const progresoActual = calcularProgreso(targetStudent);
 
-  // Generador de clases para los botones del menú lateral con excelente legibilidad
   const getSidebarBtnClass = (tabId) => {
     const isActive = activeTab === tabId;
     if (isActive) {
@@ -413,7 +412,7 @@ export default function App() {
   return (
     <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-[#FFF2F5] text-slate-900'}`}>
       
-      {/* --- HEADER ESTILO GLAM --- */}
+      {/* --- HEADER --- */}
       <header className={`border-b sticky top-0 z-40 shadow-sm transition-colors ${darkMode ? 'bg-slate-900 border-purple-950 text-white' : 'bg-white border-pink-100 text-slate-900'}`}>
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -442,7 +441,7 @@ export default function App() {
 
       <div className="flex flex-1 flex-col md:flex-row">
         
-        {/* --- 📁 MENÚ LATERAL VIBRANTE ROSA & MORADO SÓLIDO (Para evitar transparencias del navegador) --- */}
+        {/* --- MENÚ LATERAL --- */}
         <aside className={`w-full md:w-56 p-4 flex flex-col gap-1.5 md:min-h-[calc(100vh-4rem)] md:sticky md:top-16 z-30 shadow-sm ${darkMode ? 'bg-slate-900 text-pink-100 border-r border-purple-950' : 'bg-[#FFF9FB] text-purple-950 border-r border-pink-100'}`}>
           <p className={`text-[10px] uppercase font-black tracking-wider mb-2 px-2 hidden md:block ${darkMode ? 'text-pink-300' : 'text-purple-500'}`}>Menú Principal</p>
           
@@ -459,7 +458,7 @@ export default function App() {
           </div>
         </aside>
 
-        {/* --- 💻 CONTENEDOR CENTRAL DE TRABAJO --- */}
+        {/* --- CONTENEDOR CENTRAL --- */}
         <main className="flex-1 max-w-4xl w-full mx-auto px-6 py-6">
           
           {activeTab === 'dashboard' && (
@@ -537,13 +536,13 @@ export default function App() {
 
                         <div className="grid grid-cols-1 gap-2.5">
                           {les.content.map((item, i) => (
-                            <div key={i} className={`p-3.5 rounded-xl flex justify-between items-center border shadow-sm transition-all ${darkMode ? 'border-purple-950 bg-slate-900 text-white' : 'border-pink-100 bg-white text-slate-800 hover:border-pink-300'}`}>
+                            /* 🎨 RECUADROS MEJORADOS AQUÍ: Implementado fondo Rosa/Lavanda Pastel con interactividad Hover */
+                            <div key={i} className={`p-3.5 rounded-xl flex justify-between items-center border shadow-sm transition-all duration-200 transform hover:scale-[1.01] ${darkMode ? 'border-purple-900 bg-slate-900 hover:border-pink-500 text-white' : 'border-pink-200 bg-[#FFF0F5] hover:bg-[#FFE4E1] hover:border-pink-400 text-slate-800'}`}>
                               <div className="flex items-center space-x-2">
                                 <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white rounded-lg hover:opacity-90 shadow-sm"><Volume2 size={14} /></button>
-                                {/* TEXTO EN INGLÉS SÓLIDO: Se fuerza el color de texto según darkMode local de React para evitar bugs del navegador */}
-                                <span className={`text-xs font-bold ${darkMode ? 'text-white' : 'text-slate-900'}`}>{item.en}</span>
+                                <span className={`text-xs font-black tracking-wide ${darkMode ? 'text-white' : 'text-slate-900'}`}>{item.en}</span>
                               </div>
-                              <span className={`text-[12px] font-black px-3 py-1 rounded-md border ${darkMode ? 'text-pink-300 bg-purple-950 border-purple-900' : 'text-purple-950 bg-pink-50 border-pink-100'}`}>🗣 {item.es}</span>
+                              <span className={`text-[12px] font-black px-3 py-1 rounded-md border ${darkMode ? 'text-pink-300 bg-purple-950 border-purple-900' : 'text-purple-950 bg-white border-pink-200 shadow-xs'}`}>🗣 {item.es}</span>
                             </div>
                           ))}
                         </div>
@@ -722,13 +721,12 @@ export default function App() {
                     <h3 className={`text-xs font-black uppercase mb-3 tracking-wider ${darkMode ? 'text-pink-400' : 'text-fuchsia-900'}`}>{mod.title}</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {mod.lessons.flatMap(l => l.content).map((item, idx) => (
-                        <div key={idx} className={`p-3 rounded-xl flex justify-between items-center border shadow-sm transition-all ${darkMode ? 'border-purple-950 bg-slate-900 text-white' : 'border-pink-100 bg-white text-slate-800 hover:border-pink-300'}`}>
+                        <div key={idx} className={`p-3 rounded-xl flex justify-between items-center border shadow-sm transition-all duration-200 transform hover:scale-[1.01] ${darkMode ? 'border-purple-900 bg-slate-900 hover:border-pink-500 text-white' : 'border-pink-200 bg-[#FFF0F5] hover:bg-[#FFE4E1] hover:border-pink-400 text-slate-800'}`}>
                           <div className="flex items-center space-x-2">
                             <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white rounded-lg hover:opacity-90 shrink-0"><Volume2 size={12} /></button>
-                            {/* TEXTO EN INGLÉS SÓLIDO EN EL DICCIONARIO */}
-                            <span className={`text-[12px] font-bold leading-tight ${darkMode ? 'text-white' : 'text-slate-900'}`}>{item.en}</span>
+                            <span className={`text-[12px] font-black leading-tight ${darkMode ? 'text-white' : 'text-slate-900'}`}>{item.en}</span>
                           </div>
-                          <span className={`text-[11px] font-black px-2.5 py-1 rounded border shrink-0 text-right ${darkMode ? 'text-pink-300 bg-purple-950 border-purple-900' : 'text-purple-950 bg-pink-50 border-pink-100'}`}>🗣️ {item.es}</span>
+                          <span className={`text-[11px] font-black px-2.5 py-1 rounded border shrink-0 text-right ${darkMode ? 'text-pink-300 bg-purple-950 border-purple-900' : 'text-purple-950 bg-white border-pink-200'}`}>🗣️ {item.es}</span>
                         </div>
                       ))}
                     </div>
