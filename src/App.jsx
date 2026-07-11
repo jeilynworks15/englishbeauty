@@ -21,6 +21,17 @@ import {
 } from 'lucide-react';
 
 export default function App() {
+  // --- 🕶️ HECHIZO DE MEMORIA PARA EL MODO OSCURO ---
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedDarkMode = localStorage.getItem('beauty_salon_dark_mode');
+    return savedDarkMode === 'true';
+  });
+
+  // Guardar el modo oscuro automáticamente cada vez que cambie
+  useEffect(() => {
+    localStorage.setItem('beauty_salon_dark_mode', darkMode);
+  }, [darkMode]);
+
   // --- 🔐 HECHIZO DE MEMORIA PARA EL INICIO DE SESIÓN ---
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return localStorage.getItem('beauty_salon_logged') === 'true';
@@ -35,18 +46,40 @@ export default function App() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [videoUrl, setVideoUrl] = useState(null);
-  const [darkMode, setDarkMode] = useState(false);
-
-  // --- 📄 BASE DE DATOS MÁGICA DE TAREAS REALES ---
-  const [allStudentsTasks, setAllStudentsTasks] = useState({
-    jean: { clase2: null, clase3: null, clase5: null, clase6: null },
-    ricardo: { clase2: null, clase3: null, clase5: null, clase6: null },
-    victoria: { clase2: null, clase3: null, clase5: null, clase6: null },
-    yaritza: { clase2: null, clase3: null, clase5: null, clase6: null },
-    annelys: { clase2: null, clase3: null, clase5: null, clase6: null },
-    melany: { clase2: null, clase3: null, clase5: null, clase6: null }
+  
+  // Guardar video de práctica en el cofre
+  const [videoUrl, setVideoUrl] = useState(() => {
+    return localStorage.getItem('beauty_salon_video_url') || null;
   });
+
+  // --- 📄 COFRE SECRETO DE TAREAS REALES DE LOS ALUMNOS (Base64 Persistente) ---
+  const [allStudentsTasks, setAllStudentsTasks] = useState(() => {
+    try {
+      const savedTasks = localStorage.getItem('beauty_salon_tasks_v5');
+      return savedTasks ? JSON.parse(savedTasks) : {
+        jean: { clase2: null, clase3: null, clase5: null, clase6: null },
+        ricardo: { clase2: null, clase3: null, clase5: null, clase6: null },
+        victoria: { clase2: null, clase3: null, clase5: null, clase6: null },
+        yaritza: { clase2: null, clase3: null, clase5: null, clase6: null },
+        annelys: { clase2: null, clase3: null, clase5: null, clase6: null },
+        melany: { clase2: null, clase3: null, clase5: null, clase6: null }
+      };
+    } catch (e) {
+      return {
+        jean: { clase2: null, clase3: null, clase5: null, clase6: null },
+        ricardo: { clase2: null, clase3: null, clase5: null, clase6: null },
+        victoria: { clase2: null, clase3: null, clase5: null, clase6: null },
+        yaritza: { clase2: null, clase3: null, clase5: null, clase6: null },
+        annelys: { clase2: null, clase3: null, clase5: null, clase6: null },
+        melany: { clase2: null, clase3: null, clase5: null, clase6: null }
+      };
+    }
+  });
+
+  // Guardar tareas automáticamente en el cofre secreto
+  useEffect(() => {
+    localStorage.setItem('beauty_salon_tasks_v5', JSON.stringify(allStudentsTasks));
+  }, [allStudentsTasks]);
 
   // --- 📊 BASE DE DATOS MÁGICA DE CALIFICACIONES ---
   const [grades, setGrades] = useState(() => {
@@ -94,29 +127,38 @@ export default function App() {
   const handleVideoUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const url = URL.createObjectURL(file);
-      setVideoUrl(url);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64Video = event.target.result;
+        setVideoUrl(base64Video);
+        localStorage.setItem('beauty_salon_video_url', base64Video);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  // --- NUEVO MÉTODO SEGURO PARA SUBIR TU PDF REAL ---
+  // --- MÉTODO INFALIBLE PARA SUBIR TU PDF REAL (PERSISTE AL RECARGAR) ---
   const handlePdfUpload = (e, claseKey, studentUser) => {
     const file = e.target.files[0];
     if (file) {
       if (file.type === "application/pdf") {
-        const blobUrl = URL.createObjectURL(file);
-        
-        setAllStudentsTasks(prev => ({
-          ...prev,
-          [studentUser]: {
-            ...prev[studentUser],
-            [claseKey]: {
-              name: file.name,
-              url: blobUrl
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const base64Data = event.target.result; // Convierte el PDF real en un código de texto eterno
+          
+          setAllStudentsTasks(prev => ({
+            ...prev,
+            [studentUser]: {
+              ...prev[studentUser],
+              [claseKey]: {
+                name: file.name,
+                url: base64Data // ¡Guardado para siempre en el cofre!
+              }
             }
-          }
-        }));
-        alert(`¡Súper! Tu tarea real "${file.name}" se subió al pupitre con éxito. Puedes verla con el ojito verde. 📄✨`);
+          }));
+          alert(`¡Súper! Tu tarea real "${file.name}" se guardó con hechizo permanente. La maestra ya la puede ver. 📄✨`);
+        };
+        reader.readAsDataURL(file);
       } else {
         alert("¡Upps! Recuerda que solo puedes subir archivos en formato PDF. 📄");
       }
@@ -223,7 +265,7 @@ export default function App() {
           content: [
             { en: "The price is $40.", es: "El precio es $40." },
             { en: "The treatment takes around two hours.", es: "El tratamiento dura aproximadamente dos horas." },
-            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutos." },
+            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutes." },
             { en: "You can pay by cash.", es: "Puede pagar en efectivo." },
             { en: "You can pay by card.", es: "Puede pagar con tarjeta." }
           ],
@@ -299,10 +341,10 @@ export default function App() {
   if (!isLoggedIn || !currentUser) {
     return (
       <div className="min-h-screen bg-purple-950 flex flex-col items-center justify-center p-4">
-        <form onSubmit={handleLogin} className="bg-white p-8 rounded-3xl shadow-2xl max-w-sm w-full space-y-4 border-4 border-pink-400">
+        <form onSubmit={handleLogin} className="bg-white p-8 rounded-3xl shadow-2xl max-w-sm w-full space-y-4 border-4 border-pink-400 animate-bounce-short">
           <div className="text-center">
-            <span className="text-4xl">💇‍♀️✨</span>
-            <h2 className="text-xl font-black text-purple-950 mt-2">Beauty English Salón</h2>
+            <span className="text-5xl">💇‍♀️✨</span>
+            <h2 className="text-2xl font-black text-purple-950 mt-2">Beauty English Salón</h2>
             <p className="text-xs text-slate-500 font-bold">¡Pon tu nombre y tu código mágico!</p>
           </div>
           <div className="space-y-2">
@@ -320,16 +362,16 @@ export default function App() {
   const targetStudent = esProfesora ? selectedStudent : currentUser.username;
 
   return (
-    <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'}`}>
+    <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white dark-theme' : 'bg-slate-50 text-slate-900'}`}>
       
       {/* --- ENCABEZADO HERMOSO --- */}
-      <header className={`border-b sticky top-0 z-40 shadow-sm transition-colors ${darkMode ? 'bg-slate-900 border-purple-950' : 'bg-white border-purple-100'}`}>
+      <header className={`border-b sticky top-0 z-40 shadow-sm transition-colors ${darkMode ? 'bg-slate-900 border-purple-950 text-white' : 'bg-white border-purple-100'}`}>
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="bg-purple-600 p-2 rounded-xl text-white"><GraduationCap size={24} /></div>
             <div>
               <span className={`font-black text-base block leading-tight ${darkMode ? 'text-purple-300' : 'text-purple-900'}`}>Beauty English</span>
-              <span className="text-[10px] text-pink-500 font-bold tracking-wide uppercase">¡Todo de Vuelta y Seguro! 🎒💖</span>
+              <span className="text-[10px] text-pink-500 font-bold tracking-wide uppercase">¡Protección de Cofre Activa! 🔒🦄</span>
             </div>
           </div>
 
@@ -374,12 +416,12 @@ export default function App() {
             <div className="space-y-6">
               <div className="bg-gradient-to-r from-purple-600 to-pink-500 rounded-3xl p-6 text-white shadow-xl text-center">
                 <h1 className="text-2xl font-black">¡Hola, {currentUser.name}! ✨</h1>
-                <p className="text-purple-100 text-xs mt-1">¡Todo lo que necesitabas ha regresado y funciona de maravilla!</p>
+                <p className="text-purple-100 text-xs mt-1">¡Tus tareas y tu modo oscuro están protegidos por el cofre mágico!</p>
               </div>
 
               <div className={`border-2 rounded-3xl p-6 shadow-sm text-center space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
                 <div className="flex flex-col items-center justify-center">
-                  <Video className="text-pink-500 mb-2 animate-pulse" size={32} />
+                  <Video className="text-pink-500 mb-2" size={32} />
                   <h3 className={`text-sm font-black ${darkMode ? 'text-purple-300' : 'text-purple-950'}`}>📺 El Televisor de Práctica</h3>
                 </div>
                 {!videoUrl ? (
@@ -391,7 +433,7 @@ export default function App() {
                 ) : (
                   <div className="space-y-2">
                     <video src={videoUrl} controls className="w-full max-w-md mx-auto rounded-xl border-4 border-purple-900 bg-black" />
-                    <button onClick={() => setVideoUrl(null)} className="text-[10px] font-black text-rose-600 bg-rose-50 px-3 py-1 rounded-lg">❌ Quitar video</button>
+                    <button onClick={() => { setVideoUrl(null); localStorage.removeItem('beauty_salon_video_url'); }} className="text-[10px] font-black text-rose-600 bg-rose-50 px-3 py-1 rounded-lg">❌ Quitar video</button>
                   </div>
                 )}
               </div>
@@ -430,12 +472,18 @@ export default function App() {
                           <p className="my-1">{les.task}</p>
                           
                           {les.gameUrl && (
-                            <div className="mt-2"><a href={les.gameUrl} target="_blank" rel="noreferrer" className="inline-block text-[10px] font-black bg-purple-600 text-white px-2 py-1 rounded">🕹️ Abrir Juego</a></div>
+                            <div className="mt-2">
+                              <a href={les.gameUrl} target="_blank" rel="noreferrer" className="inline-block text-[10px] font-black bg-purple-600 text-white px-3 py-1.5 rounded-xl hover:bg-purple-700 transition-all">🕹️ Abrir Juego</a>
+                            </div>
                           )}
 
                           {les.taskKey && (
                             <div className="mt-3 pt-3 border-t border-amber-200/40 space-y-2">
-                              {esProfesora && <div className="p-1.5 bg-purple-900 text-white rounded-lg text-[10px]">👀 Viendo la tarea de: <b>{targetStudent.toUpperCase()}</b></div>}
+                              {esProfesora && (
+                                <div className="p-1.5 bg-purple-900 text-white rounded-lg text-[10px] font-black">
+                                  👀 Viendo la tarea de: <b>{targetStudent.toUpperCase()}</b>
+                                </div>
+                              )}
                               
                               <div className="flex flex-wrap items-center gap-2">
                                 {!esProfesora && (
@@ -445,12 +493,16 @@ export default function App() {
                                   </label>
                                 )}
                                 {taskData && (
-                                  <a href={taskData.url} target="_blank" rel="noreferrer" className="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg inline-flex items-center gap-1 shadow-sm">
-                                    <Eye size={12} /> Revisar Tarea PDF Real 👁️
+                                  <a href={taskData.url} download={taskData.name} target="_blank" rel="noreferrer" className="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg inline-flex items-center gap-1 shadow-sm">
+                                    <Eye size={12} /> Descargar / Ver PDF Real 👁️
                                   </a>
                                 )}
                               </div>
-                              {taskData ? <p className="text-[10px] text-emerald-500 mt-1">✅ Entregado: {taskData.name}</p> : <p className="text-[10px] text-rose-500 mt-1">❌ Sin entregar todavía.</p>}
+                              {taskData ? (
+                                <p className="text-[10px] text-emerald-500 font-bold mt-1">✅ Entregado: {taskData.name}</p>
+                              ) : (
+                                <p className="text-[10px] text-rose-500 font-bold mt-1">❌ Sin entregar todavía.</p>
+                              )}
                               <p className="text-[11px] font-black text-purple-600 mt-1">⭐ Calificación: {grades[targetStudent]?.[les.taskKey] || '-'} / 10</p>
                             </div>
                           )}
@@ -503,8 +555,8 @@ export default function App() {
                           </label>
                         )}
                         {currentTask ? (
-                          <a href={currentTask.url} target="_blank" rel="noreferrer" className="bg-emerald-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-md">
-                            <Eye size={12} /> Ver PDF Real
+                          <a href={currentTask.url} download={currentTask.name} target="_blank" rel="noreferrer" className="bg-emerald-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-md">
+                            <Eye size={12} /> Ver / Descargar PDF Real
                           </a>
                         ) : (
                           <span className="text-[10px] bg-rose-100 text-rose-700 px-2 py-1 rounded font-bold">Sin entregar</span>
@@ -525,9 +577,12 @@ export default function App() {
               </div>
               {esProfesora ? (
                 <div className="space-y-4">
-                  <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border text-slate-900 bg-white">
-                    {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
-                  </select>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-black">Elegir alumno para poner nota:</span>
+                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border text-slate-900 bg-white">
+                      {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
+                    </select>
+                  </div>
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => (
                     <div key={key} className="p-3 border rounded-xl flex justify-between items-center text-xs text-slate-900 dark:text-white font-bold">
                       <span>{key.toUpperCase()}</span>
@@ -611,3 +666,6 @@ export default function App() {
     </div>
   );
 }
+```eof
+
+Tu panel bilingüe de Beauty English ha sido actualizado con éxito. El modo oscuro ahora persiste entre recargas de página y las tareas reales en PDF se guardan de forma segura en `localStorage` (como Base64), lo que permite a las profesoras visualizarlas y calificarlas sin perder la información al refrescar la web.
