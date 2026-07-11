@@ -16,7 +16,8 @@ import {
   Sun,
   Moon,
   FileCheck,
-  Eye // 👁️ ¡Agregamos el icono del ojito para revisar!
+  Eye,
+  Star // ⭐ Agregamos el icono de estrella para las notas
 } from 'lucide-react';
 
 export default function App() {
@@ -34,13 +35,27 @@ export default function App() {
   // --- ESTADO: MODO OSCURO ---
   const [darkMode, setDarkMode] = useState(false);
 
-  // --- 🌟 ESTADO MEJORADO: AHORA GUARDA EL NOMBRE Y LA DIRECCIÓN (URL) DEL PDF 🌟 ---
+  // --- ESTADO DE LOS PDFS ---
   const [uploadedTasks, setUploadedTasks] = useState({
-    clase2: null, // Guardará { name: "archivo.pdf", url: "blob:..." }
+    clase2: null, 
     clase3: null,
     clase5: null,
     clase6: null
   });
+
+  // --- 🌟 NUEVO ESTADO: EL CUADERNO DE CALIFICACIONES MÁGICAS 🌟 ---
+  // Guarda las notas que las Misses le ponen a cada estudiante
+  const [grades, setGrades] = useState({
+    jean: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
+    ricardo: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
+    victoria: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
+    yaritza: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
+    annelys: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
+    melany: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' }
+  });
+
+  // Estado temporal para saber a qué alumno está revisando la Miss
+  const [selectedStudent, setSelectedStudent] = useState('jean');
 
   // --- FUNCIÓN DE PRONUNCIACIÓN ---
   const escucharPalabra = (textoEnIngles) => {
@@ -64,14 +79,12 @@ export default function App() {
     }
   };
 
-  // --- 🌟 FUNCIÓN CORREGIDA: GUARDA LA URL PARA PODER REVISAR EL PDF 🌟 ---
+  // --- FUNCIÓN PARA SUBIR EL PDF ---
   const handlePdfUpload = (e, claseKey) => {
     const file = e.target.files[0];
     if (file) {
       if (file.type === "application/pdf") {
-        // Creamos un enlace mágico temporal para poder ver el archivo
         const fileUrl = URL.createObjectURL(file);
-        
         setUploadedTasks(prev => ({
           ...prev,
           [claseKey]: {
@@ -86,18 +99,38 @@ export default function App() {
     }
   };
 
+  // --- 🌟 NUEVA FUNCIÓN: PARA QUE LAS MISSES PONGAN NOTAS 🌟 ---
+  const asignarNota = (estudiante, claseKey, nota) => {
+    setGrades(prev => ({
+      ...prev,
+      [estudiante]: {
+        ...prev[estudiante],
+        [claseKey]: nota
+      }
+    }));
+  };
+
   // --- CUENTAS DE MAESTRAS Y ESTUDIANTES ---
   const accounts = {
-    'daniela': { name: "Miss Manzaba Daniela", role: "Profesora", avatar: "MD" },
-    'josselyne': { name: "Miss Lucas Josselyne", role: "Profesora", avatar: "MJ" },
-    'jeilyn': { name: "Miss Gómez Jeilyn", role: "Profesora", avatar: "MG" },
-    'jean': { name: "Jean", role: "Estudiante", avatar: "JN" },
-    'ricardo': { name: "Ricardo", role: "Estudiante", avatar: "RC" },
-    'victoria': { name: "Victoria", role: "Estudiante", avatar: "VC" },
-    'yaritza': { name: "Yaritza", role: "Estudiante", avatar: "YR" },
-    'annelys': { name: "Annelys", role: "Estudiante", avatar: "AN" },
-    'melany': { name: "Melany", role: "Estudiante", avatar: "ML" }
+    'daniela': { username: 'daniela', name: "Miss Manzaba Daniela", role: "Profesora", avatar: "MD" },
+    'josselyne': { username: 'josselyne', name: "Miss Lucas Josselyne", role: "Profesora", avatar: "MJ" },
+    'jeilyn': { username: 'jeilyn', name: "Miss Gómez Jeilyn", role: "Profesora", avatar: "MG" },
+    'jean': { username: 'jean', name: "Jean", role: "Estudiante", avatar: "JN" },
+    'ricardo': { username: 'ricardo', name: "Ricardo", role: "Estudiante", avatar: "RC" },
+    'victoria': { username: 'victoria', name: "Victoria", role: "Estudiante", avatar: "VC" },
+    'yaritza': { username: 'yaritza', name: "Yaritza", role: "Estudiante", avatar: "YR" },
+    'annelys': { username: 'annelys', name: "Annelys", role: "Estudiante", avatar: "AN" },
+    'melany': { username: 'melany', name: "Melany", role: "Estudiante", avatar: "ML" }
   };
+
+  const estudiantesLista = [
+    { id: 'jean', name: 'Jean' },
+    { id: 'ricardo', name: 'Ricardo' },
+    { id: 'victoria', name: 'Victoria' },
+    { id: 'yaritza', name: 'Yaritza' },
+    { id: 'annelys', name: 'Annelys' },
+    { id: 'melany', name: 'Melany' }
+  ];
 
   // --- ESTRUCTURA COMPLETA DE DATOS ---
   const modules = [
@@ -156,7 +189,7 @@ export default function App() {
             { en: "Don't get your hair wet.", es: "No moje su cabello." },
             { en: "Use sulfate-free shampoo.", es: "Use un shampoo sin sulfatos." }
           ],
-          gameUrl: "Actividad en Parejas con Tarjetas",
+          gameUrl: "https://wordwall.net/resource/116065664", // 🌟 ¡AQUÍ ESTÁ TU NUEVO LINK MÁGICO!
           task: "Grabar un audio dando las instrucciones de cuidado después del tratamiento de keratina.",
           taskKey: "clase3"
         },
@@ -164,7 +197,7 @@ export default function App() {
           title: "CLASE 4: Price and Time (Hablar sobre Precio y Tiempo) 💰", 
           objective: "Objetivo: Al finalizar la clase, podrás informar el precio, la duración del tratamiento y las formas de pago en una conversation sencilla.",
           content: [
-            { en: "The price is $40.", es: "El precio es $40." },
+            { en: "The price is $40.", es: "The price is $40." },
             { en: "The treatment takes around two hours.", es: "El tratamiento dura aproximadamente dos horas." },
             { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutes." },
             { en: "You can pay by cash.", es: "Puede pagar en efectivo." },
@@ -245,7 +278,7 @@ export default function App() {
               <GraduationCap size={32} />
             </div>
             <h2 className={`text-2xl font-black text-center ${darkMode ? 'text-purple-300' : 'text-purple-900'}`}>Beauty English ✨</h2>
-            <p className="text-xs text-purple-600 font-bold bg-purple-50 px-3 py-1 rounded-full mt-1">👑 REPOTENCIADO CON REVISIÓN DE PDF 👑</p>
+            <p className="text-xs text-purple-600 font-bold bg-purple-50 px-3 py-1 rounded-full mt-1">👑 MODO NOTAS Y JUEGO NUEVO ACTIVADO 👑</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -264,6 +297,8 @@ export default function App() {
       </div>
     );
   }
+
+  const esProfesora = currentUser.role === "Profesora";
 
   return (
     <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'}`}>
@@ -305,6 +340,10 @@ export default function App() {
           <button onClick={() => setActiveTab('unit2')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit2' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}><span>🛍️</span> Unit 2</button>
           <button onClick={() => setActiveTab('unit3')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit3' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}><span>💬</span> Unit 3</button>
           <button onClick={() => setActiveTab('activities')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'activities' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}><span>🎒</span> Mochila de Tareas</button>
+          
+          {/* 🌟 PESTAÑA DE CALIFICACIONES ACCESIBLE PARA TODOS 🌟 */}
+          <button onClick={() => setActiveTab('gradesTab')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'gradesTab' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}><span>⭐</span> Calificaciones</button>
+          
           <button onClick={() => setActiveTab('vocabulary')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'vocabulary' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}><span>🔊</span> Vocabulario</button>
           
           <div className="border-t border-purple-900 my-2 pt-2">
@@ -318,7 +357,7 @@ export default function App() {
             <div className="space-y-6">
               <div className="bg-gradient-to-r from-purple-600 to-pink-500 rounded-3xl p-6 text-white shadow-xl text-center">
                 <h1 className="text-2xl font-black">¡Hola, {currentUser.name}! ✨</h1>
-                <p className="text-purple-100 text-xs mt-1">¡Mochila mejorada! Ahora cuando subas tus archivos podrás verlos y revisarlos dando clic al ojo mágico.</p>
+                <p className="text-purple-100 text-xs mt-1">¡Nuevo juego añadido en la Clase 3 y registro de calificaciones sobre 10!</p>
               </div>
 
               <div className={`border-2 rounded-3xl p-6 shadow-sm text-center space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
@@ -408,7 +447,6 @@ export default function App() {
                           <div className="mt-2"><a href={les.gameUrl} target="_blank" rel="noreferrer" className="inline-block text-[10px] font-black bg-purple-600 text-white px-2 py-1 rounded">🕹️ Abrir Juego</a></div>
                         )}
 
-                        {/* RÁPIDO PARA SUBIR Y REVISAR TAREA DESDE LA PROPIA CLASE */}
                         {les.taskKey && (
                           <div className="mt-3 pt-3 border-t border-amber-200/40 space-y-2">
                             <p className="text-[10px] font-black uppercase text-purple-400">📥 Entregar archivo PDF:</p>
@@ -419,7 +457,6 @@ export default function App() {
                                 <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, les.taskKey)} className="hidden" />
                               </label>
 
-                              {/* 👁️ BOTÓN DE REVISIÓN INTEGRADO EN LA CLASE */}
                               {uploadedTasks[les.taskKey] && (
                                 <a href={uploadedTasks[les.taskKey].url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg shadow-sm">
                                   <Eye size={12} />
@@ -429,6 +466,13 @@ export default function App() {
                             </div>
                             {uploadedTasks[les.taskKey] && (
                               <p className="text-[10px] text-emerald-500 font-bold mt-1">✅ Listo: {uploadedTasks[les.taskKey].name}</p>
+                            )}
+
+                            {/* Muestra la calificación si ya fue asignada */}
+                            {!esProfesora && (
+                              <p className="text-[11px] font-black text-purple-600 mt-2 bg-purple-50 p-1.5 rounded-md inline-block">
+                                ⭐ Mi Calificación: {grades[currentUser.username]?.[les.taskKey] || '-'} / 10
+                              </p>
                             )}
                           </div>
                         )}
@@ -440,7 +484,6 @@ export default function App() {
             </div>
           )}
 
-          {/* 🌟 🎒 PESTAÑA CENTRAL DE MOCHILA DE TAREAS REPOTENCIADA 🌟 */}
           {activeTab === 'activities' && (
             <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
               <div className="flex items-center space-x-2 border-b-2 border-purple-100 pb-3">
@@ -451,7 +494,6 @@ export default function App() {
               <p className="text-xs text-slate-400 font-bold">¡Sube tus tareas y dale clic al ojito verde para ver cómo quedaron!</p>
 
               <div className="space-y-4 pt-2">
-                
                 {['clase2', 'clase3', 'clase5', 'clase6'].map((key) => {
                   const names = {
                     clase2: "🔹 Clase 2: Explicación del Proceso (Keratina)",
@@ -464,6 +506,9 @@ export default function App() {
                       <div className="text-xs">
                         <span className="font-black text-purple-500 block">{names[key]}</span>
                         <span className="text-slate-400">Formato: Documento PDF</span>
+                        {!esProfesora && (
+                          <span className="block mt-1 font-bold text-amber-600">⭐ Nota: {grades[currentUser.username]?.[key] || '-'} / 10</span>
+                        )}
                       </div>
                       <div className="flex flex-wrap items-center gap-2 sm:justify-end">
                         <label className="bg-purple-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl cursor-pointer hover:bg-purple-700">
@@ -471,7 +516,6 @@ export default function App() {
                           <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, key)} className="hidden" />
                         </label>
                         
-                        {/* 👁️ EL OJITO MÁGICO PARA REVISAR */}
                         {uploadedTasks[key] && (
                           <a href={uploadedTasks[key].url} target="_blank" rel="noreferrer" className="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-md">
                             <Eye size={12} /> Revisar
@@ -481,8 +525,73 @@ export default function App() {
                     </div>
                   );
                 })}
-
               </div>
+            </div>
+          )}
+
+          {/* 🌟 📋 NUEVA VISTA CENTRAL DE CALIFICACIONES 🌟 */}
+          {activeTab === 'gradesTab' && (
+            <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
+              <div className="flex items-center space-x-2 border-b-2 border-purple-100 pb-3">
+                <Star className="text-amber-500 fill-amber-500" size={24} />
+                <h2 className="text-xl font-black">SISTEMA DE CALIFICACIONES (ESCALA 1-10) ⭐</h2>
+              </div>
+
+              {esProfesora ? (
+                <div className="space-y-4">
+                  <div className="p-3 bg-purple-50 rounded-xl border border-purple-100 flex flex-wrap items-center gap-2">
+                    <span className="text-xs font-black text-purple-950">Seleccionar Estudiante a Calificar:</span>
+                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border bg-white text-slate-900">
+                      {estudiantesLista.map(est => (
+                        <option key={est.id} value={est.id}>{est.name}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="space-y-3">
+                    {[
+                      { key: 'clase2', label: 'Clase 2: Proceso Keratina' },
+                      { key: 'clase3', label: 'Clase 3: Instrucciones de Cuidado' },
+                      { key: 'clase5', label: 'Clase 5: Preguntas previas' },
+                      { key: 'clase6', label: 'Clase 6: Evaluación Final' }
+                    ].map(item => (
+                      <div key={item.key} className="p-3 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50/50 dark:bg-slate-800/40">
+                        <span className="text-xs font-black text-slate-700 dark:text-slate-300">{item.label}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-bold">Nota actual: <b className="text-purple-600">{grades[selectedStudent]?.[item.key] || '-'}</b></span>
+                          <select 
+                            value={grades[selectedStudent]?.[item.key] === '-' ? '' : grades[selectedStudent]?.[item.key]} 
+                            onChange={(e) => asignarNota(selectedStudent, item.key, e.target.value)}
+                            className="text-xs p-1 rounded border bg-white text-slate-900 font-bold"
+                          >
+                            <option value="">Colocar Nota</option>
+                            {[10,9,8,7,6,5,4,3,2,1].map(n => <option key={n} value={n}>{n}</option>)}
+                          </select>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <p className="text-xs font-bold">Aquí están tus notas asignadas por las Misses Daniela, Josselyne y Jeilyn:</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {[
+                      { key: 'clase2', label: 'Clase 2: Proceso Keratina' },
+                      { key: 'clase3', label: 'Clase 3: Cuidado Posterior' },
+                      { key: 'clase5', label: 'Clase 5: Preguntas Previas' },
+                      { key: 'clase6', label: 'Clase 6: Evaluación Final' }
+                    ].map(item => (
+                      <div key={item.key} className="p-3 rounded-xl border bg-purple-50/40 flex justify-between items-center">
+                        <span className="text-xs font-bold">{item.label}</span>
+                        <span className="text-xs font-black bg-purple-600 text-white px-2.5 py-1 rounded-lg">
+                          {grades[currentUser.username]?.[item.key] || '-'} / 10
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -519,7 +628,7 @@ export default function App() {
                 <Gamepad2 className="text-amber-500 animate-bounce" size={28} />
                 <h2 className="text-xl font-black">¡LA FERIA DE JUEGOS DE VOCABULARIO! 🎡🕹️</h2>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4"> {/* Cambiado a grid-cols-3 para acomodar el tercer juego */}
                 <div className={`border-2 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2 ${darkMode ? 'bg-slate-800 border-purple-900' : 'bg-purple-50 border-purple-200'}`}>
                   <span className="text-3xl">🎯</span>
                   <h3 className="text-xs font-black">El Gran Laberinto de Saludos (Clase 1)</h3>
@@ -529,6 +638,12 @@ export default function App() {
                   <span className="text-3xl">🧪</span>
                   <h3 className="text-xs font-black">El Proceso de la Keratina (Clase 2)</h3>
                   <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noreferrer" className="w-full text-center text-xs font-black bg-pink-500 text-white py-2 rounded-xl shadow-sm">🕹️ ¡Jugar!</a>
+                </div>
+                {/* 🌟 ¡NUEVO JUEGO DE LA CLASE 3 AGREGADO A LA FERIA! 🌟 */}
+                <div className={`border-2 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2 ${darkMode ? 'bg-slate-800 border-amber-900' : 'bg-amber-50 border-amber-200'}`}>
+                  <span className="text-3xl">🧴</span>
+                  <h3 className="text-xs font-black">Instrucciones de Cuidado (Clase 3)</h3>
+                  <a href="https://wordwall.net/resource/116065664" target="_blank" rel="noreferrer" className="w-full text-center text-xs font-black bg-amber-500 text-white py-2 rounded-xl shadow-sm">🕹️ ¡Jugar!</a>
                 </div>
               </div>
             </div>
