@@ -194,6 +194,19 @@ export default function App() {
     }));
   };
 
+  // --- 📈 FUNCIÓN PARA CALCULAR EL PROGRESO MÁGICO ---
+  const calcularProgreso = (estudianteKey) => {
+    const tareasEstudiante = allStudentsTasks[estudianteKey] || {};
+    const llavesTareas = ['clase2', 'clase3', 'clase5', 'clase6'];
+    let entregadas = 0;
+    llavesTareas.forEach(key => {
+      if (tareasEstudiante[key] && tareasEstudiante[key].url) {
+        entregadas++;
+      }
+    });
+    return Math.round((entregadas / llavesTareas.length) * 100);
+  };
+
   const accounts = {
     'daniela': { username: 'daniela', name: "Miss Manzaba Daniela", role: "Profesora" },
     'josselyne': { username: 'josselyne', name: "Miss Lucas Josselyne", role: "Profesora" },
@@ -318,7 +331,7 @@ export default function App() {
         },
         {
           title: "CLASE 6: Despedir al Cliente de manera amable 👋💖",
-          objective: "Objetivo: Al finalizar la clase, los estudiantes podrán despedir a un cliente de manera cortés y participar en una conversación completa de atención al cliente.",
+          objective: "Objetivo: Al finalizar la clase, los estudiantes podrán despedir a un cliente de manera cortés and participar en una conversación completa de atención al cliente.",
           content: [
             { en: "Thank you for coming.", es: "Gracias por venir." },
             { en: "Thank you for your visit.", es: "Gracias por su visita." },
@@ -383,6 +396,9 @@ export default function App() {
   const esProfesora = currentUser.role === "Profesora";
   const targetStudent = esProfesora ? selectedStudent : currentUser.username;
 
+  // Cálculo del progreso para el usuario actual o el seleccionado
+  const progresoActual = calcularProgreso(targetStudent);
+
   return (
     <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'}`}>
       
@@ -392,7 +408,8 @@ export default function App() {
             <div className="bg-purple-600 p-2 rounded-xl text-white"><GraduationCap size={24} /></div>
             <div>
               <span className={`font-black text-base block leading-tight ${darkMode ? 'text-purple-300' : 'text-purple-900'}`}>Beauty English</span>
-              <span className="text-[10px] text-pink-500 font-bold tracking-wide uppercase">Modo Oscuro Permanente Activo 🕶️🔒</span>
+              {/* --- 👑 SUBTÍTULO MODIFICADO POR LA PRINCESA --- */}
+              <span className="text-[11px] text-pink-500 font-black tracking-wide block">Keratin talk course 💬✨</span>
             </div>
           </div>
 
@@ -433,15 +450,38 @@ export default function App() {
           
           {activeTab === 'dashboard' && (
             <div className="space-y-6">
+              {/* --- 🎨 PANEL COLORIDO CON NUEVO TEXTO --- */}
               <div className="bg-gradient-to-r from-purple-600 to-pink-500 rounded-3xl p-6 text-white shadow-xl text-center">
                 <h1 className="text-2xl font-black">¡Hola, {currentUser.name}! ✨</h1>
-                <p className="text-purple-100 text-xs mt-1">¡Tus tareas y tu modo oscuro se guardan súper fuerte ahora!</p>
+                <p className="text-purple-50 font-black text-xs mt-1.5 bg-white/20 inline-block px-4 py-1.5 rounded-full">
+                  Disfruta de tu aprendizaje con juegos interactivos 🎮🎨
+                </p>
               </div>
 
+              {/* --- 📈 VISUALIZACIÓN DE LA BARRA DE PROGRESO DEL ESTUDIANTE EN INICIO --- */}
+              {!esProfesora && (
+                <div className={`border-2 rounded-3xl p-5 shadow-sm space-y-3 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-100'}`}>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-black flex items-center gap-1 text-purple-600">📊 ¡Tu progreso de tareas!</span>
+                    <span className="text-xs font-black text-pink-500 bg-pink-50 dark:bg-slate-800 px-2 py-0.5 rounded-md">{progresoActual}%</span>
+                  </div>
+                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-3.5 overflow-hidden p-0.5 border">
+                    <div 
+                      className="bg-gradient-to-r from-emerald-400 to-teal-500 h-2.5 rounded-full transition-all duration-500 ease-out"
+                      style={{ width: `${progresoActual}%` }}
+                    />
+                  </div>
+                  <p className="text-[10px] text-slate-400 font-bold">
+                    {progresoActual === 100 ? "¡Súper! Completaste todas tus misiones del salón ⭐" : "Sigue subiendo tus archivos PDF para llenar tu barrita."}
+                  </p>
+                </div>
+              )}
+
+              {/* --- 📺 TELEVISOR TOTALMENTE RENOMBRADO --- */}
               <div className={`border-2 rounded-3xl p-6 shadow-sm text-center space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
                 <div className="flex flex-col items-center justify-center">
                   <Video className="text-pink-500 mb-2" size={32} />
-                  <h3 className={`text-sm font-black ${darkMode ? 'text-purple-300' : 'text-purple-950'}`}>📺 El Televisor de Práctica</h3>
+                  <h3 className={`text-sm font-black ${darkMode ? 'text-purple-300' : 'text-purple-950'}`}>📺 Welcoming video</h3>
                 </div>
                 {!videoUrl ? (
                   <label className="mx-auto max-w-xs flex flex-col items-center justify-center border-2 border-dashed p-4 rounded-xl cursor-pointer bg-purple-50/50">
@@ -462,11 +502,23 @@ export default function App() {
           {['unit1', 'unit2', 'unit3'].includes(activeTab) && (
             <div className="space-y-4">
               {esProfesora && (
-                <div className="p-3 bg-purple-600 text-white rounded-2xl flex items-center justify-between shadow-md mb-2">
-                  <span className="text-xs font-black">Revisando las unidades del alumno:</span>
-                  <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border text-slate-950 bg-white">
-                    {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
-                  </select>
+                <div className="p-3 bg-purple-600 text-white rounded-2xl flex flex-col gap-2 shadow-md mb-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black">Revisando las unidades del alumno:</span>
+                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border text-slate-950 bg-white">
+                      {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
+                    </select>
+                  </div>
+                  {/* --- 📈 BARRA QUE LA DOCENTE VE EN LAS UNIDADES --- */}
+                  <div className="bg-purple-950/40 p-2 rounded-xl space-y-1">
+                    <div className="flex justify-between text-[10px] font-black text-purple-200">
+                      <span>Progreso de {selectedStudent.toUpperCase()}:</span>
+                      <span>{calcularProgreso(selectedStudent)}%</span>
+                    </div>
+                    <div className="w-full bg-purple-900 rounded-full h-2 overflow-hidden">
+                      <div className="bg-emerald-400 h-2 transition-all duration-300" style={{ width: `${calcularProgreso(selectedStudent)}%` }} />
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -552,16 +604,31 @@ export default function App() {
                 <h2 className="text-xl font-black">CENTRO DE TAREAS GENERAL 🎒👁️</h2>
               </div>
               
-              {esProfesora && (
-                <div className="p-3 bg-purple-100 rounded-xl flex items-center gap-2 mb-4">
-                  <span className="text-xs font-black text-purple-950">Selecciona un alumno para ver sus PDF subidos:</span>
-                  <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border bg-white text-slate-900">
-                    {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
-                  </select>
+              {/* --- 📈 BARRA TOTAL CON FILTRO EN LA MOCHILA DE TAREAS --- */}
+              <div className="p-4 bg-purple-100 dark:bg-slate-900 rounded-2xl border space-y-3">
+                {esProfesora ? (
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span className="text-xs font-black text-purple-950 dark:text-purple-300">Selecciona un alumno para revisar:</span>
+                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border bg-white text-slate-900">
+                      {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
+                    </select>
+                  </div>
+                ) : (
+                  <span className="text-xs font-black text-purple-950 dark:text-purple-300 block">Tu Progreso de Entregas:</span>
+                )}
+                
+                <div className="space-y-1">
+                  <div className="flex justify-between text-[11px] font-black text-purple-800 dark:text-purple-400">
+                    <span>Mochila de {targetStudent.toUpperCase()}</span>
+                    <span>{calcularProgreso(targetStudent)}% Completo</span>
+                  </div>
+                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-3 overflow-hidden">
+                    <div className="bg-emerald-500 h-3 transition-all duration-300" style={{ width: `${calcularProgreso(targetStudent)}%` }} />
+                  </div>
                 </div>
-              )}
+              </div>
 
-              <div className="space-y-4">
+              <div className="space-y-4 mt-2">
                 {['clase2', 'clase3', 'clase5', 'clase6'].map((key) => {
                   const currentTask = allStudentsTasks[targetStudent]?.[key];
 
@@ -599,13 +666,26 @@ export default function App() {
                 <Star className="text-amber-500 fill-amber-500" size={24} />
                 <h2 className="text-xl font-black">SISTEMA DE CALIFICACIONES ⭐</h2>
               </div>
+              
               {esProfesora ? (
                 <div className="space-y-4">
-                  <div className="flex items-center gap-2 p-2 bg-purple-50 dark:bg-slate-800 rounded-xl">
-                    <span className="text-xs font-black">Elegir alumno para calificar y comentar:</span>
-                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border text-slate-900 bg-white">
-                      {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
-                    </select>
+                  <div className="flex flex-col gap-2 p-3 bg-purple-50 dark:bg-slate-800 rounded-xl border">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-black">Elegir alumno para calificar y comentar:</span>
+                      <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border text-slate-900 bg-white">
+                        {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
+                      </select>
+                    </div>
+                    {/* --- 📈 BARRA QUE LA DOCENTE VERIFICA EN EL PANEL DE NOTAS --- */}
+                    <div className="space-y-1 bg-white dark:bg-slate-950 p-2 rounded-lg border">
+                      <div className="flex justify-between text-[10px] font-black text-slate-600 dark:text-slate-300">
+                        <span>Verificación de Progreso de {selectedStudent.toUpperCase()}:</span>
+                        <span className="text-emerald-600 font-black">{calcularProgreso(selectedStudent)}%</span>
+                      </div>
+                      <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                        <div className="bg-emerald-500 h-2 transition-all duration-300" style={{ width: `${calcularProgreso(selectedStudent)}%` }} />
+                      </div>
+                    </div>
                   </div>
                   
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
