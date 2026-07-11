@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   BookOpen, 
   GraduationCap, 
@@ -35,23 +35,41 @@ export default function App() {
   // --- ESTADO: MODO OSCURO ---
   const [darkMode, setDarkMode] = useState(false);
 
-  // --- ESTADO DE LOS PDFS ---
-  const [uploadedTasks, setUploadedTasks] = useState({
-    clase2: null, 
-    clase3: null,
-    clase5: null,
-    clase6: null
+  // --- 🌟 BASE DE DATOS MÁGICA DE TAREAS (LOCALSTORAGE) 🌟 ---
+  // Estructura: { jean: { clase2: { name, url }, clase3: null ... }, ricardo: { ... } }
+  const [allStudentsTasks, setAllStudentsTasks] = useState(() => {
+    const savedTasks = localStorage.getItem('beauty_salon_tasks');
+    return savedTasks ? JSON.parse(savedTasks) : {
+      jean: { clase2: null, clase3: null, clase5: null, clase6: null },
+      ricardo: { clase2: null, clase3: null, clase5: null, clase6: null },
+      victoria: { clase2: null, clase3: null, clase5: null, clase6: null },
+      yaritza: { clase2: null, clase3: null, clase5: null, clase6: null },
+      annelys: { clase2: null, clase3: null, clase5: null, clase6: null },
+      melany: { clase2: null, clase3: null, clase5: null, clase6: null }
+    };
   });
 
-  // --- CUADERNO DE CALIFICACIONES MÁGICAS ---
-  const [grades, setGrades] = useState({
-    jean: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
-    ricardo: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
-    victoria: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
-    yaritza: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
-    annelys: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
-    melany: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' }
+  // --- 🌟 BASE DE DATOS MÁGICA DE CALIFICACIONES (LOCALSTORAGE) 🌟 ---
+  const [grades, setGrades] = useState(() => {
+    const savedGrades = localStorage.getItem('beauty_salon_grades');
+    return savedGrades ? JSON.parse(savedGrades) : {
+      jean: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
+      ricardo: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
+      victoria: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
+      yaritza: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
+      annelys: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
+      melany: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' }
+    };
   });
+
+  // Guardar en la memoria cada vez que cambien las tareas o notas
+  useEffect(() => {
+    localStorage.setItem('beauty_salon_tasks', JSON.stringify(allStudentsTasks));
+  }, [allStudentsTasks]);
+
+  useEffect(() => {
+    localStorage.setItem('beauty_salon_grades', JSON.stringify(grades));
+  }, [grades]);
 
   // Estado temporal para la revisión de las Misses
   const [selectedStudent, setSelectedStudent] = useState('jean');
@@ -78,22 +96,30 @@ export default function App() {
     }
   };
 
-  // --- FUNCIÓN PARA SUBIR EL PDF ---
-  const handlePdfUpload = (e, claseKey) => {
+  // --- 🌟 FUNCIÓN PARA SUBIR EL PDF CORREGIDA 🌟 ---
+  const handlePdfUpload = (e, claseKey, studentUser) => {
     const file = e.target.files[0];
     if (file) {
       if (file.type === "application/pdf") {
-        const fileUrl = URL.createObjectURL(file);
-        setUploadedTasks(prev => ({
-          ...prev,
-          [claseKey]: {
-            name: file.name,
-            url: fileUrl
-          }
-        }));
-        alert(`¡Súper! Tu tarea "${file.name}" se guardó. ¡Ahora puedes revisarla con el botón del ojito! 👁️✨`);
+        // En un entorno real se subiría a la nube, aquí usamos Base64 para simularlo en localStorage
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const base64Url = event.target.result;
+          setAllStudentsTasks(prev => ({
+            ...prev,
+            [studentUser]: {
+              ...prev[studentUser],
+              [claseKey]: {
+                name: file.name,
+                url: base64Url // ¡Guardado completo para que todos lo vean!
+              }
+            }
+          }));
+          alert(`¡Súper! La tarea de ${studentUser} ("${file.name}") se guardó en la memoria del salón. ¡Las Misses ya pueden verla! 📄✨`);
+        };
+        reader.readAsDataURL(file);
       } else {
-        alert("¡Upps! Recuerda que solo puedes subir archivos en formato PDF (los de la hojita roja). 📄");
+        alert("¡Upps! Recuerda que solo puedes subir archivos en formato PDF. 📄");
       }
     }
   };
@@ -198,11 +224,11 @@ export default function App() {
           content: [
             { en: "The price is $40.", es: "El precio es $40." },
             { en: "The treatment takes around two hours.", es: "El tratamiento dura aproximadamente dos horas." },
-            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutos." },
+            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutes." },
             { en: "You can pay by cash.", es: "Puede pagar en efectivo." },
             { en: "You can pay by card.", es: "Puede pagar con tarjeta." }
           ],
-          gameUrl: "https://wordwall.net/resource/116065924", // 🌟 ¡AQUÍ ESTÁ TU NUEVO LINK DE LA CLASE 4!
+          gameUrl: "https://wordwall.net/resource/116065924",
           task: "ROLE-PLAY: Jugar con un compañero a preguntar precios, tiempos y formas de pago."
         }
       ]
@@ -261,43 +287,9 @@ export default function App() {
     setError('¡Upps! Ese nombre no está en mi lista del salón.');
   };
 
-  if (!isLoggedIn) {
-    return (
-      <div className={`min-h-screen flex items-center justify-center p-4 font-sans transition-colors duration-300 ${darkMode ? 'bg-slate-950' : 'bg-pink-50'}`}>
-        <div className={`p-8 rounded-3xl shadow-xl max-w-md w-full border-4 ${darkMode ? 'bg-slate-900 border-purple-900 text-white' : 'bg-white border-purple-200 text-slate-900'}`}>
-          
-          <div className="flex justify-end mb-2">
-            <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-xl transition-all ${darkMode ? 'bg-slate-800 text-amber-400' : 'bg-purple-100 text-purple-950'}`}>
-              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-          </div>
-
-          <div className="flex flex-col items-center mb-6">
-            <div className="bg-purple-600 p-4 rounded-2xl text-white mb-2 shadow-md">
-              <GraduationCap size={32} />
-            </div>
-            <h2 className={`text-2xl font-black text-center ${darkMode ? 'text-purple-300' : 'text-purple-900'}`}>Beauty English ✨</h2>
-            <p className="text-xs text-purple-600 font-bold bg-purple-50 px-3 py-1 rounded-full mt-1">👑 FERIA DE JUEGOS EXPANDIDA 👑</p>
-          </div>
-
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Tu Nombre de Usuario</label>
-              <input type="text" placeholder="Ej: jeilyn, daniela, jean..." value={username} onChange={(e) => setUsername(e.target.value)} className={`w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 ${darkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-white border-purple-200'}`} />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Contraseña Secreta</label>
-              <input type="password" placeholder="Ingresa tu clave" value={password} onChange={(e) => setPassword(e.target.value)} className={`w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 ${darkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-white border-purple-200'}`} />
-            </div>
-            {error && <p className="text-rose-600 text-xs font-bold bg-rose-50 p-2.5 rounded-lg text-center">{error}</p>}
-            <button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-black py-3 rounded-xl text-sm shadow-md transition-all">¡Entrar al Salón Mágico! ➡️</button>
-          </form>
-        </div>
-      </div>
-    );
-  }
-
-  const esProfesora = currentUser.role === "Profesora";
+  const esProfesora = currentUser ? currentUser.role === "Profesora" : false;
+  // Saber a quién le pertenece la vista actual de las tareas
+  const targetStudent = esProfesora ? selectedStudent : (currentUser ? currentUser.username : 'jean');
 
   return (
     <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'}`}>
@@ -308,7 +300,7 @@ export default function App() {
             <div className="bg-purple-600 p-2 rounded-xl text-white"><GraduationCap size={24} /></div>
             <div>
               <span className={`font-black text-base block leading-tight ${darkMode ? 'text-purple-300' : 'text-purple-900'}`}>Beauty English</span>
-              <span className="text-[10px] text-pink-500 font-bold tracking-wide uppercase">¡Diversión Activa! 🎀</span>
+              <span className="text-[10px] text-pink-500 font-bold tracking-wide uppercase">¡Memoria Compartida! 🧠✨</span>
             </div>
           </div>
 
@@ -353,7 +345,7 @@ export default function App() {
             <div className="space-y-6">
               <div className="bg-gradient-to-r from-purple-600 to-pink-500 rounded-3xl p-6 text-white shadow-xl text-center">
                 <h1 className="text-2xl font-black">¡Hola, {currentUser.name}! ✨</h1>
-                <p className="text-purple-100 text-xs mt-1">¡Nuevo juego añadido en la Clase 4! Diviértete aprendiendo sobre precios y tiempo.</p>
+                <p className="text-purple-100 text-xs mt-1">¡Ahora el salón tiene súper memoria! Las tareas que subas las podrán ver tus Misses.</p>
               </div>
 
               <div className={`border-2 rounded-3xl p-6 shadow-sm text-center space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
@@ -414,66 +406,76 @@ export default function App() {
                     <h2 className="text-xs font-black uppercase tracking-wider">{mod.title}</h2>
                   </div>
 
-                  {mod.lessons.map((les, index) => (
-                    <div key={index} className={`border-2 rounded-2xl p-5 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-100'}`}>
-                      <div>
-                        <h3 className="text-base font-black">{les.title}</h3>
-                        <p className={`text-xs font-bold p-2 rounded-lg mt-2 italic ${darkMode ? 'bg-slate-800 text-purple-300' : 'bg-purple-50 text-purple-700'}`}>{les.objective}</p>
-                      </div>
+                  {mod.lessons.map((les, index) => {
+                    const taskData = allStudentsTasks[targetStudent]?.[les.taskKey];
+                    return (
+                      <div key={index} className={`border-2 rounded-2xl p-5 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-100'}`}>
+                        <div>
+                          <h3 className="text-base font-black">{les.title}</h3>
+                          <p className={`text-xs font-bold p-2 rounded-lg mt-2 italic ${darkMode ? 'bg-slate-800 text-purple-300' : 'bg-purple-50 text-purple-700'}`}>{les.objective}</p>
+                        </div>
 
-                      <div className="space-y-2">
-                        <div className="grid grid-cols-1 gap-1.5">
-                          {les.content.map((item, i) => (
-                            <div key={i} className={`p-2.5 rounded-xl flex justify-between items-center border ${darkMode ? 'bg-slate-800/40 border-slate-700' : 'bg-slate-50 border-slate-100'}`}>
-                              <div className="flex items-center space-x-2">
-                                <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-purple-600 text-white rounded-lg"><Volume2 size={14} /></button>
-                                <span className="text-xs font-black">{item.en}</span>
+                        <div className="space-y-2">
+                          <div className="grid grid-cols-1 gap-1.5">
+                            {les.content.map((item, i) => (
+                              <div key={i} className={`p-2.5 rounded-xl flex justify-between items-center border ${darkMode ? 'bg-slate-800/40 border-slate-700' : 'bg-slate-50 border-slate-100'}`}>
+                                <div className="flex items-center space-x-2">
+                                  <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-purple-600 text-white rounded-lg"><Volume2 size={14} /></button>
+                                  <span className="text-xs font-black">{item.en}</span>
+                                </div>
+                                <span className="text-[11px] font-bold text-slate-400">🗣️ {item.es}</span>
                               </div>
-                              <span className="text-[11px] font-bold text-slate-400">🗣️ {item.es}</span>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className={`p-3 rounded-xl border text-xs font-bold ${darkMode ? 'bg-slate-800/80 border-amber-900 text-amber-200' : 'bg-amber-50 border-amber-100 text-amber-950'}`}>
+                          <p className="font-black text-amber-600 uppercase tracking-wider mb-1">🎯 Actividad Obligatoria:</p>
+                          {les.task}
+                          
+                          {les.gameUrl && les.gameUrl.startsWith("http") && (
+                            <div className="mt-2"><a href={les.gameUrl} target="_blank" rel="noreferrer" className="inline-block text-[10px] font-black bg-purple-600 text-white px-2 py-1 rounded">🕹️ Abrir Juego</a></div>
+                          )}
+
+                          {les.taskKey && (
+                            <div className="mt-3 pt-3 border-t border-amber-200/40 space-y-2">
+                              {esProfesora && (
+                                <div className="p-1.5 bg-purple-900 text-white rounded-lg text-[10px] mb-2">
+                                  👀 Viendo la tarea de: <b>{targetStudent.toUpperCase()}</b>
+                                </div>
+                              )}
+                              <p className="text-[10px] font-black uppercase text-purple-400">📥 Archivo PDF del Estudiante:</p>
+                              <div className="flex flex-wrap items-center gap-2">
+                                {!esProfesora && (
+                                  <label className="inline-flex items-center gap-1.5 bg-purple-600 hover:bg-purple-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg cursor-pointer">
+                                    <Upload size={12} />
+                                    {taskData ? "Cambiar mi PDF" : "Subir Tarea PDF"}
+                                    <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, les.taskKey, currentUser.username)} className="hidden" />
+                                  </label>
+                                )}
+
+                                {taskData && (
+                                  <a href={taskData.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg shadow-sm">
+                                    <Eye size={12} />
+                                    Revisar Tarea PDF 👁️
+                                  </a>
+                                )}
+                              </div>
+                              {taskData ? (
+                                <p className="text-[10px] text-emerald-500 font-bold mt-1">✅ Guardado: {taskData.name}</p>
+                              ) : (
+                                <p className="text-[10px] text-rose-500 font-bold mt-1">❌ No se ha subido ningún documento todavía.</p>
+                              )}
+
+                              <p className="text-[11px] font-black text-purple-600 mt-2 bg-purple-50 p-1.5 rounded-md inline-block">
+                                ⭐ Calificación de {targetStudent}: {grades[targetStudent]?.[les.taskKey] || '-'} / 10
+                              </p>
                             </div>
-                          ))}
+                          )}
                         </div>
                       </div>
-
-                      <div className={`p-3 rounded-xl border text-xs font-bold ${darkMode ? 'bg-slate-800/80 border-amber-900 text-amber-200' : 'bg-amber-50 border-amber-100 text-amber-950'}`}>
-                        <p className="font-black text-amber-600 uppercase tracking-wider mb-1">🎯 Actividad Obligatoria:</p>
-                        {les.task}
-                        
-                        {les.gameUrl && les.gameUrl.startsWith("http") && (
-                          <div className="mt-2"><a href={les.gameUrl} target="_blank" rel="noreferrer" className="inline-block text-[10px] font-black bg-purple-600 text-white px-2 py-1 rounded">🕹️ Abrir Juego</a></div>
-                        )}
-
-                        {les.taskKey && (
-                          <div className="mt-3 pt-3 border-t border-amber-200/40 space-y-2">
-                            <p className="text-[10px] font-black uppercase text-purple-400">📥 Entregar archivo PDF:</p>
-                            <div className="flex flex-wrap items-center gap-2">
-                              <label className="inline-flex items-center gap-1.5 bg-purple-600 hover:bg-purple-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg cursor-pointer">
-                                <Upload size={12} />
-                                {uploadedTasks[les.taskKey] ? "Cambiar PDF" : "Subir Tarea PDF"}
-                                <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, les.taskKey)} className="hidden" />
-                              </label>
-
-                              {uploadedTasks[les.taskKey] && (
-                                <a href={uploadedTasks[les.taskKey].url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg shadow-sm">
-                                  <Eye size={12} />
-                                  Revisar mi PDF
-                                </a>
-                              )}
-                            </div>
-                            {uploadedTasks[les.taskKey] && (
-                              <p className="text-[10px] text-emerald-500 font-bold mt-1">✅ Listo: {uploadedTasks[les.taskKey].name}</p>
-                            )}
-
-                            {!esProfesora && (
-                              <p className="text-[11px] font-black text-purple-600 mt-2 bg-purple-50 p-1.5 rounded-md inline-block">
-                                ⭐ Mi Calificación: {grades[currentUser.username]?.[les.taskKey] || '-'} / 10
-                              </p>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ))}
             </div>
@@ -483,10 +485,21 @@ export default function App() {
             <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
               <div className="flex items-center space-x-2 border-b-2 border-purple-100 pb-3">
                 <Activity className="text-purple-600" size={24} />
-                <h2 className={`text-xl font-black ${darkMode ? 'text-purple-300' : 'text-purple-950'}`}>CENTRO DE TAREAS (CON REVISIÓN) 🎒👁️</h2>
+                <h2 className={`text-xl font-black ${darkMode ? 'text-purple-300' : 'text-purple-950'}`}>CENTRO DE TAREAS GENERAL 🎒👁️</h2>
               </div>
               
-              <p className="text-xs text-slate-400 font-bold">¡Sube tus tareas y dale clic al ojito verde para ver cómo quedaron!</p>
+              {esProfesora ? (
+                <div className="p-3 bg-purple-100 rounded-xl border border-purple-200 flex flex-wrap items-center gap-2 mb-4">
+                  <span className="text-xs font-black text-purple-950">Maestra, selecciona un alumno para ver su mochila:</span>
+                  <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border bg-white text-slate-900">
+                    {estudiantesLista.map(est => (
+                      <option key={est.id} value={est.id}>{est.name}</option>
+                    ))}
+                  </select>
+                </div>
+              ) : (
+                <p className="text-xs text-slate-400 font-bold">¡Sube tus tareas aquí y tu Miss podrá verlas de inmediato en su cuenta!</p>
+              )}
 
               <div className="space-y-4 pt-2">
                 {['clase2', 'clase3', 'clase5', 'clase6'].map((key) => {
@@ -496,25 +509,29 @@ export default function App() {
                     clase5: "🔹 Clase 5: Cuestionario de Alergias",
                     clase6: "🏆 Clase 6: Rúbrica y Evaluación Final"
                   };
+                  const currentTask = allStudentsTasks[targetStudent]?.[key];
+
                   return (
                     <div key={key} className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${darkMode ? 'bg-slate-800/40 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
                       <div className="text-xs">
                         <span className="font-black text-purple-500 block">{names[key]}</span>
-                        <span className="text-slate-400">Formato: Documento PDF</span>
-                        {!esProfesora && (
-                          <span className="block mt-1 font-bold text-amber-600">⭐ Nota: {grades[currentUser.username]?.[key] || '-'} / 10</span>
-                        )}
+                        <span className="text-slate-400 font-bold">Mochila de: <b className="text-pink-500">{targetStudent.toUpperCase()}</b></span>
+                        <span className="block mt-1 font-bold text-amber-600">⭐ Nota: {grades[targetStudent]?.[key] || '-'} / 10</span>
                       </div>
                       <div className="flex flex-wrap items-center gap-2 sm:justify-end">
-                        <label className="bg-purple-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl cursor-pointer hover:bg-purple-700">
-                          📄 {uploadedTasks[key] ? "Cambiar" : "Elegir PDF"}
-                          <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, key)} className="hidden" />
-                        </label>
+                        {!esProfesora && (
+                          <label className="bg-purple-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl cursor-pointer hover:bg-purple-700">
+                            📄 {currentTask ? "Cambiar" : "Elegir PDF"}
+                            <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, key, currentUser.username)} className="hidden" />
+                          </label>
+                        )}
                         
-                        {uploadedTasks[key] && (
-                          <a href={uploadedTasks[key].url} target="_blank" rel="noreferrer" className="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-md">
-                            <Eye size={12} /> Revisar
+                        {currentTask ? (
+                          <a href={currentTask.url} target="_blank" rel="noreferrer" className="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-md">
+                            <Eye size={12} /> Revisar PDF
                           </a>
+                        ) : (
+                          <span className="text-[10px] bg-rose-100 text-rose-700 px-2 py-1 rounded font-bold">Sin entregar</span>
                         )}
                       </div>
                     </div>
@@ -622,7 +639,7 @@ export default function App() {
                 <Gamepad2 className="text-amber-500 animate-bounce" size={28} />
                 <h2 className="text-xl font-black">¡LA FERIA DE JUEGOS DE VOCABULARIO! 🎡🕹️</h2>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"> {/* Cambiado el diseño de cuadricula para que entren los 4 juegos ordenados */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className={`border-2 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2 ${darkMode ? 'bg-slate-800 border-purple-900' : 'bg-purple-50 border-purple-200'}`}>
                   <span className="text-3xl">🎯</span>
                   <h3 className="text-xs font-black">El Gran Laberinto de Saludos (Clase 1)</h3>
@@ -638,7 +655,6 @@ export default function App() {
                   <h3 className="text-xs font-black">Instrucciones de Cuidado (Clase 3)</h3>
                   <a href="https://wordwall.net/resource/116065664" target="_blank" rel="noreferrer" className="w-full text-center text-xs font-black bg-amber-500 text-white py-2 rounded-xl shadow-sm">🕹️ ¡Jugar!</a>
                 </div>
-                {/* 🌟 ¡EL NUEVO JUEGO DE PRECIOS Y DURACIÓN EN LA FERIA! 🌟 */}
                 <div className={`border-2 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2 ${darkMode ? 'bg-slate-800 border-emerald-900' : 'bg-emerald-50 border-emerald-200'}`}>
                   <span className="text-3xl">💰</span>
                   <h3 className="text-xs font-black">Precio y Tiempo en el Salón (Clase 4)</h3>
