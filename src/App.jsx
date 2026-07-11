@@ -96,7 +96,6 @@ export default function App() {
         melany: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } }
       };
     } catch (e) {
-      // Migración amigable por si existían notas en el formato antiguo
       return {
         jean: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
         ricardo: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
@@ -169,7 +168,6 @@ export default function App() {
     }
   };
 
-  // --- Funciones de Asignación Actualizadas ---
   const asignarNota = (estudiante, claseKey, nota) => {
     setGrades(prev => ({
       ...prev,
@@ -217,7 +215,6 @@ export default function App() {
     { id: 'melany', name: 'Melany' }
   ];
 
-  // Estructura de nombres/detalles estables de tareas para el módulo de notas
   const infoTareas = {
     clase2: "Tarea 1: Graben un audio de 30-45 segundos explicando el proceso completo del tratamiento de keratina.",
     clase3: "Tarea 2: Graben un audio dando las instrucciones de cuidado posterior al tratamiento de keratina.",
@@ -291,7 +288,7 @@ export default function App() {
           content: [
             { en: "The price is $40.", es: "El precio es $40." },
             { en: "The treatment takes around two hours.", es: "El tratamiento dura aproximadamente dos horas." },
-            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutes." },
+            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutos." },
             { en: "You can pay by cash.", es: "Puede pagar en efectivo." },
             { en: "You can pay by card.", es: "Puede pagar con tarjeta." }
           ],
@@ -384,6 +381,7 @@ export default function App() {
   }
 
   const esProfesora = currentUser.role === "Profesora";
+  // --- 🛠️ CORRECCIÓN CLAVE DE ASIGNACIÓN DE USUARIO TARGET ---
   const targetStudent = esProfesora ? selectedStudent : currentUser.username;
 
   return (
