@@ -5,14 +5,12 @@ import {
   Clock, 
   CheckCircle, 
   Award, 
-  Play, 
-  Lock,
-  ChevronRight,
-  Users,
-  FileText,
-  Volume2,
-  Smile,
-  Heart
+  Volume2, 
+  Smile, 
+  Heart, 
+  List, 
+  FileText, 
+  Activity
 } from 'lucide-react';
 
 export default function App() {
@@ -24,26 +22,24 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
 
-  // --- FUNCIÓN MÁGICA DE PRONUNCIACIÓN (LA BOCINA) ---
+  // --- FUNCIÓN DE PRONUNCIACIÓN (LA BOCINA MÁGICA) ---
   const escucharPalabra = (textoEnIngles) => {
     if ('speechSynthesis' in window) {
-      // Cancelar cualquier voz activa para que no se amontonen
       window.speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(textoEnIngles);
-      u.lang = 'en-US'; // Voz en inglés americano
-      u.rate = 0.9;     // Un poquito más lento para que los niños entiendan bien
+      u.lang = 'en-US';
+      u.rate = 0.85; // Un poquito lento para practicar perfecto
       window.speechSynthesis.speak(u);
     } else {
-      alert("¡Oh no! Tu navegador no tiene la magia de la voz.");
+      alert("¡Tu navegador no tiene activada la magia de la voz!");
     }
   };
 
-  // --- LAS MAESTRAS Y ESTUDIANTES REALES ---
+  // --- CUENTAS DE MAESTRAS Y ESTUDIANTES ---
   const accounts = {
     'daniela': { name: "Miss Manzaba Daniela", role: "Profesora", avatar: "MD" },
     'josselyne': { name: "Miss Lucas Josselyne", role: "Profesora", avatar: "MJ" },
     'jeilyn': { name: "Miss Gómez Jeilyn", role: "Profesora", avatar: "MG" },
-    
     'jean': { name: "Jean", role: "Estudiante", avatar: "JN" },
     'ricardo': { name: "Ricardo", role: "Estudiante", avatar: "RC" },
     'victoria': { name: "Victoria", role: "Estudiante", avatar: "VC" },
@@ -52,12 +48,12 @@ export default function App() {
     'melany': { name: "Melany", role: "Estudiante", avatar: "ML" }
   };
 
-  // --- EL SÚPER LIBRO INTERACTIVO (UNIDADES 1, 2 Y 3) ---
+  // --- ESTRUCTURA COMPLETA DE DATOS ---
   const modules = [
     {
       id: 1,
-      title: "UNIDAD 1: WELCOME TO THE CLIENT (BIENVENIDA AL CLIENTE) 🚪",
-      duration: "Clase 1 y Clase 2 • Miss Daniela, Miss Josselyne, Miss Jeilyn",
+      title: "UNIDAD 1: WELCOME TO THE CLIENT (BIENVENIDA) 🚪",
+      duration: "Clase 1 y Clase 2 • Profesoras del Curso",
       lessons: [
         { 
           title: "CLASE 1: Greetings (Saludos para recibir al cliente) 👋", 
@@ -88,14 +84,14 @@ export default function App() {
             { en: "The treatment takes about two hours.", es: "El tratamiento toma aproximadamente dos horas." }
           ],
           gameUrl: "Ruleta de Palabras en Clase",
-          task: "🎤 TAREA: Grabar un audio explicando el proceso completo usando First, Then, Next y Finally."
+          task: "Grabar un audio explicando el proceso completo usando First, Then, Next y Finally."
         }
       ]
     },
     {
       id: 2,
       title: "UNIDAD 2: GIVING INFORMATION (BRINDAR INFORMACIÓN) 📢",
-      duration: "Clase 3 y Clase 4 • Miss Daniela, Miss Josselyne, Miss Jeilyn",
+      duration: "Clase 3 y Clase 4 • Profesoras del Curso",
       lessons: [
         { 
           title: "CLASE 3: Aftercare Instructions (Instrucciones de cuidado) 🧴", 
@@ -109,7 +105,7 @@ export default function App() {
             { en: "Use sulfate-free shampoo.", es: "Use un shampoo sin sulfatos." }
           ],
           gameUrl: "Actividad en Parejas con Tarjetas",
-          task: "🎤 TAREA: Grabar un audio dando las instrucciones de cuidado después del tratamiento de keratina."
+          task: "Grabar un audio dando las instrucciones de cuidado después del tratamiento de keratina."
         },
         { 
           title: "CLASE 4: Price and Time (Hablar sobre Precio y Tiempo) 💰", 
@@ -122,14 +118,14 @@ export default function App() {
             { en: "You can pay by card.", es: "Puede pagar con tarjeta." }
           ],
           gameUrl: "Role-Play de la Tiendita en Clase",
-          task: "🎭 ROLE-PLAY: Jugar con un compañero a preguntar precios, tiempos y formas de pago."
+          task: "ROLE-PLAY: Jugar con un compañero a preguntar precios, tiempos y formas de pago."
         }
       ]
     },
     {
       id: 3,
       title: "UNIDAD 3: CUSTOMER INTERACTION (INTERACTUAR CON EL CLIENTE) 💬",
-      duration: "Clase 5 y Clase 6 • Miss Daniela, Miss Josselyne, Miss Jeilyn",
+      duration: "Clase 5 y Clase 6 • Profesoras del Curso",
       lessons: [
         {
           title: "CLASE 5: Conversar con el Cliente (Preguntas previas) 💇‍♂️",
@@ -142,7 +138,7 @@ export default function App() {
             { en: "Of course.", es: "Por supuesto." }
           ],
           gameUrl: "Dinámica de preguntas rápidas en el salón",
-          task: "🎤 TAREA OFICIAL: Grabar un audio practicando las expresiones y preguntas que aprendieron en esta clase."
+          task: "Grabar un audio practicando las expresiones y preguntas que aprendieron en esta clase."
         },
         {
           title: "CLASE 6: Despedir al Cliente de manera amable 👋💖",
@@ -157,7 +153,7 @@ export default function App() {
             { en: "We hope to see you again.", es: "Esperamos verla nuevamente." }
           ],
           gameUrl: "Evaluación del Gran Salón de Belleza",
-          task: "🏆 EVALUACIÓN FINAL (ROLE-PLAY): Hacer un juego completo con un compañero que incluya: Saludo, Explicación, Instrucciones, Precio/Duración y Despedida. ¡Se calificará sobre 10 puntos!"
+          task: "EVALUACIÓN FINAL (ROLE-PLAY): Hacer un juego completo con un compañero que incluya: Saludo, Explicación, Instrucciones, Precio/Duración y Despedida. ¡Se calificará sobre 10 puntos con la rúbrica oficial!"
         }
       ]
     }
@@ -187,7 +183,7 @@ export default function App() {
               <GraduationCap size={32} />
             </div>
             <h2 className="text-2xl font-black text-purple-900 text-center">Beauty English ✨</h2>
-            <p className="text-xs text-purple-600 font-bold bg-purple-50 px-3 py-1 rounded-full mt-1">✨ CAMPUS INTERACTIVO CON AUDIO ✨</p>
+            <p className="text-xs text-purple-600 font-bold bg-purple-50 px-3 py-1 rounded-full mt-1">👑 SALÓN INTERACTIVO ORDENADO 👑</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -197,10 +193,10 @@ export default function App() {
             </div>
             <div>
               <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Contraseña Secreta</label>
-              <input type="password" placeholder="Ingresa tu clave del salón" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-purple-200 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" />
+              <input type="password" placeholder="Ingresa tu clave" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-purple-200 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" />
             </div>
             {error && <p className="text-rose-600 text-xs font-bold bg-rose-50 p-2.5 rounded-lg text-center">{error}</p>}
-            <button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-black py-3 rounded-xl text-sm shadow-md transition-all transform hover:scale-105">¡Entrar a Escuchar y Aprender! ➡️</button>
+            <button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-black py-3 rounded-xl text-sm shadow-md transition-all">¡Entrar al Salón Mágico! ➡️</button>
           </form>
         </div>
       </div>
@@ -209,164 +205,237 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans flex flex-col">
+      {/* ENCABEZADO */}
       <header className="bg-white border-b border-purple-100 sticky top-0 z-40 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="bg-purple-600 p-2 rounded-xl text-white"><GraduationCap size={24} /></div>
             <div>
-              <span className="font-black text-lg text-purple-900 block leading-tight">Beauty English</span>
-              <span className="text-[10px] text-purple-600 font-bold tracking-wide uppercase">Interactive Audio App 🔊</span>
+              <span className="font-black text-base text-purple-900 block leading-tight">Beauty English</span>
+              <span className="text-[10px] text-pink-500 font-bold tracking-wide uppercase">¡Todo organizado! 🎀</span>
             </div>
           </div>
 
-          <nav className="flex space-x-1">
-            <button onClick={() => setActiveTab('dashboard')} className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${activeTab === 'dashboard' ? 'bg-purple-100 text-purple-700' : 'text-slate-600'}`}>Inicio</button>
-            <button onClick={() => setActiveTab('lessons')} className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${activeTab === 'lessons' ? 'bg-purple-100 text-purple-700' : 'text-slate-600'}`}>Libro con Audio 📖</button>
-          </nav>
-
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2">
             <div className="text-right hidden sm:block">
-              <p className="text-xs font-black text-slate-700 leading-none">{currentUser.name}</p>
-              <p className="text-[10px] text-purple-600 font-bold mt-0.5">{currentUser.role}</p>
+              <p className="text-xs font-black text-slate-700">{currentUser.name}</p>
+              <p className="text-[9px] text-purple-600 font-bold uppercase">{currentUser.role}</p>
             </div>
-            <div className="h-9 w-9 bg-purple-600 text-white rounded-xl flex items-center justify-center font-black text-sm">{currentUser.avatar}</div>
             <button onClick={() => setIsLoggedIn(false)} className="text-[10px] font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded-lg">Salir</button>
           </div>
         </div>
       </header>
 
+      {/* BARRA DE MENÚ DE COLORES (LAS SECCIONES QUE PEDISTE) */}
+      <div className="bg-purple-900 text-white p-2 sticky top-16 z-30 shadow-md">
+        <div className="max-w-4xl mx-auto flex flex-wrap gap-1 justify-center">
+          <button onClick={() => setActiveTab('dashboard')} className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${activeTab === 'dashboard' ? 'bg-pink-500 text-white shadow' : 'hover:bg-purple-800'}`}>🏠 Inicio</button>
+          <button onClick={() => setActiveTab('syllabus')} className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${activeTab === 'syllabus' ? 'bg-pink-500 text-white shadow' : 'hover:bg-purple-800'}`}>📋 Syllabus</button>
+          <button onClick={() => setActiveTab('unit1')} className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${activeTab === 'unit1' ? 'bg-pink-500 text-white shadow' : 'hover:bg-purple-800'}`}>📦 Unit 1</button>
+          <button onClick={() => setActiveTab('unit2')} className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${activeTab === 'unit2' ? 'bg-pink-500 text-white shadow' : 'hover:bg-purple-800'}`}>🛍️ Unit 2</button>
+          <button onClick={() => setActiveTab('unit3')} className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${activeTab === 'unit3' ? 'bg-pink-500 text-white shadow' : 'hover:bg-purple-800'}`}>💬 Unit 3</button>
+          <button onClick={() => setActiveTab('activities')} className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${activeTab === 'activities' ? 'bg-pink-500 text-white shadow' : 'hover:bg-purple-800'}`}>🎯 Tareas/Actividades</button>
+          <button onClick={() => setActiveTab('vocabulary')} className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${activeTab === 'vocabulary' ? 'bg-pink-500 text-white shadow' : 'hover:bg-purple-800'}`}>🔊 Vocabulario</button>
+        </div>
+      </div>
+
+      {/* CONTENIDO PRINCIPAL */}
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
+        
+        {/* PESTAÑA: INICIO */}
         {activeTab === 'dashboard' && (
-          <div className="space-y-6">
-            <div className="bg-gradient-to-r from-purple-600 to-pink-500 rounded-3xl p-6 text-white shadow-md">
-              <h1 className="text-2xl font-black">¡Hola, {currentUser.name}! ✨</h1>
-              <p className="text-purple-100 text-xs mt-1">¡Hecho! Agregamos la Unidad 3 con bocinas parlantes automáticas.</p>
+          <div className="space-y-6 text-center">
+            <div className="bg-gradient-to-r from-purple-600 to-pink-500 rounded-3xl p-8 text-white shadow-xl transform transition-all">
+              <h1 className="text-3xl font-black">¡Hola de nuevo, {currentUser.name}! ✨</h1>
+              <p className="text-purple-100 text-sm mt-2">¡Mira arriba! Tienes botones mágicos para ir directo a lo que buscas sin perderte nada.</p>
             </div>
-
-            <div className="bg-white border-2 border-purple-100 rounded-2xl p-4 shadow-sm text-center">
-              <p className="text-xs font-black text-purple-950 flex items-center justify-center gap-1">
-                <Smile size={16} className="text-pink-500 animate-bounce" /> 
-                ¡Instrucción de voz activada! Presiona el botón morado de bocina en cada frase para escuchar cómo se dice.
-              </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-white p-5 rounded-2xl shadow-sm border border-purple-100">
+                <span className="text-2xl">📖</span>
+                <h3 className="font-black text-purple-950 mt-1">3 Unidades Listas</h3>
+                <p className="text-xs text-slate-500">Clases de la 1 a la 6 completas.</p>
+              </div>
+              <div className="bg-white p-5 rounded-2xl shadow-sm border border-purple-100">
+                <span className="text-2xl">🔊</span>
+                <h3 className="font-black text-purple-950 mt-1">Bocinas Activas</h3>
+                <p className="text-xs text-slate-500">Escucha la pronunciación cuando quieras.</p>
+              </div>
+              <div className="bg-white p-5 rounded-2xl shadow-sm border border-purple-100">
+                <span className="text-2xl">🏆</span>
+                <h3 className="font-black text-purple-950 mt-1">Rúbrica Final</h3>
+                <p className="text-xs text-slate-500">Lista para calificar el juego final.</p>
+              </div>
             </div>
-
-            <button onClick={() => setActiveTab('lessons')} className="w-full bg-white border-2 border-dashed border-purple-300 hover:border-purple-500 p-6 rounded-2xl flex flex-col items-center justify-center text-center transition-all group">
-              <BookOpen size={32} className="text-purple-500 mb-2 group-hover:scale-110 transition-transform" />
-              <span className="text-sm font-black text-purple-900">¡Abrir libro de Unidades 1, 2 y 3! 🎉</span>
-              <span className="text-xs text-slate-400 mt-0.5">Clases del 1 al 6 listas para escuchar</span>
-            </button>
           </div>
         )}
 
-        {activeTab === 'lessons' && (
-          <div className="space-y-8">
-            {modules.map(mod => (
+        {/* PESTAÑA: SYLLABUS */}
+        {activeTab === 'syllabus' && (
+          <div className="bg-white border-2 border-purple-200 rounded-3xl p-6 shadow-sm space-y-4">
+            <div className="flex items-center space-x-2 border-b-2 border-purple-100 pb-3">
+              <FileText className="text-purple-600" size={24} />
+              <h2 className="text-xl font-black text-purple-950">SYLLABUS OFICIAL DEL CURSO 📋</h2>
+            </div>
+            <p className="text-xs font-bold text-slate-600">Este es el mapa del tesoro de lo que aprendemos en el curso Beauty English: Keratin Talk.</p>
+            
+            <div className="space-y-3 pt-2">
+              <div className="p-3 bg-purple-50 rounded-xl border border-purple-100">
+                <h3 className="text-xs font-black text-purple-900">📦 UNIDAD 1: Welcome to the Client</h3>
+                <p className="text-[11px] text-slate-600 font-semibold mt-0.5">• Clase 1: Saludos para recibir al cliente 👋</p>
+                <p className="text-[11px] text-slate-600 font-semibold">• Clase 2: Explicar el proceso de la Keratina con conectores 🧪</p>
+              </div>
+              <div className="p-3 bg-pink-50 rounded-xl border border-pink-100">
+                <h3 className="text-xs font-black text-pink-900">🛍️ UNIDAD 2: Giving Information</h3>
+                <p className="text-[11px] text-slate-600 font-semibold mt-0.5">• Clase 3: Instrucciones de cuidado posterior (Shampoo, no mojar) 🧴</p>
+                <p className="text-[11px] text-slate-600 font-semibold">• Clase 4: Hablar sobre precio ($40) y cuánto tiempo toma 💰</p>
+              </div>
+              <div className="p-3 bg-amber-50 rounded-xl border border-amber-100">
+                <h3 className="text-xs font-black text-amber-900">💬 UNIDAD 3: Customer Interaction</h3>
+                <p className="text-[11px] text-slate-600 font-semibold mt-0.5">• Clase 5: Preguntar por alergias y si el cabello está teñido 💇‍♂️</p>
+                <p className="text-[11px] text-slate-600 font-semibold">• Clase 6: Despedida amable y Evaluación con Rúbrica Final 🏆</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* FUNCIÓN AUXILIAR PARA RENDERIZAR UNA UNIDAD EN ESPECÍFICO */}
+        {['unit1', 'unit2', 'unit3'].includes(activeTab) && (
+          <div className="space-y-4">
+            {modules.filter((_, idx) => (activeTab === 'unit1' && idx === 0) || (activeTab === 'unit2' && idx === 1) || (activeTab === 'unit3' && idx === 2)).map(mod => (
               <div key={mod.id} className="space-y-4">
                 <div className="bg-purple-900 text-white p-4 rounded-2xl shadow-sm flex justify-between items-center">
                   <div>
-                    <h2 className="text-sm font-black uppercase tracking-wider">{mod.title}</h2>
-                    <p className="text-[11px] text-purple-200 font-medium mt-0.5">{mod.duration}</p>
+                    <h2 className="text-xs font-black uppercase tracking-wider">{mod.title}</h2>
+                    <p className="text-[10px] text-purple-200 font-bold mt-0.5">{mod.duration}</p>
                   </div>
-                  <span className="bg-pink-500 text-white text-[10px] font-black px-2 py-1 rounded-lg">AUDIO COMPATIBLE 🔊</span>
                 </div>
 
-                <div className="grid grid-cols-1 gap-4">
-                  {mod.lessons.map((les, index) => (
-                    <div key={index} className="bg-white border-2 border-purple-100 rounded-2xl p-5 shadow-sm space-y-4">
-                      <div>
-                        <span className="bg-pink-100 text-pink-700 font-black text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wide">Lección Práctica</span>
-                        <h3 className="text-base font-black text-slate-800 mt-1">{les.title}</h3>
-                        <p className="text-xs text-purple-700 font-bold bg-purple-50 p-2 rounded-lg border border-purple-100/60 mt-2 italic">{les.objective}</p>
-                      </div>
+                {mod.lessons.map((les, index) => (
+                  <div key={index} className="bg-white border-2 border-purple-100 rounded-2xl p-5 shadow-sm space-y-4">
+                    <div>
+                      <h3 className="text-base font-black text-slate-800">{les.title}</h3>
+                      <p className="text-xs text-purple-700 font-bold bg-purple-50 p-2 rounded-lg mt-2 italic">{les.objective}</p>
+                    </div>
 
-                      <div className="space-y-2">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Vocabulario Oficial (Toca la bocina para oír):</p>
-                        <div className="grid grid-cols-1 gap-2">
-                          {les.content.map((item, i) => (
-                            <div key={i} className="bg-slate-50 p-3 rounded-xl flex justify-between items-center border border-slate-100 hover:bg-purple-50/50 transition-colors">
-                              <div className="flex items-center space-x-3">
-                                <button 
-                                  onClick={() => escucharPalabra(item.en)}
-                                  className="p-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow-sm transition-transform active:scale-95 flex items-center justify-center"
-                                  title="Escuchar pronunciación"
-                                >
-                                  <Volume2 size={16} />
-                                </button>
-                                <span className="text-sm font-black text-purple-950">{item.en}</span>
-                              </div>
-                              <span className="text-xs font-bold text-slate-500 bg-white px-2 py-1 rounded-md border border-slate-100">🗣️ {item.es}</span>
+                    <div className="space-y-2">
+                      <p className="text-[10px] font-black text-slate-400 uppercase">Vocabulario de la clase:</p>
+                      <div className="grid grid-cols-1 gap-1.5">
+                        {les.content.map((item, i) => (
+                          <div key={i} className="bg-slate-50 p-2.5 rounded-xl flex justify-between items-center border border-slate-100">
+                            <div className="flex items-center space-x-2">
+                              <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-purple-600 text-white rounded-lg shadow-sm"><Volume2 size={14} /></button>
+                              <span className="text-xs font-black text-purple-950">{item.en}</span>
                             </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="bg-amber-50 p-4 rounded-xl border border-amber-100 space-y-2">
-                        <p className="text-xs font-black text-amber-800 uppercase tracking-wider">🎯 ACTIVIDAD DE LA CLASE:</p>
-                        <p className="text-xs font-bold text-amber-950 leading-relaxed">{les.task}</p>
-                        {les.gameUrl && les.gameUrl.startsWith("http") && (
-                          <a href={les.gameUrl} target="_blank" rel="noreferrer" className="inline-block mt-2 text-xs font-black bg-purple-600 text-white px-3 py-1.5 rounded-lg shadow-sm hover:bg-purple-700">🕹️ Abrir Wordwall</a>
-                        )}
-                      </div>
-
-                      {/* MOSTRAR RÚBRICA SÓLO EN LA CLASE 6 EVALUACIÓN FINAL */}
-                      {les.title.includes("CLASE 6") && (
-                        <div className="mt-4 border-t-2 border-purple-100 pt-4">
-                          <h4 className="text-xs font-black text-pink-600 uppercase tracking-wider mb-2 flex items-center gap-1">
-                            <Heart size={14} /> TABLA DE CALIFICACIÓN (RUBRIC - MAX 10 PTS)
-                          </h4>
-                          <div className="overflow-x-auto">
-                            <table className="w-full text-left border-collapse text-[11px]">
-                              <thead>
-                                <tr className="bg-purple-50 text-purple-900 font-black">
-                                  <th className="p-2 border border-purple-100">Criterio</th>
-                                  <th className="p-2 border border-purple-100 text-emerald-700">Excelente (2 pts)</th>
-                                  <th className="p-2 border border-purple-100 text-amber-700">Bueno (1 pt)</th>
-                                  <th className="p-2 border border-purple-100 text-rose-700">Mejorar (0 pts)</th>
-                                </tr>
-                              </thead>
-                              <tbody className="font-bold text-slate-600">
-                                <tr>
-                                  <td className="p-2 border border-purple-100 bg-slate-50">1. Saludo</td>
-                                  <td className="p-2 border border-purple-100">Completo y adecuado</td>
-                                  <td className="p-2 border border-purple-100">Omite alguna parte</td>
-                                  <td className="p-2 border border-purple-100">Incompleto</td>
-                                </tr>
-                                <tr>
-                                  <td className="p-2 border border-purple-100 bg-slate-50">2. Proceso</td>
-                                  <td className="p-2 border border-purple-100">Todos los pasos ordenados</td>
-                                  <td className="p-2 border border-purple-100">Mayoría de pasos</td>
-                                  <td className="p-2 border border-purple-100">Pocos pasos / errores</td>
-                                </tr>
-                                <tr>
-                                  <td className="p-2 border border-purple-100 bg-slate-50">3. Cuidados</td>
-                                  <td className="p-2 border border-purple-100">Instrucciones claras</td>
-                                  <td className="p-2 border border-purple-100">Mayoría, con omisión</td>
-                                  <td className="p-2 border border-purple-100">Pocas o errores</td>
-                                </tr>
-                                <tr>
-                                  <td className="p-2 border border-purple-100 bg-slate-50">4. Precio / Tiempo</td>
-                                  <td className="p-2 border border-purple-100">Informa claro y correcto</td>
-                                  <td className="p-2 border border-purple-100">Con algún error</td>
-                                  <td className="p-2 border border-purple-100">No informa bien</td>
-                                </tr>
-                                <tr>
-                                  <td className="p-2 border border-purple-100 bg-slate-50">5. Despedida</td>
-                                  <td className="p-2 border border-purple-100">Completa y muy cortés</td>
-                                  <td className="p-2 border border-purple-100">Omite expresiones</td>
-                                  <td className="p-2 border border-purple-100">Inadecuada</td>
-                                </tr>
-                              </tbody>
-                            </table>
+                            <span className="text-[11px] font-bold text-slate-500">🗣️ {item.es}</span>
                           </div>
-                        </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="bg-amber-50 p-3 rounded-xl border border-amber-100 text-xs font-bold text-amber-950">
+                      <p className="font-black text-amber-800 uppercase tracking-wider mb-1">🎯 Actividad:</p>
+                      {les.task}
+                      {les.gameUrl && les.gameUrl.startsWith("http") && (
+                        <div className="mt-2"><a href={les.gameUrl} target="_blank" rel="noreferrer" className="inline-block text-[10px] font-black bg-purple-600 text-white px-2 py-1 rounded shadow">🕹️ Abrir Wordwall</a></div>
                       )}
                     </div>
-                  ))}
-                </div>
+
+                    {les.title.includes("CLASE 6") && (
+                      <div className="mt-4 border-t border-purple-100 pt-4">
+                        <h4 className="text-xs font-black text-pink-600 mb-2 flex items-center gap-1"><Heart size={12} /> TABLA DE CALIFICACIÓN (MAX 10 PTS)</h4>
+                        <div className="overflow-x-auto text-[10px] font-bold text-slate-600">
+                          <table className="w-full text-left border-collapse">
+                            <thead>
+                              <tr className="bg-purple-50 text-purple-900 font-black">
+                                <th className="p-1.5 border border-purple-100">Criterio</th>
+                                <th className="p-1.5 border border-purple-100 text-emerald-700">Excelente (2 pts)</th>
+                                <th className="p-1.5 border border-purple-100 text-rose-700">Mejorar (0 pts)</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr><td className="p-1.5 border border-purple-100 bg-slate-50">1. Saludo[cite: 7]</td><td className="p-1.5 border border-purple-100">Completo y adecuado[cite: 7]</td><td className="p-1.5 border border-purple-100">Incompleto[cite: 7]</td></tr>
+                              <tr><td className="p-1.5 border border-purple-100 bg-slate-50">2. Proceso[cite: 7]</td><td className="p-1.5 border border-purple-100">Todos los pasos ordenados[cite: 7]</td><td className="p-1.5 border border-purple-100">Pocos pasos o errores[cite: 7]</td></tr>
+                              <tr><td className="p-1.5 border border-purple-100 bg-slate-50">3. Cuidados[cite: 7]</td><td className="p-1.5 border border-purple-100">Instrucciones claras[cite: 7]</td><td className="p-1.5 border border-purple-100">Pocas o errores[cite: 7]</td></tr>
+                              <tr><td className="p-1.5 border border-purple-100 bg-slate-50">4. Precio / Tiempo[cite: 7]</td><td className="p-1.5 border border-purple-100">Informa claro y correcto[cite: 7]</td><td className="p-1.5 border border-purple-100">No informa bien[cite: 7]</td></tr>
+                              <tr><td className="p-1.5 border border-purple-100 bg-slate-50">5. Despedida[cite: 7]</td><td className="p-1.5 border border-purple-100">Completa y muy cortés[cite: 7]</td><td className="p-1.5 border border-purple-100">Inadecuada[cite: 7]</td></tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             ))}
           </div>
         )}
+
+        {/* PESTAÑA: TAREAS / ACTIVIDADES */}
+        {activeTab === 'activities' && (
+          <div className="bg-white border-2 border-purple-200 rounded-3xl p-6 shadow-sm space-y-4">
+            <div className="flex items-center space-x-2 border-b-2 border-purple-100 pb-3">
+              <Activity className="text-purple-600" size={24} />
+              <h2 className="text-xl font-black text-purple-950">TODAS LAS TAREAS DEL CURSO 🎯</h2>
+            </div>
+            <div className="space-y-3">
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <span className="font-black text-xs text-purple-900 block">🔹 Clase 1: Greetings 👋</span>
+                <p className="text-xs text-slate-600 mt-1">Role-Play en Parejas: Estilista da la bienvenida y el Cliente responde amablemente.</p>
+              </div>
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <span className="font-black text-xs text-purple-900 block">🔹 Clase 2: Explain the Process 🧪</span>
+                <p className="text-xs text-slate-600 mt-1">🎤 TAREA: Grabar un audio explicando el proceso completo usando First, Then, Next y Finally.</p>
+              </div>
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <span className="font-black text-xs text-purple-900 block">🔹 Clase 3: Aftercare Instructions 🧴</span>
+                <p className="text-xs text-slate-600 mt-1">🎤 TAREA: Grabar un audio dando las instrucciones de cuidado después del tratamiento de keratina.</p>
+              </div>
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <span className="font-black text-xs text-purple-900 block">🔹 Clase 4: Price and Time 💰</span>
+                <p className="text-xs text-slate-600 mt-1">🎭 ROLE-PLAY: Jugar con un compañero a preguntar precios, tiempos y formas de pago.</p>
+              </div>
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <span className="font-black text-xs text-purple-900 block">🔹 Clase 5: Conversar con el Cliente 💇‍♂️</span>
+                <p className="text-xs text-slate-600 mt-1">🎤 TAREA OFICIAL: Grabar un audio practicando las expresiones y preguntas que aprendieron en esta clase[cite: 6].</p>
+              </div>
+              <div className="p-3 bg-purple-100 rounded-xl border border-purple-200">
+                <span className="font-black text-xs text-purple-950 block">🏆 Clase 6: EVALUACIÓN FINAL DE JUEGO DE ROLES[cite: 7]</span>
+                <p className="text-xs text-purple-900 mt-1 font-semibold">Hacer un juego completo con un compañero que incluya todo lo aprendido. ¡Se calificará sobre 10 puntos![cite: 7]</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* PESTAÑA: VOCABULARIO INTERACTIVO COMPLETO */}
+        {activeTab === 'vocabulary' && (
+          <div className="bg-white border-2 border-purple-200 rounded-3xl p-6 shadow-sm space-y-4">
+            <div className="flex items-center space-x-2 border-b-2 border-purple-100 pb-3">
+              <Volume2 className="text-purple-600" size={24} />
+              <h2 className="text-xl font-black text-purple-950">DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
+            </div>
+            <p className="text-xs font-bold text-slate-500">¡Aquí están todas las palabras reunidas! Presiona cualquier bocina morada para escuchar.</p>
+            
+            <div className="space-y-4 pt-2">
+              {modules.map(mod => (
+                <div key={mod.id} className="border-l-4 border-pink-400 pl-3 py-1">
+                  <h3 className="text-xs font-black text-purple-900 uppercase tracking-wider mb-2">{mod.title.split(":")[0]}</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {mod.lessons.flatMap(l => l.content).map((item, idx) => (
+                      <div key={idx} className="bg-slate-50 p-2 rounded-xl flex justify-between items-center border border-slate-100 hover:bg-purple-50 transition-colors">
+                        <div className="flex items-center space-x-2">
+                          <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-purple-600 text-white rounded-lg shadow-sm"><Volume2 size={12} /></button>
+                          <span className="text-[12px] font-black text-purple-950">{item.en}</span>
+                        </div>
+                        <span className="text-[11px] font-bold text-slate-500">🗣️ {item.es}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
       </main>
     </div>
   );
