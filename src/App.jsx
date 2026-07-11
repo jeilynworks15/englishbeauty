@@ -12,7 +12,10 @@ import {
   Activity,
   Gamepad2,
   Video,
-  Upload
+  Upload,
+  Sun,
+  Moon,
+  FileCheck
 } from 'lucide-react';
 
 export default function App() {
@@ -26,6 +29,17 @@ export default function App() {
 
   // --- ESTADO MÁGICO PARA EL VIDEO ---
   const [videoUrl, setVideoUrl] = useState(null);
+
+  // --- 🌟 ESTADO NUEVO: MODO OSCURO (SOL Y LUNA) 🌟 ---
+  const [darkMode, setDarkMode] = useState(false);
+
+  // --- 🌟 ESTADO NUEVO: CONTROL DE TAREAS SUBIDAS (PDF) 🌟 ---
+  const [uploadedTasks, setUploadedTasks] = useState({
+    clase2: null,
+    clase3: null,
+    clase5: null,
+    clase6: null
+  });
 
   // --- FUNCIÓN DE PRONUNCIACIÓN (LA BOCINA MÁGICA) ---
   const escucharPalabra = (textoEnIngles) => {
@@ -46,6 +60,22 @@ export default function App() {
     if (file) {
       const url = URL.createObjectURL(file);
       setVideoUrl(url);
+    }
+  };
+
+  // --- 🌟 FUNCIÓN NUEVA: ENVIAR TAREA PDF 🌟 ---
+  const handlePdfUpload = (e, claseKey) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.type === "application/pdf") {
+        setUploadedTasks(prev => ({
+          ...prev,
+          [claseKey]: file.name
+        }));
+        alert(`¡Súper! Tu tarea "${file.name}" se subió correctamente a la mochila del salón. ✨`);
+      } else {
+        alert("¡Upps! Recuerda que solo puedes subir archivos en formato PDF (los de la hojita roja). 📄");
+      }
     }
   };
 
@@ -98,7 +128,8 @@ export default function App() {
             { en: "The treatment takes about two hours.", es: "El tratamiento toma aproximadamente dos horas." }
           ],
           gameUrl: "https://interacty.me/projects/e502cc8626a13026",
-          task: "Grabar un audio explicando el proceso completo usando First, Then, Next y Finally."
+          task: "Grabar un audio explicando el proceso completo usando First, Then, Next y Finally.",
+          taskKey: "clase2"
         }
       ]
     },
@@ -119,7 +150,8 @@ export default function App() {
             { en: "Use sulfate-free shampoo.", es: "Use un shampoo sin sulfatos." }
           ],
           gameUrl: "Actividad en Parejas con Tarjetas",
-          task: "Grabar un audio dando las instrucciones de cuidado después del tratamiento de keratina."
+          task: "Grabar un audio dando las instrucciones de cuidado después del tratamiento de keratina.",
+          taskKey: "clase3"
         },
         { 
           title: "CLASE 4: Price and Time (Hablar sobre Precio y Tiempo) 💰", 
@@ -152,7 +184,8 @@ export default function App() {
             { en: "Of course.", es: "Por supuesto." }
           ],
           gameUrl: "Dinámica de preguntas rápidas en el salón",
-          task: "Grabar un audio practicando las expresiones y preguntas que aprendieron en esta clase."
+          task: "Grabar un audio practicando las expresiones y preguntas que aprendieron en esta clase.",
+          taskKey: "clase5"
         },
         {
           title: "CLASE 6: Despedir al Cliente de manera amable 👋💖",
@@ -167,7 +200,8 @@ export default function App() {
             { en: "We hope to see you again.", es: "Esperamos verla nuevamente." }
           ],
           gameUrl: "Evaluación del Gran Salón de Belleza",
-          task: "EVALUACIÓN FINAL (ROLE-PLAY): Hacer un juego completo con un compañero que incluya: Saludo, Explicación, Instrucciones, Precio/Duración y Despedida. ¡Se calificará sobre 10 puntos con la rúbrica oficial!"
+          task: "EVALUACIÓN FINAL (ROLE-PLAY): Hacer un juego completo con un compañero que incluya todo lo aprendido. ¡Se calificará sobre 10 puntos!",
+          taskKey: "clase6"
         }
       ]
     }
@@ -190,24 +224,32 @@ export default function App() {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-pink-50 flex items-center justify-center p-4 font-sans">
-        <div className="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full border-4 border-purple-200">
+      <div className={`min-h-screen flex items-center justify-center p-4 font-sans transition-colors duration-300 ${darkMode ? 'bg-slate-950' : 'bg-pink-50'}`}>
+        <div className={`p-8 rounded-3xl shadow-xl max-w-md w-full border-4 ${darkMode ? 'bg-slate-900 border-purple-900 text-white' : 'bg-white border-purple-200 text-slate-900'}`}>
+          
+          {/* BOTÓN MODO OSCURO EN LOGIN */}
+          <div className="flex justify-end mb-2">
+            <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-xl transition-all ${darkMode ? 'bg-slate-800 text-amber-400' : 'bg-purple-100 text-purple-950'}`}>
+              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+          </div>
+
           <div className="flex flex-col items-center mb-6">
             <div className="bg-purple-600 p-4 rounded-2xl text-white mb-2 shadow-md">
               <GraduationCap size={32} />
             </div>
-            <h2 className="text-2xl font-black text-purple-900 text-center">Beauty English ✨</h2>
-            <p className="text-xs text-purple-600 font-bold bg-purple-50 px-3 py-1 rounded-full mt-1">👑 MÓDULO CON JUEGOS Y VIDEO 👑</p>
+            <h2 className={`text-2xl font-black text-center ${darkMode ? 'text-purple-300' : 'text-purple-900'}`}>Beauty English ✨</h2>
+            <p className="text-xs text-purple-600 font-bold bg-purple-50 px-3 py-1 rounded-full mt-1">👑 REPOTENCIADO CON TAREAS PDF 👑</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Tu Nombre de Usuario</label>
-              <input type="text" placeholder="Ej: jeilyn, daniela, jean, victoria..." value={username} onChange={(e) => setUsername(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-purple-200 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" />
+              <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Tu Nombre de Usuario</label>
+              <input type="text" placeholder="Ej: jeilyn, daniela, jean, victoria..." value={username} onChange={(e) => setUsername(e.target.value)} className={`w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 ${darkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-white border-purple-200'}`} />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Contraseña Secreta</label>
-              <input type="password" placeholder="Ingresa tu clave" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-purple-200 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" />
+              <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Contraseña Secreta</label>
+              <input type="password" placeholder="Ingresa tu clave" value={password} onChange={(e) => setPassword(e.target.value)} className={`w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 ${darkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-white border-purple-200'}`} />
             </div>
             {error && <p className="text-rose-600 text-xs font-bold bg-rose-50 p-2.5 rounded-lg text-center">{error}</p>}
             <button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-black py-3 rounded-xl text-sm shadow-md transition-all">¡Entrar al Salón Mágico! ➡️</button>
@@ -218,24 +260,32 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans flex flex-col">
+    <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'}`}>
+      
       {/* ENCABEZADO SUPERIOR */}
-      <header className="bg-white border-b border-purple-100 sticky top-0 z-40 shadow-sm">
+      <header className={`border-b sticky top-0 z-40 shadow-sm transition-colors ${darkMode ? 'bg-slate-900 border-purple-950' : 'bg-white border-purple-100'}`}>
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="bg-purple-600 p-2 rounded-xl text-white"><GraduationCap size={24} /></div>
             <div>
-              <span className="font-black text-base text-purple-900 block leading-tight">Beauty English</span>
+              <span className={`font-black text-base block leading-tight ${darkMode ? 'text-purple-300' : 'text-purple-900'}`}>Beauty English</span>
               <span className="text-[10px] text-pink-500 font-bold tracking-wide uppercase">¡Diversión Activa! 🎀</span>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
-            <div className="text-right hidden sm:block">
-              <p className="text-xs font-black text-slate-700">{currentUser.name}</p>
-              <p className="text-[9px] text-purple-600 font-bold uppercase">{currentUser.role}</p>
+          <div className="flex items-center space-x-4">
+            {/* INTERRUPTOR SOL / LUNA */}
+            <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-xl transition-all ${darkMode ? 'bg-slate-800 text-amber-400' : 'bg-purple-100 text-purple-950'}`} title="Cambiar Modo de Luz">
+              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+
+            <div className="flex items-center space-x-2">
+              <div className="text-right hidden sm:block">
+                <p className={`text-xs font-black ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>{currentUser.name}</p>
+                <p className="text-[9px] text-purple-500 font-bold uppercase">{currentUser.role}</p>
+              </div>
+              <button onClick={() => setIsLoggedIn(false)} className="text-[10px] font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded-lg">Salir</button>
             </div>
-            <button onClick={() => setIsLoggedIn(false)} className="text-[10px] font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded-lg">Salir</button>
           </div>
         </div>
       </header>
@@ -244,28 +294,28 @@ export default function App() {
       <div className="flex flex-1 flex-col md:flex-row">
         
         {/* 🧭 MENÚ VERTICAL DEL LADO IZQUIERDO */}
-        <aside className="w-full md:w-56 bg-purple-950 text-white p-4 flex flex-col gap-1.5 md:min-h-[calc(100vh-4rem)] md:sticky md:top-16 z-30 shadow-inner">
-          <p className="text-[10px] uppercase font-black text-purple-300 tracking-wider mb-2 px-2 hidden md:block">Navegación Salón</p>
+        <aside className={`w-full md:w-56 p-4 flex flex-col gap-1.5 md:min-h-[calc(100vh-4rem)] md:sticky md:top-16 z-30 shadow-inner ${darkMode ? 'bg-slate-900 text-slate-100' : 'bg-purple-950 text-white'}`}>
+          <p className={`text-[10px] uppercase font-black tracking-wider mb-2 px-2 hidden md:block ${darkMode ? 'text-purple-400' : 'text-purple-300'}`}>Navegación Salón</p>
           
-          <button onClick={() => setActiveTab('dashboard')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'dashboard' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900'}`}>
+          <button onClick={() => setActiveTab('dashboard')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'dashboard' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}>
             <span>🏠</span> Inicio
           </button>
-          <button onClick={() => setActiveTab('syllabus')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'syllabus' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900'}`}>
+          <button onClick={() => setActiveTab('syllabus')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'syllabus' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}>
             <span>📋</span> Syllabus
           </button>
-          <button onClick={() => setActiveTab('unit1')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit1' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900'}`}>
+          <button onClick={() => setActiveTab('unit1')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit1' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}>
             <span>📦</span> Unit 1
           </button>
-          <button onClick={() => setActiveTab('unit2')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit2' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900'}`}>
+          <button onClick={() => setActiveTab('unit2')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit2' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}>
             <span>🛍️</span> Unit 2
           </button>
-          <button onClick={() => setActiveTab('unit3')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit3' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900'}`}>
+          <button onClick={() => setActiveTab('unit3')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit3' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}>
             <span>💬</span> Unit 3
           </button>
-          <button onClick={() => setActiveTab('activities')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'activities' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900'}`}>
-            <span>🎯</span> Tareas
+          <button onClick={() => setActiveTab('activities')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'activities' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}>
+            <span>🎯</span> Mochila de Tareas
           </button>
-          <button onClick={() => setActiveTab('vocabulary')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'vocabulary' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900'}`}>
+          <button onClick={() => setActiveTab('vocabulary')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'vocabulary' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}>
             <span>🔊</span> Vocabulario
           </button>
           
@@ -284,21 +334,21 @@ export default function App() {
             <div className="space-y-6">
               <div className="bg-gradient-to-r from-purple-600 to-pink-500 rounded-3xl p-6 text-white shadow-xl text-center">
                 <h1 className="text-2xl font-black">¡Hola, {currentUser.name}! ✨</h1>
-                <p className="text-purple-100 text-xs mt-1">¡Ahora puedes subir tus videos practicando inglés y jugar en la nueva pestaña!</p>
+                <p className="text-purple-100 text-xs mt-1">¡Ahora puedes cambiar el color del salón con el sol y la luna arriba, y subir tus PDFs de tareas!</p>
               </div>
 
               {/* RECUADRO MÁGICO PARA SUBIR UN VIDEO */}
-              <div className="bg-white border-2 border-purple-200 rounded-3xl p-6 shadow-sm text-center space-y-4">
+              <div className={`border-2 rounded-3xl p-6 shadow-sm text-center space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
                 <div className="flex flex-col items-center justify-center">
                   <Video className="text-pink-500 mb-2 animate-pulse" size={32} />
-                  <h3 className="text-sm font-black text-purple-950">📺 El Televisor de Práctica</h3>
-                  <p className="text-xs text-slate-500 max-w-xs mx-auto mt-0.5">¡Sube un video tuyo hablando inglés para verlo aquí en el salón!</p>
+                  <h3 className={`text-sm font-black ${darkMode ? 'text-purple-300' : 'text-purple-950'}`}>📺 El Televisor de Práctica</h3>
+                  <p className="text-xs text-slate-400 max-w-xs mx-auto mt-0.5">¡Sube un video tuyo hablando inglés para verlo aquí en el salón!</p>
                 </div>
 
                 {!videoUrl ? (
-                  <label className="mx-auto max-w-xs flex flex-col items-center justify-center border-2 border-dashed border-purple-300 hover:border-purple-500 bg-purple-50/50 p-4 rounded-xl cursor-pointer transition-all group">
-                    <Upload size={24} className="text-purple-600 group-hover:scale-110 transition-transform mb-1" />
-                    <span className="text-xs font-black text-purple-900">Seleccionar mi video</span>
+                  <label className={`mx-auto max-w-xs flex flex-col items-center justify-center border-2 border-dashed p-4 rounded-xl cursor-pointer transition-all group ${darkMode ? 'border-purple-800 bg-slate-800/50 hover:border-purple-600' : 'border-purple-300 bg-purple-50/50 hover:border-purple-500'}`}>
+                    <Upload size={24} className="text-purple-500 group-hover:scale-110 transition-transform mb-1" />
+                    <span className={`text-xs font-black ${darkMode ? 'text-purple-200' : 'text-purple-900'}`}>Seleccionar mi video</span>
                     <input type="file" accept="video/*" onChange={handleVideoUpload} className="hidden" />
                   </label>
                 ) : (
@@ -315,26 +365,26 @@ export default function App() {
 
           {/* PESTAÑA: SYLLABUS */}
           {activeTab === 'syllabus' && (
-            <div className="bg-white border-2 border-purple-200 rounded-3xl p-6 shadow-sm space-y-4">
+            <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
               <div className="flex items-center space-x-2 border-b-2 border-purple-100 pb-3">
                 <FileText className="text-purple-600" size={24} />
-                <h2 className="text-xl font-black text-purple-950">SYLLABUS OFICIAL DEL CURSO 📋</h2>
+                <h2 className={`text-xl font-black ${darkMode ? 'text-purple-300' : 'text-purple-950'}`}>SYLLABUS OFICIAL DEL CURSO 📋</h2>
               </div>
               <div className="space-y-3 pt-2">
-                <div className="p-3 bg-purple-50 rounded-xl border border-purple-100">
-                  <h3 className="text-xs font-black text-purple-900">📦 UNIDAD 1: Welcome to the Client</h3>
-                  <p className="text-[11px] text-slate-600 font-semibold mt-0.5">• Clase 1: Saludos para recibir al cliente 👋</p>
-                  <p className="text-[11px] text-slate-600 font-semibold">• Clase 2: Explicar el proceso de la Keratina con conectores 🧪</p>
+                <div className={`p-3 rounded-xl border ${darkMode ? 'bg-slate-800 border-purple-950' : 'bg-purple-50 border-purple-100'}`}>
+                  <h3 className="text-xs font-black text-purple-400">📦 UNIDAD 1: Welcome to the Client</h3>
+                  <p className="text-[11px] font-semibold mt-0.5">• Clase 1: Saludos para recibir al cliente 👋</p>
+                  <p className="text-[11px] font-semibold">• Clase 2: Explicar el proceso de la Keratina con conectores 🧪 📝 (Lleva Tarea)</p>
                 </div>
-                <div className="p-3 bg-pink-50 rounded-xl border border-pink-100">
-                  <h3 className="text-xs font-black text-pink-900">🛍️ UNIDAD 2: Giving Information</h3>
-                  <p className="text-[11px] text-slate-600 font-semibold mt-0.5">• Clase 3: Instrucciones de cuidado posterior (Shampoo, no mojar) 🧴</p>
-                  <p className="text-[11px] text-slate-600 font-semibold">• Clase 4: Hablar sobre precio ($40) y cuánto tiempo toma 💰</p>
+                <div className={`p-3 rounded-xl border ${darkMode ? 'bg-slate-800 border-pink-950' : 'bg-pink-50 border-pink-100'}`}>
+                  <h3 className="text-xs font-black text-pink-400">🛍️ UNIDAD 2: Giving Information</h3>
+                  <p className="text-[11px] font-semibold mt-0.5">• Clase 3: Instrucciones de cuidado posterior 🧴 📝 (Lleva Tarea)</p>
+                  <p className="text-[11px] font-semibold">• Clase 4: Hablar sobre precio ($40) y cuánto tiempo toma 💰</p>
                 </div>
-                <div className="p-3 bg-amber-50 rounded-xl border border-amber-100">
-                  <h3 className="text-xs font-black text-amber-900">💬 UNIDAD 3: Customer Interaction</h3>
-                  <p className="text-[11px] text-slate-600 font-semibold mt-0.5">• Clase 5: Preguntar por alergias y si el cabello está teñido 💇‍♂️</p>
-                  <p className="text-[11px] text-slate-600 font-semibold">• Clase 6: Despedida amable y Evaluación con Rúbrica Final 🏆</p>
+                <div className={`p-3 rounded-xl border ${darkMode ? 'bg-slate-800 border-amber-950' : 'bg-amber-50 border-amber-100'}`}>
+                  <h3 className="text-xs font-black text-amber-400">💬 UNIDAD 3: Customer Interaction</h3>
+                  <p className="text-[11px] font-semibold mt-0.5">• Clase 5: Preguntar por alergias y si el cabello está teñido 💇‍♂️ 📝 (Lleva Tarea)</p>
+                  <p className="text-[11px] font-semibold">• Clase 6: Despedida amable y Evaluación Final 🏆 📝 (Lleva Tarea)</p>
                 </div>
               </div>
             </div>
@@ -351,52 +401,69 @@ export default function App() {
                   </div>
 
                   {mod.lessons.map((les, index) => (
-                    <div key={index} className="bg-white border-2 border-purple-100 rounded-2xl p-5 shadow-sm space-y-4">
+                    <div key={index} className={`border-2 rounded-2xl p-5 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-100'}`}>
                       <div>
-                        <h3 className="text-base font-black text-slate-800">{les.title}</h3>
-                        <p className="text-xs text-purple-700 font-bold bg-purple-50 p-2 rounded-lg mt-2 italic">{les.objective}</p>
+                        <h3 className={`text-base font-black ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>{les.title}</h3>
+                        <p className={`text-xs font-bold p-2 rounded-lg mt-2 italic ${darkMode ? 'bg-slate-800 text-purple-300' : 'bg-purple-50 text-purple-700'}`}>{les.objective}</p>
                       </div>
 
                       <div className="space-y-2">
                         <div className="grid grid-cols-1 gap-1.5">
                           {les.content.map((item, i) => (
-                            <div key={i} className="bg-slate-50 p-2.5 rounded-xl flex justify-between items-center border border-slate-100">
+                            <div key={i} className={`p-2.5 rounded-xl flex justify-between items-center border ${darkMode ? 'bg-slate-800/40 border-slate-700' : 'bg-slate-50 border-slate-100'}`}>
                               <div className="flex items-center space-x-2">
                                 <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-purple-600 text-white rounded-lg shadow-sm"><Volume2 size={14} /></button>
-                                <span className="text-xs font-black text-purple-950">{item.en}</span>
+                                <span className={`text-xs font-black ${darkMode ? 'text-purple-300' : 'text-purple-950'}`}>{item.en}</span>
                               </div>
-                              <span className="text-[11px] font-bold text-slate-500">🗣️ {item.es}</span>
+                              <span className="text-[11px] font-bold text-slate-400">🗣️ {item.es}</span>
                             </div>
                           ))}
                         </div>
                       </div>
 
-                      <div className="bg-amber-50 p-3 rounded-xl border border-amber-100 text-xs font-bold text-amber-950">
-                        <p className="font-black text-amber-800 uppercase tracking-wider mb-1">🎯 Actividad:</p>
+                      <div className={`p-3 rounded-xl border text-xs font-bold ${darkMode ? 'bg-slate-800/80 border-amber-900 text-amber-200' : 'bg-amber-50 border-amber-100 text-amber-950'}`}>
+                        <p className="font-black text-amber-600 uppercase tracking-wider mb-1">🎯 Actividad Obligatoria:</p>
                         {les.task}
+                        
+                        {/* BOTÓN DE ENLACE DE JUEGO SI EXISTE */}
                         {les.gameUrl && les.gameUrl.startsWith("http") && (
-                          <div className="mt-2"><a href={les.gameUrl} target="_blank" rel="noreferrer" className="inline-block text-[10px] font-black bg-purple-600 text-white px-2 py-1 rounded shadow">🕹️ Abrir Juego Interacty / Wordwall</a></div>
+                          <div className="mt-2"><a href={les.gameUrl} target="_blank" rel="noreferrer" className="inline-block text-[10px] font-black bg-purple-600 text-white px-2 py-1 rounded shadow">🕹️ Abrir Juego en Nueva Ventana</a></div>
+                        )}
+
+                        {/* 🌟 APARTADO RÁPIDO PARA SUBIR TAREA DESDE LA PROPIA CLASE 🌟 */}
+                        {les.taskKey && (
+                          <div className="mt-3 pt-3 border-t border-amber-200/40">
+                            <p className="text-[10px] font-black uppercase text-purple-400 mb-1">📥 Entregar archivo PDF:</p>
+                            <label className="inline-flex items-center gap-1.5 bg-purple-600 hover:bg-purple-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg cursor-pointer transition-all">
+                              <Upload size={12} />
+                              {uploadedTasks[les.taskKey] ? "¡Cambiar PDF cambiado!" : "Subir Tarea PDF"}
+                              <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, les.taskKey)} className="hidden" />
+                            </label>
+                            {uploadedTasks[les.taskKey] && (
+                              <p className="text-[10px] text-emerald-500 font-bold mt-1 flex items-center gap-1">✅ Listo: {uploadedTasks[les.taskKey]}</p>
+                            )}
+                          </div>
                         )}
                       </div>
 
                       {les.title.includes("CLASE 6") && (
-                        <div className="mt-4 border-t border-purple-100 pt-4">
-                          <h4 className="text-xs font-black text-pink-600 mb-2 flex items-center gap-1"><Heart size={12} /> TABLA DE CALIFICACIÓN (MAX 10 PTS)</h4>
-                          <div className="overflow-x-auto text-[10px] font-bold text-slate-600">
+                        <div className="mt-4 border-t border-purple-900/20 pt-4">
+                          <h4 className="text-xs font-black text-pink-500 mb-2 flex items-center gap-1"><Heart size={12} /> TABLA DE CALIFICACIÓN (MAX 10 PTS)</h4>
+                          <div className="overflow-x-auto text-[10px] font-bold">
                             <table className="w-full text-left border-collapse">
                               <thead>
-                                <tr className="bg-purple-50 text-purple-900 font-black">
-                                  <th className="p-1.5 border border-purple-100">Criterio</th>
-                                  <th className="p-1.5 border border-purple-100 text-emerald-700">Excelente (2 pts)</th>
-                                  <th className="p-1.5 border border-purple-100 text-rose-700">Mejorar (0 pts)</th>
+                                <tr className={`font-black ${darkMode ? 'bg-slate-800 text-purple-300' : 'bg-purple-50 text-purple-900'}`}>
+                                  <th className="p-1.5 border border-purple-900/20">Criterio</th>
+                                  <th className="p-1.5 border border-purple-900/20 text-emerald-500">Excelente (2 pts)</th>
+                                  <th className="p-1.5 border border-purple-900/20 text-rose-500">Mejorar (0 pts)</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr><td className="p-1.5 border border-purple-100 bg-slate-50">1. Saludo</td><td className="p-1.5 border border-purple-100">Completo y adecuado</td><td className="p-1.5 border border-purple-100">Incompleto</td></tr>
-                                <tr><td className="p-1.5 border border-purple-100 bg-slate-50">2. Proceso</td><td className="p-1.5 border border-purple-100">Todos los pasos ordenados</td><td className="p-1.5 border border-purple-100">Pocos pasos o errores</td></tr>
-                                <tr><td className="p-1.5 border border-purple-100 bg-slate-50">3. Cuidados</td><td className="p-1.5 border border-purple-100">Instrucciones claras</td><td className="p-1.5 border border-purple-100">Pocas o errores</td></tr>
-                                <tr><td className="p-1.5 border border-purple-100 bg-slate-50">4. Precio / Tiempo</td><td className="p-1.5 border border-purple-100">Informa claro y correcto</td><td className="p-1.5 border border-purple-100">No informa bien</td></tr>
-                                <tr><td className="p-1.5 border border-purple-100 bg-slate-50">5. Despedida</td><td className="p-1.5 border border-purple-100">Completa y muy cortés</td><td className="p-1.5 border border-purple-100">Inadecuada</td></tr>
+                                <tr><td className="p-1.5 border border-purple-900/20">1. Saludo</td><td className="p-1.5 border border-purple-900/20">Completo y adecuado</td><td className="p-1.5 border border-purple-900/20">Incompleto</td></tr>
+                                <tr><td className="p-1.5 border border-purple-900/20">2. Proceso</td><td className="p-1.5 border border-purple-900/20">Todos los pasos ordenados</td><td className="p-1.5 border border-purple-900/20">Pocos pasos</td></tr>
+                                <tr><td className="p-1.5 border border-purple-900/20">3. Cuidados</td><td className="p-1.5 border border-purple-900/20">Instrucciones claras</td><td className="p-1.5 border border-purple-900/20">Pocas o errores</td></tr>
+                                <tr><td className="p-1.5 border border-purple-900/20">4. Precio / Tiempo</td><td className="p-1.5 border border-purple-900/20">Informa claro y correcto</td><td className="p-1.5 border border-purple-900/20">No informa bien</td></tr>
+                                <tr><td className="p-1.5 border border-purple-900/20">5. Despedida</td><td className="p-1.5 border border-purple-900/20">Completa y muy cortés</td><td className="p-1.5 border border-purple-900/20">Inadecuada</td></tr>
                               </tbody>
                             </table>
                           </div>
@@ -409,43 +476,101 @@ export default function App() {
             </div>
           )}
 
-          {/* PESTAÑA: TAREAS */}
+          {/* 🌟 📥 PESTAÑA MEJORADA: LA MOCHILA DE TAREAS CENTRALIZADA 🌟 */}
           {activeTab === 'activities' && (
-            <div className="bg-white border-2 border-purple-200 rounded-3xl p-6 shadow-sm space-y-4">
+            <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
               <div className="flex items-center space-x-2 border-b-2 border-purple-100 pb-3">
                 <Activity className="text-purple-600" size={24} />
-                <h2 className="text-xl font-black text-purple-950">TODAS LAS TAREAS DEL CURSO 🎯</h2>
+                <h2 className={`text-xl font-black ${darkMode ? 'text-purple-300' : 'text-purple-950'}`}>CENTRO DE RECOLECCIÓN DE TAREAS (PDF) 🎒</h2>
               </div>
-              <div className="space-y-3">
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"><span className="font-black text-purple-900 block">🔹 Clase 1</span>Role-Play en Parejas: Saludos amables.</div>
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"><span className="font-black text-purple-900 block">🔹 Clase 2</span>Grabar un audio explicando el proceso completo (First, Then...).</div>
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"><span className="font-black text-purple-900 block">🔹 Clase 3</span>Grabar un audio dando instrucciones de cuidado (Sulfate-free).</div>
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"><span className="font-black text-purple-900 block">🔹 Clase 4</span>Preguntar precios, tiempos y formas de pago.</div>
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"><span className="font-black text-purple-900 block">🔹 Clase 5</span>Grabar un audio con preguntas de alergias y cabello teñido.</div>
-                <div className="p-3 bg-purple-100 rounded-xl border border-purple-200 text-xs"><span className="font-black text-purple-950 block">🏆 Clase 6: EVALUACIÓN FINAL DE JUEGO DE ROLES</span>Juego de roles completo desde que el cliente entra hasta que se va.</div>
+              
+              <p className="text-xs text-slate-400 font-bold">Aquí puedes subir los archivos de las tareas que te pide el Syllabus de manera organizada:</p>
+
+              <div className="space-y-4 pt-2">
+                
+                {/* CONTROL DE CLASE 2 */}
+                <div className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${darkMode ? 'bg-slate-800/40 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+                  <div className="text-xs">
+                    <span className="font-black text-purple-500 block">🔹 Clase 2: Explicación del Proceso</span>
+                    <span className="text-slate-400">Formato requerido: Documento de texto o guión en PDF.</span>
+                  </div>
+                  <div className="flex flex-col items-start sm:items-end gap-1">
+                    <label className="bg-purple-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl cursor-pointer hover:bg-purple-700">
+                      📄 {uploadedTasks.clase2 ? "Cambiar archivo" : "Elegir PDF"}
+                      <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, 'clase2')} className="hidden" />
+                    </label>
+                    {uploadedTasks.clase2 && <span className="text-[10px] text-emerald-500 font-bold">✅ Recibido: {uploadedTasks.clase2}</span>}
+                  </div>
+                </div>
+
+                {/* CONTROL DE CLASE 3 */}
+                <div className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${darkMode ? 'bg-slate-800/40 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+                  <div className="text-xs">
+                    <span className="font-black text-purple-500 block">🔹 Clase 3: Instrucciones de Cuidado Posterior</span>
+                    <span className="text-slate-400">Formato requerido: Ficha técnica o lista en PDF.</span>
+                  </div>
+                  <div className="flex flex-col items-start sm:items-end gap-1">
+                    <label className="bg-purple-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl cursor-pointer hover:bg-purple-700">
+                      📄 {uploadedTasks.clase3 ? "Cambiar archivo" : "Elegir PDF"}
+                      <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, 'clase3')} className="hidden" />
+                    </label>
+                    {uploadedTasks.clase3 && <span className="text-[10px] text-emerald-500 font-bold">✅ Recibido: {uploadedTasks.clase3}</span>}
+                  </div>
+                </div>
+
+                {/* CONTROL DE CLASE 5 */}
+                <div className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${darkMode ? 'bg-slate-800/40 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+                  <div className="text-xs">
+                    <span className="font-black text-purple-500 block">🔹 Clase 5: Cuestionario de Alergias</span>
+                    <span className="text-slate-400">Formato requerido: Preguntas del cliente en PDF.</span>
+                  </div>
+                  <div className="flex flex-col items-start sm:items-end gap-1">
+                    <label className="bg-purple-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl cursor-pointer hover:bg-purple-700">
+                      📄 {uploadedTasks.clase5 ? "Cambiar archivo" : "Elegir PDF"}
+                      <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, 'clase5')} className="hidden" />
+                    </label>
+                    {uploadedTasks.clase5 && <span className="text-[10px] text-emerald-500 font-bold">✅ Recibido: {uploadedTasks.clase5}</span>}
+                  </div>
+                </div>
+
+                {/* CONTROL DE CLASE 6 */}
+                <div className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${darkMode ? 'bg-slate-800/40 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+                  <div className="text-xs">
+                    <span className="font-black text-pink-500 block">🏆 Clase 6: Rúbrica y Autoevaluación Final</span>
+                    <span className="text-slate-400">Formato requerido: Reporte completo final en PDF.</span>
+                  </div>
+                  <div className="flex flex-col items-start sm:items-end gap-1">
+                    <label className="bg-pink-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl cursor-pointer hover:bg-pink-700">
+                      📄 {uploadedTasks.clase6 ? "Cambiar archivo" : "Elegir PDF"}
+                      <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, 'clase6')} className="hidden" />
+                    </label>
+                    {uploadedTasks.clase6 && <span className="text-[10px] text-emerald-500 font-bold">✅ Recibido: {uploadedTasks.clase6}</span>}
+                  </div>
+                </div>
+
               </div>
             </div>
           )}
 
           {/* PESTAÑA: VOCABULARIO INTERACTIVO COMPLETO */}
           {activeTab === 'vocabulary' && (
-            <div className="bg-white border-2 border-purple-200 rounded-3xl p-6 shadow-sm space-y-4">
+            <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
               <div className="flex items-center space-x-2 border-b-2 border-purple-100 pb-3">
                 <Volume2 className="text-purple-600" size={24} />
-                <h2 className="text-xl font-black text-purple-950">DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
+                <h2 className={`text-xl font-black ${darkMode ? 'text-purple-300' : 'text-purple-950'}`}>DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
               </div>
               <div className="space-y-4 pt-2">
                 {modules.map(mod => (
                   <div key={mod.id} className="border-l-4 border-pink-400 pl-3 py-1">
-                    <h3 className="text-xs font-black text-purple-900 uppercase mb-2">{mod.title.split(":")[0]}</h3>
+                    <h3 className="text-xs font-black text-purple-400 uppercase mb-2">{mod.title.split(":")[0]}</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {mod.lessons.flatMap(l => l.content).map((item, idx) => (
-                        <div key={idx} className="bg-slate-50 p-2 rounded-xl flex justify-between items-center border border-slate-100">
+                        <div key={idx} className={`p-2 rounded-xl flex justify-between items-center border ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-100'}`}>
                           <div className="flex items-center space-x-2">
                             <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-purple-600 text-white rounded-lg"><Volume2 size={12} /></button>
-                            <span className="text-[12px] font-black text-purple-950">{item.en}</span>
+                            <span className="text-[12px] font-black">{item.en}</span>
                           </div>
-                          <span className="text-[11px] font-bold text-slate-500">🗣️ {item.es}</span>
+                          <span className="text-[11px] font-bold text-slate-400">🗣️ {item.es}</span>
                         </div>
                       ))}
                     </div>
@@ -455,47 +580,43 @@ export default function App() {
             </div>
           )}
 
-          {/* 🕹️ PESTAÑA: JUEGOS INTERACTIVOS DEL VOCABULARIO */}
+          {/* 🕹️ PESTAÑA: JUEGOS INTERACTIVOS */}
           {activeTab === 'games' && (
-            <div className="bg-white border-2 border-amber-300 rounded-3xl p-6 shadow-md space-y-6">
+            <div className={`border-2 rounded-3xl p-6 shadow-md space-y-6 ${darkMode ? 'bg-slate-900 border-amber-500/30' : 'bg-white border-amber-300'}`}>
               <div className="flex items-center space-x-2 border-b-2 border-amber-100 pb-3 text-center justify-center">
                 <Gamepad2 className="text-amber-500 animate-bounce" size={28} />
-                <h2 className="text-xl font-black text-amber-950">¡LA FERIA DE JUEGOS DE VOCABULARIO! 🎡🕹️</h2>
+                <h2 className={`text-xl font-black ${darkMode ? 'text-amber-300' : 'text-amber-950'}`}>¡LA FERIA DE JUEGOS DE VOCABULARIO! 🎡🕹️</h2>
               </div>
               
-              <p className="text-xs font-bold text-slate-600 text-center">¡Haz clic en cualquiera de estas atracciones del salón para jugar y aprender!</p>
+              <p className="text-xs font-bold text-slate-400 text-center">¡Haz clic en cualquiera de estas atracciones del salón para jugar y aprender!</p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* JUEGO 1: WORDWALL DIRECTO */}
-                <div className="bg-purple-50 border-2 border-purple-200 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2">
+                <div className={`border-2 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2 ${darkMode ? 'bg-slate-800 border-purple-900' : 'bg-purple-50 border-purple-200'}`}>
                   <span className="text-3xl">🎯</span>
-                  <h3 className="text-xs font-black text-purple-950">El Gran Laberinto de Saludos (Clase 1)</h3>
-                  <p className="text-[11px] text-slate-500">Encuentra las palabras correctas para decir "¡Bienvenido!" en inglés.</p>
-                  <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noreferrer" className="w-full text-center text-xs font-black bg-purple-600 text-white py-2 rounded-xl shadow-sm hover:bg-purple-700 transition-transform active:scale-95">🕹️ ¡Jugar en Wordwall!</a>
+                  <h3 className="text-xs font-black">El Gran Laberinto de Saludos (Clase 1)</h3>
+                  <p className="text-[11px] text-slate-400">Encuentra las palabras correctas para decir "¡Bienvenido!" en inglés.</p>
+                  <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noreferrer" className="w-full text-center text-xs font-black bg-purple-600 text-white py-2 rounded-xl shadow-sm hover:bg-purple-700">🕹️ ¡Jugar en Wordwall!</a>
                 </div>
 
-                {/* JUEGO 2: INTERACTY CLASE 2 */}
-                <div className="bg-pink-50 border-2 border-pink-200 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2">
+                <div className={`border-2 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2 ${darkMode ? 'bg-slate-800 border-pink-900' : 'bg-pink-50 border-pink-200'}`}>
                   <span className="text-3xl">🧪</span>
-                  <h3 className="text-xs font-black text-pink-950">El Proceso de la Keratina (Clase 2)</h3>
-                  <p className="text-[11px] text-slate-500">Une las piezas correctas y domina la explicación de los pasos de la keratina.</p>
-                  <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noreferrer" className="w-full text-center text-xs font-black bg-pink-500 text-white py-2 rounded-xl shadow-sm hover:bg-pink-600 transition-transform active:scale-95">🕹️ ¡Jugar en Interacty!</a>
+                  <h3 className="text-xs font-black">El Proceso de la Keratina (Clase 2)</h3>
+                  <p className="text-[11px] text-slate-400">Une las piezas correctas y domina la explicación de los pasos de la keratina.</p>
+                  <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noreferrer" className="w-full text-center text-xs font-black bg-pink-500 text-white py-2 rounded-xl shadow-sm hover:bg-pink-600">🕹️ ¡Jugar en Interacty!</a>
                 </div>
 
-                {/* JUEGO 3: MEMORIA DE TARJETAS */}
-                <div className="bg-amber-50 border-2 border-amber-200 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2">
+                <div className={`border-2 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2 ${darkMode ? 'bg-slate-800 border-amber-900' : 'bg-amber-50 border-amber-200'}`}>
                   <span className="text-3xl">🃏</span>
-                  <h3 className="text-xs font-black text-amber-950">Adivina las Instrucciones</h3>
-                  <p className="text-[11px] text-slate-500">Pon a prueba tu mente recordando qué significa "Don't tie your hair".</p>
-                  <button onClick={() => alert("🃏 ¡Cartas volteadas! Recuerda: 'Don't wash your hair for 3 days' significa 'No lavar por 3 días'. ¡Tú puedes ganarle al juego!")} className="w-full text-center text-xs font-black bg-amber-500 text-purple-950 py-2 rounded-xl shadow-sm hover:bg-amber-600 transition-transform active:scale-95">🃏 Voltear Cartas</button>
+                  <h3 className="text-xs font-black">Adivina las Instrucciones</h3>
+                  <p className="text-[11px] text-slate-400">Pon a prueba tu mente recordando qué significa "Don't tie your hair".</p>
+                  <button onClick={() => alert("🃏 ¡Cartas volteadas! Recuerda: 'Don't wash your hair for 3 days' significa 'No lavar por 3 días'.")} className="w-full text-center text-xs font-black bg-amber-500 text-purple-950 py-2 rounded-xl shadow-sm hover:bg-amber-600">🃏 Voltear Cartas</button>
                 </div>
 
-                {/* JUEGO 4: RETO RELÁMPAGO */}
-                <div className="bg-emerald-50 border-2 border-emerald-200 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2">
+                <div className={`border-2 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2 ${darkMode ? 'bg-slate-800 border-emerald-900' : 'bg-emerald-50 border-emerald-200'}`}>
                   <span className="text-3xl">⚡</span>
-                  <h3 className="text-xs font-black text-emerald-950">Desafío Final: Alergias</h3>
-                  <p className="text-[11px] text-slate-500">¿Cómo le preguntas a un cliente si tiene alguna alergia antes de empezar?</p>
-                  <button onClick={() => { escucharPalabra("Do you have any allergies?"); alert("⚡ ¡Correcto! Se dice: 'Do you have any allergies?' ¡Punto para ti!"); }} className="w-full text-center text-xs font-black bg-emerald-600 text-white py-2 rounded-xl shadow-sm hover:bg-emerald-700 transition-transform active:scale-95">⚡ Lanzar Desafío</button>
+                  <h3 className="text-xs font-black">Desafío Final: Alergias</h3>
+                  <p className="text-[11px] text-slate-400">¿Cómo le preguntas a un cliente si tiene alguna alergia antes de empezar?</p>
+                  <button onClick={() => { escucharPalabra("Do you have any allergies?"); alert("⚡ ¡Correcto! Se dice: 'Do you have any allergies?'"); }} className="w-full text-center text-xs font-black bg-emerald-600 text-white py-2 rounded-xl shadow-sm hover:bg-emerald-700">⚡ Lanzar Desafío</button>
                 </div>
               </div>
             </div>
