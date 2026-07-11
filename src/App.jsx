@@ -97,7 +97,7 @@ export default function App() {
             { en: "Finally, we use the flat iron.", es: "Finalmente, usamos la plancha." },
             { en: "The treatment takes about two hours.", es: "El tratamiento toma aproximadamente dos horas." }
           ],
-          gameUrl: "Ruleta de Palabras en Clase",
+          gameUrl: "https://interacty.me/projects/e502cc8626a13026",
           task: "Grabar un audio explicando el proceso completo usando First, Then, Next y Finally."
         }
       ]
@@ -127,7 +127,7 @@ export default function App() {
           content: [
             { en: "The price is $40.", es: "El precio es $40." },
             { en: "The treatment takes around two hours.", es: "El tratamiento dura aproximadamente dos horas." },
-            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutos." },
+            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutes." },
             { en: "You can pay by cash.", es: "Puede pagar en efectivo." },
             { en: "You can pay by card.", es: "Puede pagar con tarjeta." }
           ],
@@ -152,7 +152,7 @@ export default function App() {
             { en: "Of course.", es: "Por supuesto." }
           ],
           gameUrl: "Dinámica de preguntas rápidas en el salón",
-          task: "Grabar un audio practicando las expresiones y preguntas que aprendieron en esta clase[cite: 6]."
+          task: "Grabar un audio practicando las expresiones y preguntas que aprendieron en esta clase."
         },
         {
           title: "CLASE 6: Despedir al Cliente de manera amable 👋💖",
@@ -167,7 +167,7 @@ export default function App() {
             { en: "We hope to see you again.", es: "Esperamos verla nuevamente." }
           ],
           gameUrl: "Evaluación del Gran Salón de Belleza",
-          task: "EVALUACIÓN FINAL (ROLE-PLAY): Hacer un juego completo con un compañero que incluya: Saludo, Explicación, Instrucciones, Precio/Duración y Despedida. ¡Se calificará sobre 10 puntos con la rúbrica oficial![cite: 7]"
+          task: "EVALUACIÓN FINAL (ROLE-PLAY): Hacer un juego completo con un compañero que incluya: Saludo, Explicación, Instrucciones, Precio/Duración y Despedida. ¡Se calificará sobre 10 puntos con la rúbrica oficial!"
         }
       ]
     }
@@ -311,8 +311,8 @@ export default function App() {
               </div>
               <div className="p-3 bg-amber-50 rounded-xl border border-amber-100">
                 <h3 className="text-xs font-black text-amber-900">💬 UNIDAD 3: Customer Interaction</h3>
-                <p className="text-[11px] text-slate-600 font-semibold mt-0.5">• Clase 5: Preguntar por alergias y si el cabello está teñido 💇‍♂️[cite: 6]</p>
-                <p className="text-[11px] text-slate-600 font-semibold">• Clase 6: Despedida amable y Evaluación con Rúbrica Final 🏆[cite: 7]</p>
+                <p className="text-[11px] text-slate-600 font-semibold mt-0.5">• Clase 5: Preguntar por alergias y si el cabello está teñido 💇‍♂️</p>
+                <p className="text-[11px] text-slate-600 font-semibold">• Clase 6: Despedida amable y Evaluación con Rúbrica Final 🏆</p>
               </div>
             </div>
           </div>
@@ -353,7 +353,7 @@ export default function App() {
                       <p className="font-black text-amber-800 uppercase tracking-wider mb-1">🎯 Actividad:</p>
                       {les.task}
                       {les.gameUrl && les.gameUrl.startsWith("http") && (
-                        <div className="mt-2"><a href={les.gameUrl} target="_blank" rel="noreferrer" className="inline-block text-[10px] font-black bg-purple-600 text-white px-2 py-1 rounded shadow">🕹️ Abrir Wordwall</a></div>
+                        <div className="mt-2"><a href={les.gameUrl} target="_blank" rel="noreferrer" className="inline-block text-[10px] font-black bg-purple-600 text-white px-2 py-1 rounded shadow">🕹️ Abrir Juego Interacty / Wordwall</a></div>
                       )}
                     </div>
 
@@ -370,11 +370,11 @@ export default function App() {
                               </tr>
                             </thead>
                             <tbody>
-                              <tr><td className="p-1.5 border border-purple-100 bg-slate-50">1. Saludo[cite: 7]</td><td className="p-1.5 border border-purple-100">Completo y adecuado[cite: 7]</td><td className="p-1.5 border border-purple-100">Incompleto[cite: 7]</td></tr>
-                              <tr><td className="p-1.5 border border-purple-100 bg-slate-50">2. Proceso[cite: 7]</td><td className="p-1.5 border border-purple-100">Todos los pasos ordenados[cite: 7]</td><td className="p-1.5 border border-purple-100">Pocos pasos o errores[cite: 7]</td></tr>
-                              <tr><td className="p-1.5 border border-purple-100 bg-slate-50">3. Cuidados[cite: 7]</td><td className="p-1.5 border border-purple-100">Instrucciones claras[cite: 7]</td><td className="p-1.5 border border-purple-100">Pocas o errores[cite: 7]</td></tr>
-                              <tr><td className="p-1.5 border border-purple-100 bg-slate-50">4. Precio / Tiempo[cite: 7]</td><td className="p-1.5 border border-purple-100">Informa claro y correcto[cite: 7]</td><td className="p-1.5 border border-purple-100">No informa bien[cite: 7]</td></tr>
-                              <tr><td className="p-1.5 border border-purple-100 bg-slate-50">5. Despedida[cite: 7]</td><td className="p-1.5 border border-purple-100">Completa y muy cortés[cite: 7]</td><td className="p-1.5 border border-purple-100">Inadecuada[cite: 7]</td></tr>
+                              <tr><td className="p-1.5 border border-purple-100 bg-slate-50">1. Saludo</td><td className="p-1.5 border border-purple-100">Completo y adecuado</td><td className="p-1.5 border border-purple-100">Incompleto</td></tr>
+                              <tr><td className="p-1.5 border border-purple-100 bg-slate-50">2. Proceso</td><td className="p-1.5 border border-purple-100">Todos los pasos ordenados</td><td className="p-1.5 border border-purple-100">Pocos pasos o errores</td></tr>
+                              <tr><td className="p-1.5 border border-purple-100 bg-slate-50">3. Cuidados</td><td className="p-1.5 border border-purple-100">Instrucciones claras</td><td className="p-1.5 border border-purple-100">Pocas o errores</td></tr>
+                              <tr><td className="p-1.5 border border-purple-100 bg-slate-50">4. Precio / Tiempo</td><td className="p-1.5 border border-purple-100">Informa claro y correcto</td><td className="p-1.5 border border-purple-100">No informa bien</td></tr>
+                              <tr><td className="p-1.5 border border-purple-100 bg-slate-50">5. Despedida</td><td className="p-1.5 border border-purple-100">Completa y muy cortés</td><td className="p-1.5 border border-purple-100">Inadecuada</td></tr>
                             </tbody>
                           </table>
                         </div>
@@ -399,8 +399,8 @@ export default function App() {
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"><span className="font-black text-purple-900 block">🔹 Clase 2</span>Grabar un audio explicando el proceso completo (First, Then...).</div>
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"><span className="font-black text-purple-900 block">🔹 Clase 3</span>Grabar un audio dando instrucciones de cuidado (Sulfate-free).</div>
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"><span className="font-black text-purple-900 block">🔹 Clase 4</span>Preguntar precios, tiempos y formas de pago.</div>
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"><span className="font-black text-purple-900 block">🔹 Clase 5</span>Grabar un audio con preguntas de alergias y cabello teñido[cite: 6].</div>
-              <div className="p-3 bg-purple-100 rounded-xl border border-purple-200 text-xs"><span className="font-black text-purple-950 block">🏆 Clase 6: EVALUACIÓN FINAL DE JUEGO DE ROLES[cite: 7]</span>Juego de roles completo desde que el cliente entra hasta que se va[cite: 7].</div>
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"><span className="font-black text-purple-900 block">🔹 Clase 5</span>Grabar un audio con preguntas de alergias y cabello teñido.</div>
+              <div className="p-3 bg-purple-100 rounded-xl border border-purple-200 text-xs"><span className="font-black text-purple-950 block">🏆 Clase 6: EVALUACIÓN FINAL DE JUEGO DE ROLES</span>Juego de roles completo desde que el cliente entra hasta que se va.</div>
             </div>
           </div>
         )}
@@ -433,7 +433,7 @@ export default function App() {
           </div>
         )}
 
-        {/* 🕹️ NUEVA PESTAÑA: JUEGOS INTERACTIVOS DEL VOCABULARIO */}
+        {/* 🕹️ PESTAÑA: JUEGOS INTERACTIVOS DEL VOCABULARIO */}
         {activeTab === 'games' && (
           <div className="bg-white border-2 border-amber-300 rounded-3xl p-6 shadow-md space-y-6">
             <div className="flex items-center space-x-2 border-b-2 border-amber-100 pb-3 text-center justify-center">
@@ -447,17 +447,17 @@ export default function App() {
               {/* JUEGO 1: WORDWALL DIRECTO */}
               <div className="bg-purple-50 border-2 border-purple-200 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2">
                 <span className="text-3xl">🎯</span>
-                <h3 className="text-xs font-black text-purple-950">El Gran Laberinto de Saludos</h3>
+                <h3 className="text-xs font-black text-purple-950">El Gran Laberinto de Saludos (Clase 1)</h3>
                 <p className="text-[11px] text-slate-500">Encuentra las palabras correctas para decir "¡Bienvenido!" en inglés.</p>
                 <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noreferrer" className="w-full text-center text-xs font-black bg-purple-600 text-white py-2 rounded-xl shadow-sm hover:bg-purple-700 transition-transform active:scale-95">🕹️ ¡Jugar en Wordwall!</a>
               </div>
 
-              {/* JUEGO 2: LA RULETA LOCAL DE PALABRAS PRO */}
+              {/* JUEGO 2: INTERACTY CLASE 2 */}
               <div className="bg-pink-50 border-2 border-pink-200 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2">
-                <span className="text-3xl">🎡</span>
-                <h3 className="text-xs font-black text-pink-950">La Ruleta Loca del Salón</h3>
-                <p className="text-[11px] text-slate-500">¿Qué te tocará? Gira la ruleta imaginaria y practica decir en voz alta los pasos de la keratina.</p>
-                <button onClick={() => alert("🎡 ¡Girando la Ruleta Mágica! Te tocó: 'First, we wash your hair' 🧴 ¡Pica tu bocina en la Unidad 1 para escucharla!")} className="w-full text-center text-xs font-black bg-pink-500 text-white py-2 rounded-xl shadow-sm hover:bg-pink-600 transition-transform active:scale-95">🎰 ¡Girar la Ruleta!</button>
+                <span className="text-3xl">🧪</span>
+                <h3 className="text-xs font-black text-pink-950">El Proceso de la Keratina (Clase 2)</h3>
+                <p className="text-[11px] text-slate-500">Une las piezas correctas y domina la explicación de los pasos de la keratina.</p>
+                <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noreferrer" className="w-full text-center text-xs font-black bg-pink-500 text-white py-2 rounded-xl shadow-sm hover:bg-pink-600 transition-transform active:scale-95">🕹️ ¡Jugar en Interacty!</a>
               </div>
 
               {/* JUEGO 3: MEMORIA DE TARJETAS */}
@@ -472,8 +472,8 @@ export default function App() {
               <div className="bg-emerald-50 border-2 border-emerald-200 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2">
                 <span className="text-3xl">⚡</span>
                 <h3 className="text-xs font-black text-emerald-950">Desafío Final: Alergias</h3>
-                <p className="text-[11px] text-slate-500">¿Cómo le preguntas a un cliente si tiene alguna alergia antes de empezar?[cite: 6]</p>
-                <button onClick={() => { escucharPalabra("Do you have any allergies?"); alert("⚡ ¡Correcto! Se dice: 'Do you have any allergies?'[cite: 6] ¡Punto para ti!"); }} className="w-full text-center text-xs font-black bg-emerald-600 text-white py-2 rounded-xl shadow-sm hover:bg-emerald-700 transition-transform active:scale-95">⚡ Lanzar Desafío</button>
+                <p className="text-[11px] text-slate-500">¿Cómo le preguntas a un cliente si tiene alguna alergia antes de empezar?</p>
+                <button onClick={() => { escucharPalabra("Do you have any allergies?"); alert("⚡ ¡Correcto! Se dice: 'Do you have any allergies?' ¡Punto para ti!"); }} className="w-full text-center text-xs font-black bg-emerald-600 text-white py-2 rounded-xl shadow-sm hover:bg-emerald-700 transition-transform active:scale-95">⚡ Lanzar Desafío</button>
               </div>
             </div>
           </div>
