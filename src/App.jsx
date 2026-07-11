@@ -398,7 +398,6 @@ export default function App() {
   const progresoActual = calcularProgreso(targetStudent);
 
   return (
-    // --- 🎨 FONDO CLARO CORREGIDO A SLATE-100 (AZUL GRISÁCEO LIMPIO Y PROFESIONAL) ---
     <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-slate-100 text-slate-900'}`}>
       
       <header className={`border-b sticky top-0 z-40 shadow-sm transition-colors ${darkMode ? 'bg-slate-900 border-purple-950 text-white' : 'bg-white border-slate-200'}`}>
@@ -458,7 +457,7 @@ export default function App() {
               {!esProfesora && (
                 <div className={`border rounded-3xl p-5 shadow-sm space-y-3 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-200'}`}>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs font-black flex items-center gap-1 text-slate-700 dark:text-slate-300">📊 Progreso de tus Tareas</span>
+                    <span className="text-xs font-black flex items-center gap-1 text-slate-800 dark:text-slate-300">📊 Progreso de tus Tareas</span>
                     <span className="text-xs font-black text-indigo-600 bg-indigo-50 dark:bg-purple-950 px-2 py-0.5 rounded-md">{progresoActual}%</span>
                   </div>
                   <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3.5 overflow-hidden p-0.5 border border-slate-200 dark:border-slate-700">
@@ -478,7 +477,7 @@ export default function App() {
                 {!videoUrl ? (
                   <label className="mx-auto max-w-xs flex flex-col items-center justify-center border-2 border-dashed p-4 rounded-xl cursor-pointer bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700">
                     <Upload size={24} className="text-slate-400 mb-1" />
-                    <span className="text-xs font-black text-slate-600 dark:text-slate-400">Seleccionar mi video</span>
+                    <span className="text-xs font-black text-slate-700 dark:text-slate-400">Seleccionar mi video</span>
                     <input type="file" accept="video/*" onChange={handleVideoUpload} className="hidden" />
                   </label>
                 ) : (
@@ -497,7 +496,7 @@ export default function App() {
                 <div className="p-4 bg-indigo-600 text-white rounded-2xl flex flex-col gap-2 shadow-md mb-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-black">Revisando las unidades del alumno:</span>
-                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border text-slate-900 bg-white">
+                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1.5 rounded border text-slate-900 bg-white outline-none">
                       {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                     </select>
                   </div>
@@ -516,25 +515,25 @@ export default function App() {
                     return (
                       <div key={index} className={`border rounded-2xl p-5 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-200'}`}>
                         <h3 className="text-base font-black text-slate-900 dark:text-white">{les.title}</h3>
-                        <p className="text-xs font-bold p-2.5 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg italic border border-slate-200 dark:border-slate-700">{les.objective}</p>
+                        {/* --- 📖 TEXTO EN MODO CLARO EN AZUL MARINO DE ALTO CONTRASTE --- */}
+                        <p className="text-xs font-black p-3 bg-slate-50 dark:bg-slate-800 text-indigo-950 dark:text-slate-300 rounded-lg italic border border-slate-200 dark:border-slate-700 leading-relaxed">{les.objective}</p>
 
                         <div className="grid grid-cols-1 gap-1.5">
                           {les.content.map((item, i) => (
-                            // --- 🌟 VOCABULARIO INTERNO: CON BORDES DEFINIDOS OSCUROS TOTALMENTE LEÍBLES ---
                             <div key={i} className={`p-2.5 rounded-xl flex justify-between items-center border shadow-sm transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/40' : 'border-slate-400/80 bg-white'}`}>
                               <div className="flex items-center space-x-2">
                                 <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"><Volume2 size={14} /></button>
                                 <span className="text-xs font-black text-slate-900 dark:text-white">{item.en}</span>
                               </div>
-                              {/* --- 🗣️ TRADUCCIÓN: TEXT-SLATE-900 (TOTALMENTE VISIBLE) --- */}
                               <span className="text-[12px] font-black text-slate-900 dark:text-purple-300 bg-slate-100 dark:bg-purple-950 px-2 py-0.5 rounded border border-slate-200 dark:border-purple-900">🗣️ {item.es}</span>
                             </div>
                           ))}
                         </div>
 
-                        <div className={`p-4 rounded-xl border text-xs font-bold transition-colors ${darkMode ? 'bg-purple-950/40 border-purple-950 text-amber-200' : 'bg-slate-50 border-slate-200 text-slate-800'}`}>
-                          <p className="font-black text-indigo-600 dark:text-purple-400">🎯 Actividad Obligatoria:</p>
-                          <p className="my-1 text-slate-700 dark:text-purple-100">{les.task}</p>
+                        {/* --- 🎯 CONTENEDOR DE ACTIVIDADES PULIDO Y DE FÁCIL LECTURA --- */}
+                        <div className={`p-4 rounded-xl border text-xs font-bold transition-colors ${darkMode ? 'bg-purple-950/40 border-purple-950 text-amber-200' : 'bg-slate-50 border-slate-300 text-slate-900'}`}>
+                          <p className="font-black text-indigo-600 dark:text-purple-400 uppercase tracking-wide">🎯 Actividad Obligatoria:</p>
+                          <p className="my-1.5 text-slate-800 dark:text-purple-100 font-bold leading-relaxed">{les.task}</p>
                           
                           {les.gameUrl && (
                             <div className="mt-2">
@@ -543,8 +542,8 @@ export default function App() {
                           )}
 
                           {les.taskKey && (
-                            <div className="mt-3 pt-3 border-t border-slate-200 dark:border-purple-900 space-y-2">
-                              <div className="p-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-[10px] font-black">
+                            <div className="mt-3 pt-3 border-t border-slate-300 dark:border-purple-900 space-y-2">
+                              <div className="p-1.5 bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-300 rounded-lg text-[10px] font-black">
                                 👀 Viendo la mochila de: <b>{targetStudent.toUpperCase()}</b>
                               </div>
                               
@@ -563,7 +562,7 @@ export default function App() {
                               </div>
                               <p className="text-[11px] font-black text-indigo-600 dark:text-purple-400 mt-1">⭐ Calificación: {recordCalificacion?.nota || '-'} / 10</p>
                               {recordCalificacion?.comentario && (
-                                <p className="text-[10px] text-slate-600 dark:text-purple-200 bg-slate-100 dark:bg-purple-950 p-2 rounded-md mt-1 border border-slate-200 dark:border-purple-900">💬 <b>Comentario Miss:</b> {recordCalificacion.comentario}</p>
+                                <p className="text-[10px] text-slate-900 dark:text-purple-200 bg-white dark:bg-purple-950 p-2 rounded-md mt-1 border border-slate-300 dark:border-purple-900 leading-relaxed">💬 <b>Comentario Miss:</b> {recordCalificacion.comentario}</p>
                               )}
                             </div>
                           )}
@@ -583,16 +582,16 @@ export default function App() {
                 <h2 className="text-xl font-black text-slate-900 dark:text-white">CENTRO DE TAREAS GENERAL 🎒👁️</h2>
               </div>
               
-              <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
+              <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-300 dark:border-slate-700 space-y-3">
                 {esProfesora ? (
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <span className="text-xs font-black text-slate-700 dark:text-slate-300">Selecciona un alumno para revisar:</span>
-                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border bg-white text-slate-900">
+                    <span className="text-xs font-black text-slate-800 dark:text-slate-300">Selecciona un alumno para revisar:</span>
+                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1.5 rounded border bg-white text-slate-900 outline-none">
                       {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                     </select>
                   </div>
                 ) : (
-                  <span className="text-xs font-black text-slate-700 dark:text-slate-300 block">Tu Progreso de Entregas:</span>
+                  <span className="text-xs font-black text-slate-800 dark:text-slate-300 block">Tu Progreso de Entregas:</span>
                 )}
               </div>
 
@@ -601,11 +600,10 @@ export default function App() {
                   const currentTask = allStudentsTasks[targetStudent]?.[key];
 
                   return (
-                    // --- 🌟 BORDES DEFINIDOS EN LA MOCHILA DE TAREAS CONTRA EL FONDO CLARO ---
                     <div key={key} className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/20 text-white' : 'border-slate-400/80 bg-white text-slate-900'}`}>
                       <div className="text-xs max-w-md">
-                        <span className="font-black text-indigo-900 dark:text-purple-400 block">{infoTareas[key]}</span>
-                        <span className="text-slate-500 font-bold">Mochila de: <b className="text-slate-700 dark:text-slate-300 font-black">{targetStudent.toUpperCase()}</b></span>
+                        <span className="font-black text-slate-900 dark:text-purple-400 block leading-relaxed">{infoTareas[key]}</span>
+                        <span className="text-slate-600 dark:text-slate-400 font-bold block mt-1">Mochila de: <b className="text-slate-900 dark:text-slate-300 font-black">{targetStudent.toUpperCase()}</b></span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         {!esProfesora && (
@@ -619,7 +617,7 @@ export default function App() {
                             <Eye size={12} /> Ver PDF 👁️
                           </a>
                         ) : (
-                          <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-1 rounded-lg font-black border border-slate-200 dark:border-slate-700">Sin entregar todavía 🎒</span>
+                          <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 px-2 py-1 rounded-lg font-black border border-slate-300 dark:border-slate-700">Sin entregar todavía 🎒</span>
                         )}
                       </div>
                     </div>
@@ -641,21 +639,22 @@ export default function App() {
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
                     const currentRecord = grades[selectedStudent]?.[key] || { nota: '-', comentario: '' };
                     return (
-                      <div key={key} className="p-4 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col gap-2 text-xs bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold shadow-sm">
-                        <span className="text-indigo-600 dark:text-purple-400 font-black block text-sm">{infoTareas[key]}</span>
+                      <div key={key} className="p-4 border border-slate-300 dark:border-slate-800 rounded-2xl flex flex-col gap-3 text-xs bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold shadow-sm">
+                        <span className="text-slate-900 dark:text-purple-400 font-black block text-sm leading-relaxed">{infoTareas[key]}</span>
                         
-                        {/* --- 🔘 REGRESA EL BOTON DE CALIFICAR DEL 1 AL 10 --- */}
-                        <div className="flex flex-wrap gap-1 my-2">
-                          {[1,2,3,4,5,6,7,8,9,10].map(num => (
-                            <button 
-                              key={num} 
-                              type="button"
-                              onClick={() => asignarNota(selectedStudent, key, String(num))}
-                              className={`px-2.5 py-1.5 rounded-lg text-[11px] font-black transition-all ${String(num) === currentRecord.nota ? 'bg-indigo-600 text-white scale-115 shadow-sm' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200 hover:bg-slate-300'}`}
-                            >
-                              {num}
-                            </button>
-                          ))}
+                        {/* --- 🔘 ESCALA COMPACTADA A UN SOLO BOTÓN DESPLEGABLE ESTÉTICO --- */}
+                        <div className="flex items-center space-x-2">
+                          <label className="text-xs font-black text-slate-700 dark:text-slate-300">Asignar Nota:</label>
+                          <select 
+                            value={currentRecord.nota} 
+                            onChange={(e) => asignarNota(selectedStudent, key, e.target.value)}
+                            className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-3 py-1.5 rounded-xl text-xs font-black border-2 border-indigo-600 outline-none shadow-sm cursor-pointer transition-all focus:ring-2 focus:ring-indigo-400"
+                          >
+                            <option value="-">Sin Calificar (-)</option>
+                            {[1,2,3,4,5,6,7,8,9,10].map(num => (
+                              <option key={num} value={String(num)}>{num} Puntos</option>
+                            ))}
+                          </select>
                         </div>
 
                         <div className="flex flex-col gap-1 mt-1">
@@ -663,7 +662,7 @@ export default function App() {
                             value={currentRecord.comentario || ''} 
                             onChange={(e) => asignarComentario(selectedStudent, key, e.target.value)}
                             placeholder="Añade un comentario sobre el desempeño..." 
-                            className="w-full p-2 text-xs text-slate-900 dark:text-white font-medium border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 outline-none focus:border-indigo-500"
+                            className="w-full p-3 text-xs text-slate-900 dark:text-white font-medium border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 outline-none focus:border-indigo-500 leading-relaxed"
                             rows={2}
                           />
                         </div>
@@ -676,13 +675,13 @@ export default function App() {
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
                     const studentRecord = grades[currentUser.username]?.[key] || { nota: '-', comentario: '' };
                     return (
-                      <div key={key} className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl text-xs font-bold flex flex-col gap-2 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 shadow-sm">
+                      <div key={key} className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl text-xs font-bold flex flex-col gap-2 text-slate-900 dark:text-white border border-slate-300 dark:border-slate-700 shadow-sm">
                         <div className="flex justify-between items-start gap-4">
-                          <span className="text-slate-700 dark:text-slate-300 font-black">{infoTareas[key]}</span>
+                          <span className="text-slate-900 dark:text-slate-300 font-black leading-relaxed">{infoTareas[key]}</span>
                           <span className="bg-indigo-600 text-white font-black px-2.5 py-1 rounded-lg text-xs shrink-0 shadow-sm">Nota: {studentRecord.nota} / 10</span>
                         </div>
                         {studentRecord.comentario && (
-                          <div className="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-[11px] text-slate-600 dark:text-slate-400 mt-1">
+                          <div className="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-[11px] text-slate-800 dark:text-slate-400 mt-1 leading-relaxed">
                             📢 <b>Comentario de la Miss:</b> {studentRecord.comentario}
                           </div>
                         )}
@@ -706,13 +705,11 @@ export default function App() {
                     <h3 className="text-xs font-black text-indigo-600 dark:text-purple-400 uppercase mb-2">{mod.title.split(":")[0]}</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {mod.lessons.flatMap(l => l.content).map((item, idx) => (
-                        // --- 🌟 EL DICCIONARIO AHORA TIENE FONDOS BLANCOS CON BORDES GRISES BIEN MARCADOS ---
                         <div key={idx} className={`p-2 rounded-xl flex justify-between items-center border shadow-sm transition-colors ${darkMode ? 'border-purple-950 bg-purple-950/40 text-white' : 'border-slate-400/80 bg-white text-slate-900'}`}>
                           <div className="flex items-center space-x-2">
                             <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"><Volume2 size={12} /></button>
                             <span className="text-[12px] font-black">{item.en}</span>
                           </div>
-                          {/* --- 🗣️ TRADUCCIÓN COMPLETAMENTE LEÍBLE Y SIN AMARILLO --- */}
                           <span className="text-[11px] font-black text-slate-900 dark:text-purple-300 bg-slate-100 dark:bg-purple-950 px-2 py-0.5 rounded border border-slate-200 dark:border-purple-900">🗣️ {item.es}</span>
                         </div>
                       ))}
@@ -723,27 +720,26 @@ export default function App() {
             </div>
           )}
 
-          {/* --- 🕹️ ÁREA DE JUEGOS RECUPERADA CON SUS 4 LINKS --- */}
           {activeTab === 'games' && (
             <div className={`border rounded-3xl p-6 shadow-sm space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-slate-200'}`}>
               <h2 className="text-xl font-black text-center text-indigo-600 dark:text-purple-400">🎡 LA FERIA DE JUEGOS DE VOCABULARIO 🕹️</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
-                <div className="border border-slate-200 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
+                <div className="border border-slate-300 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">🎯</span>
                   <h4 className="text-xs font-black text-slate-900 dark:text-white">Saludos (Clase 1)</h4>
                   <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-indigo-600 text-white py-1.5 rounded-xl hover:bg-indigo-700">¡Jugar Wordwall!</a>
                 </div>
-                <div className="border border-slate-200 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
+                <div className="border border-slate-300 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">🧪</span>
                   <h4 className="text-xs font-black text-slate-900 dark:text-white">Proceso (Clase 2)</h4>
                   <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-indigo-600 text-white py-1.5 rounded-xl hover:bg-indigo-700">¡Jugar Interacty!</a>
                 </div>
-                <div className="border border-slate-200 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
+                <div className="border border-slate-300 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">🧴</span>
                   <h4 className="text-xs font-black text-slate-900 dark:text-white">Cuidado (Clase 3)</h4>
                   <a href="https://wordwall.net/resource/116065664" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-indigo-600 text-white py-1.5 rounded-xl hover:bg-indigo-700">¡Jugar Wordwall!</a>
                 </div>
-                <div className="border border-slate-200 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
+                <div className="border border-slate-300 dark:border-slate-800 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">💰</span>
                   <h4 className="text-xs font-black text-slate-900 dark:text-white">Precios (Clase 4)</h4>
                   <a href="https://create.kahoot.it/share/class-5/16e72ba0-e8fc-4910-9400-b7a3c94c3586" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-indigo-600 text-white py-1.5 rounded-xl hover:bg-indigo-700">¡Jugar Kahoot!</a>
