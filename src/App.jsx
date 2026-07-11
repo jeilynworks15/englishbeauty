@@ -21,13 +21,12 @@ import {
 } from 'lucide-react';
 
 export default function App() {
-  // --- 🕶️ SUPER HECHIZO DE MEMORIA PARA EL MODO OSCURO (¡AHORA SÍ SE QUEDA!) ---
+  // --- 🕶️ MODO OSCURO PERMANENTE ---
   const [darkMode, setDarkMode] = useState(() => {
     const savedDarkMode = localStorage.getItem('beauty_salon_dark_mode_v2');
     return savedDarkMode === 'true';
   });
 
-  // Este guardián pinta la pantalla de oscuro inmediatamente al recargar
   useEffect(() => {
     localStorage.setItem('beauty_salon_dark_mode_v2', darkMode);
     if (darkMode) {
@@ -37,7 +36,7 @@ export default function App() {
     }
   }, [darkMode]);
 
-  // --- 🔐 COFRE DE SESIÓN PARA TU LOGIN ---
+  // --- 🔐 CONTROL DE SESIÓN ---
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return localStorage.getItem('beauty_salon_logged') === 'true';
   });
@@ -52,12 +51,11 @@ export default function App() {
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('dashboard');
   
-  // Guardar video de práctica en el cofre
   const [videoUrl, setVideoUrl] = useState(() => {
     return localStorage.getItem('beauty_salon_video_url') || null;
   });
 
-  // --- 📄 COFRE REFORZADO DE TAREAS COMPARTIDAS (ALUMNOS Y PROFESORAS) ---
+  // --- 📄 COFRE REFORZADO DE TAREAS (COMPARTIDO ENTRE ALUMNOS Y PROFESORAS) ---
   const [allStudentsTasks, setAllStudentsTasks] = useState(() => {
     try {
       const savedTasks = localStorage.getItem('beauty_salon_tasks_final_v2');
@@ -81,12 +79,11 @@ export default function App() {
     }
   });
 
-  // Guardar tareas al instante en el cofre eterno
   useEffect(() => {
     localStorage.setItem('beauty_salon_tasks_final_v2', JSON.stringify(allStudentsTasks));
   }, [allStudentsTasks]);
 
-  // --- 📊 BASE DE DATOS MÁGICA DE CALIFICACIONES ---
+  // --- 📊 BASE DE DATOS DE CALIFICACIONES ---
   const [grades, setGrades] = useState(() => {
     try {
       const savedGrades = localStorage.getItem('beauty_salon_grades_final');
@@ -114,9 +111,9 @@ export default function App() {
     localStorage.setItem('beauty_salon_grades_final', JSON.stringify(grades));
   }, [grades]);
 
+  // Alumno que la profesora está revisando actualmente
   const [selectedStudent, setSelectedStudent] = useState('jean');
 
-  // --- ESCUCHAR AUDIO EN INGLÉS ---
   const escucharPalabra = (textoEnIngles) => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
@@ -127,7 +124,6 @@ export default function App() {
     }
   };
 
-  // --- SUBIR EL VIDEO ---
   const handleVideoUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -141,7 +137,7 @@ export default function App() {
     }
   };
 
-  // --- HECHIZO REPARADO PARA SUBIR TAREAS QUE LA PROFESORA SÍ PUEDE VER ---
+  // --- 🛠️ SUBIDA CORREGIDA: Guarda en el casillero correcto del alumno ---
   const handlePdfUpload = (e, claseKey, studentUser) => {
     const file = e.target.files[0];
     if (file) {
@@ -150,7 +146,6 @@ export default function App() {
         reader.onload = (event) => {
           const base64Data = event.target.result;
           
-          // Guardamos directamente usando el nombre del alumno para que la Miss lo vea reflejado
           setAllStudentsTasks(prev => {
             const updated = {
               ...prev,
@@ -162,21 +157,19 @@ export default function App() {
                 }
               }
             };
-            // Forzar guardado inmediato en el almacenamiento de la computadora
             localStorage.setItem('beauty_salon_tasks_final_v2', JSON.stringify(updated));
             return updated;
           });
           
-          alert(`¡Perfecto! Tu tarea real "${file.name}" voló al buzón de la profesora de forma permanente. 📄✨`);
+          alert(`¡Listo! La tarea "${file.name}" ya llegó al buzón de la profesora. 📄✨`);
         };
         reader.readAsDataURL(file);
       } else {
-        alert("¡Upps! Recuerda que solo puedes subir archivos en formato PDF. 📄");
+        alert("¡Upps! Recuerda que solo puedes subir archivos PDF. 📄");
       }
     }
   };
 
-  // --- ASIGNAR NOTAS ---
   const asignarNota = (estudiante, claseKey, nota) => {
     setGrades(prev => ({
       ...prev,
@@ -187,7 +180,6 @@ export default function App() {
     }));
   };
 
-  // --- CUENTAS DEL SALÓN ---
   const accounts = {
     'daniela': { username: 'daniela', name: "Miss Manzaba Daniela", role: "Profesora" },
     'josselyne': { username: 'josselyne', name: "Miss Lucas Josselyne", role: "Profesora" },
@@ -209,7 +201,6 @@ export default function App() {
     { id: 'melany', name: 'Melany' }
   ];
 
-  // --- CONTENIDOS Y LINKS DE JUEGOS INTACTOS ---
   const modules = [
     {
       id: 1,
@@ -242,7 +233,7 @@ export default function App() {
             { en: "Then, we dry your hair.", es: "Luego, secamos tu cabello." },
             { en: "Next, we apply the keratin.", es: "Después, aplicamos la keratina." },
             { en: "Finally, we use the flat iron.", es: "Finalmente, usamos la plancha." },
-            { en: "The treatment takes about two hours.", es: "El tratamiento toma aproximadamente dos horas." }
+            { en: "The treatment takes about two hours.", es: "The treatment takes about two hours." }
           ],
           gameUrl: "https://interacty.me/projects/e502cc8626a13026",
           task: "Grabar un audio explicando el proceso completo usando First, Then, Next y Finally.",
@@ -276,7 +267,7 @@ export default function App() {
           content: [
             { en: "The price is $40.", es: "El precio es $40." },
             { en: "The treatment takes around two hours.", es: "El tratamiento dura aproximadamente dos horas." },
-            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutes." },
+            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutos." },
             { en: "You can pay by cash.", es: "Puede pagar en efectivo." },
             { en: "You can pay by card.", es: "Puede pagar con tarjeta." }
           ],
@@ -288,7 +279,7 @@ export default function App() {
     {
       id: 3,
       title: "UNIDAD 3: CUSTOMER INTERACTION (INTERACTUAR CON EL CLIENTE) 💬",
-      duration: "Clase 3 y Clase 4 • Profesoras del Curso",
+      duration: "Clase 5 y Clase 6 • Profesoras del Curso",
       lessons: [
         {
           title: "CLASE 5: Conversar con el Cliente (Preguntas previas) 💇‍♂️",
@@ -369,13 +360,13 @@ export default function App() {
   }
 
   const esProfesora = currentUser.role === "Profesora";
-  // ¡HECHIZO CLAVE! Si eres profesora miras al alumno seleccionado en el desplegable, si eres alumno miras tu propio perfil.
+  // --- 🛠️ INTERRUPTOR DE VISTA DINÁMICA ---
+  // Si eres Miss, miras al alumno de la lista desplegable. Si eres alumno, ves tus tareas.
   const targetStudent = esProfesora ? selectedStudent : currentUser.username;
 
   return (
-    <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white dark-theme' : 'bg-slate-50 text-slate-900'}`}>
+    <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'}`}>
       
-      {/* --- ENCABEZADO CON SOL Y LUNA --- */}
       <header className={`border-b sticky top-0 z-40 shadow-sm transition-colors ${darkMode ? 'bg-slate-900 border-purple-950 text-white' : 'bg-white border-purple-100'}`}>
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -404,7 +395,6 @@ export default function App() {
 
       <div className="flex flex-1 flex-col md:flex-row">
         
-        {/* --- MENÚ LATERAL --- */}
         <aside className={`w-full md:w-56 p-4 flex flex-col gap-1.5 md:min-h-[calc(100vh-4rem)] md:sticky md:top-16 z-30 shadow-inner ${darkMode ? 'bg-slate-900 text-slate-100' : 'bg-purple-950 text-white'}`}>
           <p className="text-[10px] uppercase font-black tracking-wider mb-2 px-2 hidden md:block text-purple-300">Navegación Salón</p>
           <button onClick={() => setActiveTab('dashboard')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'dashboard' ? 'bg-pink-500 text-white' : 'hover:bg-purple-900/50'}`}><span>🏠</span> Inicio</button>
@@ -420,7 +410,6 @@ export default function App() {
           </div>
         </aside>
 
-        {/* --- CONTENIDO PRINCIPAL --- */}
         <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
           
           {activeTab === 'dashboard' && (
@@ -453,7 +442,6 @@ export default function App() {
 
           {['unit1', 'unit2', 'unit3'].includes(activeTab) && (
             <div className="space-y-4">
-              {/* Selector global de alumnos visible arriba de las unidades si eres profesora para que cambies de alumno fácilmente */}
               {esProfesora && (
                 <div className="p-3 bg-purple-600 text-white rounded-2xl flex items-center justify-between shadow-md mb-2">
                   <span className="text-xs font-black">Revisando las unidades del alumno:</span>
@@ -470,7 +458,6 @@ export default function App() {
                   </div>
 
                   {mod.lessons.map((les, index) => {
-                    // Carga dinámicamente la tarea según el alumno seleccionado
                     const taskData = allStudentsTasks[targetStudent]?.[les.taskKey];
                     return (
                       <div key={index} className={`border-2 rounded-2xl p-5 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-100'}`}>
@@ -559,7 +546,6 @@ export default function App() {
                     clase5: "🔹 Clase 5: Conversación / Preguntas de Alergias",
                     clase6: "🏆 Clase 6: Despedida y Evaluación Final"
                   };
-                  // Carga dinámicamente los archivos del alumno seleccionado en tiempo real
                   const currentTask = allStudentsTasks[targetStudent]?.[key];
 
                   return (
