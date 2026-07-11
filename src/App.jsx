@@ -65,7 +65,7 @@ export default function App() {
         victoria: { clase2: null, clase3: null, clase5: null, clase6: null },
         yaritza: { clase2: null, clase3: null, clase5: null, clase6: null },
         annelys: { clase2: null, clase3: null, clase5: null, clase6: null },
-        melany: { clase2: null, clase3: null, clase5: null, clase6: null }
+        melany: { clase2: null, clase3: null, clase5: null, clase6: null },
       };
     } catch (e) {
       return {
@@ -74,7 +74,7 @@ export default function App() {
         victoria: { clase2: null, clase3: null, clase5: null, clase6: null },
         yaritza: { clase2: null, clase3: null, clase5: null, clase6: null },
         annelys: { clase2: null, clase3: null, clase5: null, clase6: null },
-        melany: { clase2: null, clase3: null, clase5: null, clase6: null }
+        melany: { clase2: null, clase3: null, clase5: null, clase6: null },
       };
     }
   });
@@ -381,7 +381,6 @@ export default function App() {
   }
 
   const esProfesora = currentUser.role === "Profesora";
-  // --- 🛠️ CORRECCIÓN CLAVE DE ASIGNACIÓN DE USUARIO TARGET ---
   const targetStudent = esProfesora ? selectedStudent : currentUser.username;
 
   return (
