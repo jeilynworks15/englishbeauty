@@ -83,7 +83,7 @@ export default function App() {
     localStorage.setItem('beauty_salon_tasks_final_v2', JSON.stringify(allStudentsTasks));
   }, [allStudentsTasks]);
 
-  // --- 📊 BASE DE DATOS DE CALIFICACIONES Y COMENTARIOS REFORZADA ---
+  // --- 📊 BASE DE DATOS DE CALIFICACIONES ---
   const [grades, setGrades] = useState(() => {
     try {
       const savedGrades = localStorage.getItem('beauty_salon_grades_final_v3');
@@ -194,7 +194,6 @@ export default function App() {
     }));
   };
 
-  // --- 📈 FUNCIÓN PARA CALCULAR EL PROGRESO MÁGICO ---
   const calcularProgreso = (estudianteKey) => {
     const tareasEstudiante = allStudentsTasks[estudianteKey] || {};
     const llavesTareas = ['clase2', 'clase3', 'clase5', 'clase6'];
@@ -207,10 +206,12 @@ export default function App() {
     return Math.round((entregadas / llavesTareas.length) * 100);
   };
 
+  // --- 👩‍🏫 SE AÑADE A LA MISS ISABEL AQUÍ ---
   const accounts = {
     'daniela': { username: 'daniela', name: "Miss Manzaba Daniela", role: "Profesora" },
     'josselyne': { username: 'josselyne', name: "Miss Lucas Josselyne", role: "Profesora" },
     'jeilyn': { username: 'jeilyn', name: "Miss Gómez Jeilyn", role: "Profesora" },
+    'isabel': { username: 'isabel', name: "Miss Isabel", role: "Profesora" },
     'jean': { username: 'jean', name: "Jean", role: "Estudiante" },
     'ricardo': { username: 'ricardo', name: "Ricardo", role: "Estudiante" },
     'victoria': { username: 'victoria', name: "Victoria", role: "Estudiante" },
@@ -267,7 +268,7 @@ export default function App() {
             { en: "Then, we dry your hair.", es: "Luego, secamos tu cabello." },
             { en: "Next, we apply the keratin.", es: "Después, aplicamos la keratina." },
             { en: "Finally, we use the flat iron.", es: "Finalmente, usamos la plancha." },
-            { en: "The treatment takes about two hours.", es: "The treatment takes about two hours." }
+            { en: "The treatment takes about two hours.", es: "El tratamiento toma alrededor de dos horas." }
           ],
           gameUrl: "https://interacty.me/projects/e502cc8626a13026",
           task: "Grabar un audio de 30-45 segundos explicando el proceso completo del tratamiento de keratina.",
@@ -297,11 +298,11 @@ export default function App() {
         },
         { 
           title: "CLASE 4: Price and Time (Hablar sobre Precio y Tiempo) 💰", 
-          objective: "Objetivo: Al finalizar la clase, podrás informar el precio, la duración del tratamiento y las formas de pago en una conversation sencilla.",
+          objective: "Objetivo: Al finalizar la clase, podrás informar el precio, la duración del tratamiento y las formas de pago en una conversación sencilla.",
           content: [
             { en: "The price is $40.", es: "El precio es $40." },
             { en: "The treatment takes around two hours.", es: "El tratamiento dura aproximadamente dos horas." },
-            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutes." },
+            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutos." },
             { en: "You can pay by cash.", es: "Puede pagar en efectivo." },
             { en: "You can pay by card.", es: "Puede pagar con tarjeta." }
           ],
@@ -331,7 +332,7 @@ export default function App() {
         },
         {
           title: "CLASE 6: Despedir al Cliente de manera amable 👋💖",
-          objective: "Objetivo: Al finalizar la clase, los estudiantes podrán despedir a un cliente de manera cortés and participar en una conversación completa de atención al cliente.",
+          objective: "Objetivo: Al finalizar la clase, los estudiantes podrán despedir a un cliente de manera cortés y participar en una conversación completa de atención al cliente.",
           content: [
             { en: "Thank you for coming.", es: "Gracias por venir." },
             { en: "Thank you for your visit.", es: "Gracias por su visita." },
@@ -375,19 +376,19 @@ export default function App() {
 
   if (!isLoggedIn || !currentUser) {
     return (
-      <div className="min-h-screen bg-purple-950 flex flex-col items-center justify-center p-4">
-        <form onSubmit={handleLogin} className="bg-white p-8 rounded-3xl shadow-2xl max-w-sm w-full space-y-4 border-4 border-pink-400">
+      <div className="min-h-screen bg-pink-100 flex flex-col items-center justify-center p-4">
+        <form onSubmit={handleLogin} className="bg-white p-8 rounded-3xl shadow-xl max-w-sm w-full space-y-4 border-4 border-purple-300">
           <div className="text-center">
             <span className="text-5xl">💇‍♀️✨</span>
             <h2 className="text-2xl font-black text-purple-950 mt-2">Beauty English Salón</h2>
-            <p className="text-xs text-slate-500 font-bold">¡Pon tu nombre y tu código mágico!</p>
+            <p className="text-xs text-purple-500 font-bold">¡Pon tu nombre y tu código mágico!</p>
           </div>
           <div className="space-y-2">
-            <input type="text" placeholder="Tu nombre (ej. jean)" value={username} onChange={e => setUsername(e.target.value)} className="w-full p-3 border-2 border-purple-100 rounded-xl text-xs text-slate-900 font-bold focus:border-pink-400 outline-none" />
-            <input type="password" placeholder="Tu Clave Mágica" value={password} onChange={e => setPassword(e.target.value)} className="w-full p-3 border-2 border-purple-100 rounded-xl text-xs text-slate-900 font-bold focus:border-pink-400 outline-none" />
+            <input type="text" placeholder="Tu nombre (ej. isabel)" value={username} onChange={e => setUsername(e.target.value)} className="w-full p-3 border-2 border-pink-200 rounded-xl text-xs text-slate-900 font-bold focus:border-purple-400 outline-none" />
+            <input type="password" placeholder="Tu Clave Mágica" value={password} onChange={e => setPassword(e.target.value)} className="w-full p-3 border-2 border-pink-200 rounded-xl text-xs text-slate-900 font-bold focus:border-purple-400 outline-none" />
           </div>
-          {error && <p className="text-rose-500 text-xs font-black text-center bg-rose-50 p-2 rounded-xl">❌ {error}</p>}
-          <button type="submit" className="w-full bg-pink-500 hover:bg-pink-600 active:scale-95 text-white font-black p-3.5 rounded-xl text-xs shadow-md transition-all">¡Entrar al Salón! 🚀</button>
+          {error && <p className="text-rose-600 text-xs font-black text-center bg-rose-50 p-2 rounded-xl">❌ {error}</p>}
+          <button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 active:scale-95 text-white font-black p-3.5 rounded-xl text-xs shadow-md transition-all">¡Entrar al Salón! 🚀</button>
         </form>
       </div>
     );
@@ -395,33 +396,31 @@ export default function App() {
 
   const esProfesora = currentUser.role === "Profesora";
   const targetStudent = esProfesora ? selectedStudent : currentUser.username;
-
-  // Cálculo del progreso para el usuario actual o el seleccionado
   const progresoActual = calcularProgreso(targetStudent);
 
   return (
-    <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'}`}>
+    // --- 🎨 AJUSTE DE COLORES CLAROS A TONOS PASTEL (Fondo Lavanda muy suave, textos oscuros legibles) ---
+    <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-purple-50/50 text-purple-950'}`}>
       
-      <header className={`border-b sticky top-0 z-40 shadow-sm transition-colors ${darkMode ? 'bg-slate-900 border-purple-950 text-white' : 'bg-white border-purple-100'}`}>
+      <header className={`border-b sticky top-0 z-40 shadow-sm transition-colors ${darkMode ? 'bg-slate-900 border-purple-950 text-white' : 'bg-white border-pink-200'}`}>
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="bg-purple-600 p-2 rounded-xl text-white"><GraduationCap size={24} /></div>
             <div>
               <span className={`font-black text-base block leading-tight ${darkMode ? 'text-purple-300' : 'text-purple-900'}`}>Beauty English</span>
-              {/* --- 👑 SUBTÍTULO MODIFICADO POR LA PRINCESA --- */}
               <span className="text-[11px] text-pink-500 font-black tracking-wide block">Keratin talk course 💬✨</span>
             </div>
           </div>
 
           <div className="flex items-center space-x-4">
-            <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-xl transition-all ${darkMode ? 'bg-slate-800 text-amber-400' : 'bg-purple-100 text-purple-950'}`}>
+            <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-xl transition-all ${darkMode ? 'bg-slate-800 text-amber-400' : 'bg-pink-100 text-purple-950'}`}>
               {darkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
 
             <div className="flex items-center space-x-2">
               <div className="text-right hidden sm:block">
-                <p className={`text-xs font-black ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>{currentUser.name}</p>
-                <p className="text-[9px] text-purple-500 font-bold uppercase">{currentUser.role}</p>
+                <p className={`text-xs font-black ${darkMode ? 'text-slate-300' : 'text-purple-900'}`}>{currentUser.name}</p>
+                <p className="text-[9px] text-pink-500 font-bold uppercase">{currentUser.role}</p>
               </div>
               <button onClick={handleLogout} className="text-[10px] font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 px-2.5 py-1.5 rounded-lg transition-all">Salir</button>
             </div>
@@ -431,18 +430,19 @@ export default function App() {
 
       <div className="flex flex-1 flex-col md:flex-row">
         
-        <aside className={`w-full md:w-56 p-4 flex flex-col gap-1.5 md:min-h-[calc(100vh-4rem)] md:sticky md:top-16 z-30 shadow-inner ${darkMode ? 'bg-slate-900 text-slate-100' : 'bg-purple-950 text-white'}`}>
-          <p className="text-[10px] uppercase font-black tracking-wider mb-2 px-2 hidden md:block text-purple-300">Navegación Salón</p>
-          <button onClick={() => setActiveTab('dashboard')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'dashboard' ? 'bg-pink-500 text-white' : 'hover:bg-purple-900/50'}`}><span>🏠</span> Inicio</button>
-          <button onClick={() => setActiveTab('unit1')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit1' ? 'bg-pink-500 text-white' : 'hover:bg-purple-900/50'}`}><span>📦</span> Unit 1</button>
-          <button onClick={() => setActiveTab('unit2')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit2' ? 'bg-pink-500 text-white' : 'hover:bg-purple-900/50'}`}><span>🛍️</span> Unit 2</button>
-          <button onClick={() => setActiveTab('unit3')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit3' ? 'bg-pink-500 text-white' : 'hover:bg-purple-900/50'}`}><span>💬</span> Unit 3</button>
-          <button onClick={() => setActiveTab('activities')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'activities' ? 'bg-pink-500 text-white' : 'hover:bg-purple-900/50'}`}><span>🎒</span> Mochila de Tareas</button>
-          <button onClick={() => setActiveTab('gradesTab')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'gradesTab' ? 'bg-pink-500 text-white' : 'hover:bg-purple-900/50'}`}><span>⭐</span> Calificaciones</button>
-          <button onClick={() => setActiveTab('vocabulary')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'vocabulary' ? 'bg-pink-500 text-white' : 'hover:bg-purple-900/50'}`}><span>🔊</span> Vocabulario</button>
+        {/* --- 🎨 BARRA LATERAL CON MEJOR CONTRASTE CLARO --- */}
+        <aside className={`w-full md:w-56 p-4 flex flex-col gap-1.5 md:min-h-[calc(100vh-4rem)] md:sticky md:top-16 z-30 shadow-inner ${darkMode ? 'bg-slate-900 text-slate-100' : 'bg-white text-purple-900 border-r border-pink-100'}`}>
+          <p className={`text-[10px] uppercase font-black tracking-wider mb-2 px-2 hidden md:block ${darkMode ? 'text-purple-300' : 'text-purple-500'}`}>Navegación Salón</p>
+          <button onClick={() => setActiveTab('dashboard')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'dashboard' ? 'bg-purple-600 text-white' : 'hover:bg-pink-50'}`}><span>🏠</span> Inicio</button>
+          <button onClick={() => setActiveTab('unit1')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit1' ? 'bg-purple-600 text-white' : 'hover:bg-pink-50'}`}><span>📦</span> Unit 1</button>
+          <button onClick={() => setActiveTab('unit2')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit2' ? 'bg-purple-600 text-white' : 'hover:bg-pink-50'}`}><span>🛍️</span> Unit 2</button>
+          <button onClick={() => setActiveTab('unit3')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit3' ? 'bg-purple-600 text-white' : 'hover:bg-pink-50'}`}><span>💬</span> Unit 3</button>
+          <button onClick={() => setActiveTab('activities')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'activities' ? 'bg-purple-600 text-white' : 'hover:bg-pink-50'}`}><span>🎒</span> Mochila de Tareas</button>
+          <button onClick={() => setActiveTab('gradesTab')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'gradesTab' ? 'bg-purple-600 text-white' : 'hover:bg-pink-50'}`}><span>⭐</span> Calificaciones</button>
+          <button onClick={() => setActiveTab('vocabulary')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'vocabulary' ? 'bg-purple-600 text-white' : 'hover:bg-pink-50'}`}><span>🔊</span> Vocabulario</button>
           
-          <div className="border-t border-purple-900 my-2 pt-2">
-            <button onClick={() => setActiveTab('games')} className={`w-full text-left px-4 py-3 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'games' ? 'bg-amber-500 text-purple-950' : 'bg-purple-900 text-amber-300 hover:bg-purple-800'}`}><span>🕹️</span> Área de Juegos</button>
+          <div className="border-t border-pink-100 dark:border-purple-900 my-2 pt-2">
+            <button onClick={() => setActiveTab('games')} className={`w-full text-left px-4 py-3 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'games' ? 'bg-amber-500 text-purple-950' : 'bg-pink-100 text-purple-950 hover:bg-pink-200'}`}><span>🕹️</span> Área de Juegos</button>
           </div>
         </aside>
 
@@ -450,7 +450,6 @@ export default function App() {
           
           {activeTab === 'dashboard' && (
             <div className="space-y-6">
-              {/* --- 🎨 PANEL COLORIDO CON NUEVO TEXTO --- */}
               <div className="bg-gradient-to-r from-purple-600 to-pink-500 rounded-3xl p-6 text-white shadow-xl text-center">
                 <h1 className="text-2xl font-black">¡Hola, {currentUser.name}! ✨</h1>
                 <p className="text-purple-50 font-black text-xs mt-1.5 bg-white/20 inline-block px-4 py-1.5 rounded-full">
@@ -458,14 +457,13 @@ export default function App() {
                 </p>
               </div>
 
-              {/* --- 📈 VISUALIZACIÓN DE LA BARRA DE PROGRESO DEL ESTUDIANTE EN INICIO --- */}
               {!esProfesora && (
-                <div className={`border-2 rounded-3xl p-5 shadow-sm space-y-3 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-100'}`}>
+                <div className={`border-2 rounded-3xl p-5 shadow-sm space-y-3 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-pink-100'}`}>
                   <div className="flex justify-between items-center">
                     <span className="text-xs font-black flex items-center gap-1 text-purple-600">📊 ¡Tu progreso de tareas!</span>
-                    <span className="text-xs font-black text-pink-500 bg-pink-50 dark:bg-slate-800 px-2 py-0.5 rounded-md">{progresoActual}%</span>
+                    <span className="text-xs font-black text-pink-600 bg-pink-50 dark:bg-slate-800 px-2 py-0.5 rounded-md">{progresoActual}%</span>
                   </div>
-                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-3.5 overflow-hidden p-0.5 border">
+                  <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3.5 overflow-hidden p-0.5 border border-pink-100">
                     <div 
                       className="bg-gradient-to-r from-emerald-400 to-teal-500 h-2.5 rounded-full transition-all duration-500 ease-out"
                       style={{ width: `${progresoActual}%` }}
@@ -477,21 +475,21 @@ export default function App() {
                 </div>
               )}
 
-              {/* --- 📺 TELEVISOR TOTALMENTE RENOMBRADO --- */}
-              <div className={`border-2 rounded-3xl p-6 shadow-sm text-center space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
+              {/* --- 📺 TELEVISOR EN MODO CLARO MEJORADO --- */}
+              <div className={`border-2 rounded-3xl p-6 shadow-sm text-center space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-pink-200'}`}>
                 <div className="flex flex-col items-center justify-center">
                   <Video className="text-pink-500 mb-2" size={32} />
                   <h3 className={`text-sm font-black ${darkMode ? 'text-purple-300' : 'text-purple-950'}`}>📺 Welcoming video</h3>
                 </div>
                 {!videoUrl ? (
-                  <label className="mx-auto max-w-xs flex flex-col items-center justify-center border-2 border-dashed p-4 rounded-xl cursor-pointer bg-purple-50/50">
+                  <label className="mx-auto max-w-xs flex flex-col items-center justify-center border-2 border-dashed p-4 rounded-xl cursor-pointer bg-pink-50/30 border-pink-300">
                     <Upload size={24} className="text-purple-500 mb-1" />
-                    <span className="text-xs font-black text-slate-900">Seleccionar mi video</span>
+                    <span className="text-xs font-black text-purple-950">Seleccionar mi video</span>
                     <input type="file" accept="video/*" onChange={handleVideoUpload} className="hidden" />
                   </label>
                 ) : (
                   <div className="space-y-2">
-                    <video src={videoUrl} controls className="w-full max-w-md mx-auto rounded-xl border-4 border-purple-900 bg-black" />
+                    <video src={videoUrl} controls className="w-full max-w-md mx-auto rounded-xl border-4 border-purple-600 bg-black" />
                     <button onClick={() => { setVideoUrl(null); localStorage.removeItem('beauty_salon_video_url'); }} className="text-[10px] font-black text-rose-600 bg-rose-50 px-3 py-1 rounded-lg">❌ Quitar video</button>
                   </div>
                 )}
@@ -502,14 +500,13 @@ export default function App() {
           {['unit1', 'unit2', 'unit3'].includes(activeTab) && (
             <div className="space-y-4">
               {esProfesora && (
-                <div className="p-3 bg-purple-600 text-white rounded-2xl flex flex-col gap-2 shadow-md mb-2">
+                <div className="p-4 bg-purple-600 text-white rounded-2xl flex flex-col gap-2 shadow-md mb-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-black">Revisando las unidades del alumno:</span>
                     <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border text-slate-950 bg-white">
                       {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                     </select>
                   </div>
-                  {/* --- 📈 BARRA QUE LA DOCENTE VE EN LAS UNIDADES --- */}
                   <div className="bg-purple-950/40 p-2 rounded-xl space-y-1">
                     <div className="flex justify-between text-[10px] font-black text-purple-200">
                       <span>Progreso de {selectedStudent.toUpperCase()}:</span>
@@ -524,7 +521,7 @@ export default function App() {
 
               {modules.filter((_, idx) => (activeTab === 'unit1' && idx === 0) || (activeTab === 'unit2' && idx === 1) || (activeTab === 'unit3' && idx === 2)).map(mod => (
                 <div key={mod.id} className="space-y-4">
-                  <div className="bg-purple-900 text-white p-4 rounded-2xl shadow-sm">
+                  <div className="bg-purple-700 text-white p-4 rounded-2xl shadow-sm">
                     <h2 className="text-xs font-black uppercase tracking-wider">{mod.title}</h2>
                   </div>
 
@@ -532,25 +529,26 @@ export default function App() {
                     const taskData = allStudentsTasks[targetStudent]?.[les.taskKey];
                     const recordCalificacion = grades[targetStudent]?.[les.taskKey];
                     return (
-                      <div key={index} className={`border-2 rounded-2xl p-5 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-100'}`}>
-                        <h3 className="text-base font-black">{les.title}</h3>
-                        <p className="text-xs font-bold p-2 bg-purple-50 text-purple-700 rounded-lg italic">{les.objective}</p>
+                      <div key={index} className={`border-2 rounded-2xl p-5 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-pink-100'}`}>
+                        <h3 className="text-base font-black text-purple-950 dark:text-white">{les.title}</h3>
+                        <p className="text-xs font-bold p-2.5 bg-purple-50 dark:bg-slate-800 text-purple-700 dark:text-purple-300 rounded-lg italic border border-purple-100/50">{les.objective}</p>
 
                         <div className="grid grid-cols-1 gap-1.5">
                           {les.content.map((item, i) => (
-                            <div key={i} className="p-2.5 rounded-xl flex justify-between items-center border bg-slate-50/50 dark:bg-slate-800/40">
+                            <div key={i} className="p-2.5 rounded-xl flex justify-between items-center border border-pink-100/60 bg-white dark:bg-slate-800/40">
                               <div className="flex items-center space-x-2">
-                                <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-purple-600 text-white rounded-lg"><Volume2 size={14} /></button>
-                                <span className="text-xs font-black text-slate-900 dark:text-white">{item.en}</span>
+                                <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700"><Volume2 size={14} /></button>
+                                <span className="text-xs font-black text-purple-950 dark:text-white">{item.en}</span>
                               </div>
-                              <span className="text-[11px] font-bold text-slate-400">🗣️ {item.es}</span>
+                              <span className="text-[11px] font-bold text-purple-400 dark:text-slate-400">🗣️ {item.es}</span>
                             </div>
                           ))}
                         </div>
 
-                        <div className="p-3 bg-amber-50 dark:bg-slate-800/80 rounded-xl border text-xs text-amber-950 dark:text-amber-200 font-bold">
-                          <p className="font-black text-amber-600">🎯 Actividad Obligatoria:</p>
-                          <p className="my-1">{les.task}</p>
+                        {/* --- 🎨 SECCIÓN DE ACTIVIDAD CON MEJORES COLORES CLAROS --- */}
+                        <div className="p-4 bg-pink-50/50 dark:bg-slate-800/80 rounded-xl border border-pink-100 text-xs text-purple-950 dark:text-amber-200 font-bold">
+                          <p className="font-black text-pink-600">🎯 Actividad Obligatoria:</p>
+                          <p className="my-1 text-purple-900 dark:text-slate-300">{les.task}</p>
                           
                           {les.gameUrl && (
                             <div className="mt-2">
@@ -559,15 +557,15 @@ export default function App() {
                           )}
 
                           {les.taskKey && (
-                            <div className="mt-3 pt-3 border-t border-amber-200/40 space-y-2">
-                              <div className="p-1.5 bg-purple-900 text-white rounded-lg text-[10px] font-black">
+                            <div className="mt-3 pt-3 border-t border-pink-200/50 space-y-2">
+                              <div className="p-1.5 bg-purple-800 text-white rounded-lg text-[10px] font-black">
                                 👀 Viendo la mochila de: <b>{targetStudent.toUpperCase()}</b>
                               </div>
                               
                               <div className="flex flex-wrap items-center gap-2">
                                 {!esProfesora && (
                                   <label className="bg-purple-600 hover:bg-purple-700 text-white text-[10px] font-black px-2.5 py-1.5 rounded-lg cursor-pointer inline-flex items-center gap-1">
-                                    <Upload size={12} /> {taskData ? "Cambiar mi PDF Real" : "Subir Tarea PDF Real"}
+                                    <Upload size={12} /> {taskData ? "Cambiar mi PDF" : "Subir Tarea PDF"}
                                     <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, les.taskKey, currentUser.username)} className="hidden" />
                                   </label>
                                 )}
@@ -578,13 +576,13 @@ export default function App() {
                                 )}
                               </div>
                               {taskData ? (
-                                <p className="text-[10px] text-emerald-500 font-bold mt-1">✅ Entregado: {taskData.name}</p>
+                                <p className="text-[10px] text-emerald-600 font-bold mt-1">✅ Entregado: {taskData.name}</p>
                               ) : (
                                 <p className="text-[10px] text-rose-500 font-bold mt-1">❌ Sin entregar todavía.</p>
                               )}
-                              <p className="text-[11px] font-black text-purple-600 mt-1">⭐ Calificación: {recordCalificacion?.nota || '-'} / 10</p>
+                              <p className="text-[11px] font-black text-purple-700 dark:text-purple-400 mt-1">⭐ Calificación: {recordCalificacion?.nota || '-'} / 10</p>
                               {recordCalificacion?.comentario && (
-                                <p className="text-[10px] text-purple-950 dark:text-purple-300 bg-purple-100/50 p-1.5 rounded-md mt-1">💬 <b>Comentario Miss:</b> {recordCalificacion.comentario}</p>
+                                <p className="text-[10px] text-purple-950 dark:text-purple-300 bg-white dark:bg-slate-900 p-2 rounded-md mt-1 border border-purple-100">💬 <b>Comentario Miss:</b> {recordCalificacion.comentario}</p>
                               )}
                             </div>
                           )}
@@ -598,18 +596,17 @@ export default function App() {
           )}
 
           {activeTab === 'activities' && (
-            <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
-              <div className="flex items-center space-x-2 border-b-2 border-purple-100 pb-3">
+            <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-pink-200'}`}>
+              <div className="flex items-center space-x-2 border-b-2 border-pink-100 pb-3">
                 <Activity className="text-purple-600" size={24} />
-                <h2 className="text-xl font-black">CENTRO DE TAREAS GENERAL 🎒👁️</h2>
+                <h2 className="text-xl font-black text-purple-950 dark:text-white">CENTRO DE TAREAS GENERAL 🎒👁️</h2>
               </div>
               
-              {/* --- 📈 BARRA TOTAL CON FILTRO EN LA MOCHILA DE TAREAS --- */}
-              <div className="p-4 bg-purple-100 dark:bg-slate-900 rounded-2xl border space-y-3">
+              <div className="p-4 bg-purple-50 dark:bg-slate-900 rounded-2xl border border-purple-100 space-y-3">
                 {esProfesora ? (
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <span className="text-xs font-black text-purple-950 dark:text-purple-300">Selecciona un alumno para revisar:</span>
-                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border bg-white text-slate-900">
+                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border bg-white text-purple-950">
                       {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                     </select>
                   </div>
@@ -622,7 +619,7 @@ export default function App() {
                     <span>Mochila de {targetStudent.toUpperCase()}</span>
                     <span>{calcularProgreso(targetStudent)}% Completo</span>
                   </div>
-                  <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-3 overflow-hidden">
+                  <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3 overflow-hidden border border-purple-100">
                     <div className="bg-emerald-500 h-3 transition-all duration-300" style={{ width: `${calcularProgreso(targetStudent)}%` }} />
                   </div>
                 </div>
@@ -633,24 +630,24 @@ export default function App() {
                   const currentTask = allStudentsTasks[targetStudent]?.[key];
 
                   return (
-                    <div key={key} className="p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50 dark:bg-slate-800/40 text-slate-900 dark:text-white">
+                    <div key={key} className="p-4 rounded-2xl border border-pink-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-800/40 text-purple-950 dark:text-white">
                       <div className="text-xs max-w-md">
-                        <span className="font-black text-purple-500 block">{infoTareas[key]}</span>
+                        <span className="font-black text-purple-600 block">{infoTareas[key]}</span>
                         <span className="text-slate-400 font-bold">Mochila actual de: <b className="text-pink-500 font-black">{targetStudent.toUpperCase()}</b></span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         {!esProfesora && (
-                          <label className="bg-purple-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl cursor-pointer">
-                            📄 {currentTask ? "Cambiar" : "Elegir PDF Real"}
+                          <label className="bg-purple-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl cursor-pointer hover:bg-purple-700">
+                            📄 {currentTask ? "Cambiar" : "Elegir PDF"}
                             <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, key, currentUser.username)} className="hidden" />
                           </label>
                         )}
                         {currentTask ? (
                           <a href={currentTask.url} download={currentTask.name} target="_blank" rel="noreferrer" className="bg-emerald-600 text-white text-[10px] font-black px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-md">
-                            <Eye size={12} /> Ver PDF de {targetStudent.toUpperCase()} 👁️
+                            <Eye size={12} /> Ver PDF 👁️
                           </a>
                         ) : (
-                          <span className="text-[10px] bg-rose-100 text-rose-700 px-2 py-1 rounded font-bold">Sin entregar</span>
+                          <span className="text-[10px] bg-rose-50 text-rose-600 px-2 py-1 rounded font-bold border border-rose-100">Sin entregar</span>
                         )}
                       </div>
                     </div>
@@ -661,22 +658,21 @@ export default function App() {
           )}
 
           {activeTab === 'gradesTab' && (
-            <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
-              <div className="flex items-center space-x-2 border-b-2 border-purple-100 pb-3">
+            <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-pink-200'}`}>
+              <div className="flex items-center space-x-2 border-b-2 border-pink-100 pb-3">
                 <Star className="text-amber-500 fill-amber-500" size={24} />
-                <h2 className="text-xl font-black">SISTEMA DE CALIFICACIONES ⭐</h2>
+                <h2 className="text-xl font-black text-purple-950 dark:text-white">SISTEMA DE CALIFICACIONES ⭐</h2>
               </div>
               
               {esProfesora ? (
                 <div className="space-y-4">
-                  <div className="flex flex-col gap-2 p-3 bg-purple-50 dark:bg-slate-800 rounded-xl border">
+                  <div className="flex flex-col gap-2 p-3 bg-purple-50 dark:bg-slate-800 rounded-xl border border-purple-100">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-black">Elegir alumno para calificar y comentar:</span>
+                      <span className="text-xs font-black text-purple-950">Elegir alumno para calificar y comentar:</span>
                       <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1 rounded border text-slate-900 bg-white">
                         {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                       </select>
                     </div>
-                    {/* --- 📈 BARRA QUE LA DOCENTE VERIFICA EN EL PANEL DE NOTAS --- */}
                     <div className="space-y-1 bg-white dark:bg-slate-950 p-2 rounded-lg border">
                       <div className="flex justify-between text-[10px] font-black text-slate-600 dark:text-slate-300">
                         <span>Verificación de Progreso de {selectedStudent.toUpperCase()}:</span>
@@ -691,7 +687,7 @@ export default function App() {
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
                     const currentRecord = grades[selectedStudent]?.[key] || { nota: '-', comentario: '' };
                     return (
-                      <div key={key} className="p-4 border rounded-2xl flex flex-col gap-2 text-xs bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-bold shadow-sm">
+                      <div key={key} className="p-4 border border-pink-100 rounded-2xl flex flex-col gap-2 text-xs bg-white dark:bg-slate-900 text-purple-950 dark:text-white font-bold shadow-sm">
                         <span className="text-purple-600 font-black block text-sm">{infoTareas[key]}</span>
                         
                         <div className="flex items-center gap-3 mt-1">
@@ -703,12 +699,12 @@ export default function App() {
                         </div>
 
                         <div className="flex flex-col gap-1 mt-2">
-                          <span className="text-slate-500 text-[11px]">Escribir Comentario / Retroalimentación (Opcional):</span>
+                          <span className="text-slate-500 text-[11px]">Escribir Comentario / Retroalimentación:</span>
                           <textarea 
                             value={currentRecord.comentario || ''} 
                             onChange={(e) => asignarComentario(selectedStudent, key, e.target.value)}
-                            placeholder="¡Buen trabajo! O detalla qué mejorar aquí..." 
-                            className="w-full p-2 text-xs text-slate-900 font-medium border rounded-xl outline-none focus:border-pink-400 bg-white"
+                            placeholder="¡Buen trabajo!..." 
+                            className="w-full p-2 text-xs text-slate-900 font-medium border rounded-xl outline-none focus:border-purple-400 bg-white"
                             rows={2}
                           />
                         </div>
@@ -721,13 +717,13 @@ export default function App() {
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
                     const studentRecord = grades[currentUser.username]?.[key] || { nota: '-', comentario: '' };
                     return (
-                      <div key={key} className="p-4 bg-purple-50 dark:bg-slate-800/60 rounded-2xl text-xs font-bold flex flex-col gap-2 text-slate-900 dark:text-white border border-purple-100">
+                      <div key={key} className="p-4 bg-white dark:bg-slate-800/60 rounded-2xl text-xs font-bold flex flex-col gap-2 text-purple-950 dark:text-white border border-pink-100">
                         <div className="flex justify-between items-start gap-4">
                           <span className="text-purple-700 dark:text-purple-300 font-black">{infoTareas[key]}</span>
                           <span className="bg-purple-600 text-white px-2.5 py-1 rounded-lg text-xs font-black whitespace-nowrap shrink-0">{studentRecord.nota || '-'} / 10</span>
                         </div>
                         {studentRecord.comentario && (
-                          <div className="bg-white/80 dark:bg-slate-900/50 p-2.5 rounded-xl border text-[11px] text-slate-700 dark:text-slate-200 mt-1">
+                          <div className="bg-pink-50/50 dark:bg-slate-900/50 p-2.5 rounded-xl border border-pink-100 text-[11px] text-purple-900 dark:text-slate-200 mt-1">
                             📢 <b>Comentario de la Miss:</b> {studentRecord.comentario}
                           </div>
                         )}
@@ -740,23 +736,23 @@ export default function App() {
           )}
 
           {activeTab === 'vocabulary' && (
-            <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
-              <div className="flex items-center space-x-2 border-b-2 border-purple-100 pb-3">
+            <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-pink-200'}`}>
+              <div className="flex items-center space-x-2 border-b-2 border-pink-100 pb-3">
                 <Volume2 className="text-purple-600" size={24} />
-                <h2 className="text-xl font-black">DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
+                <h2 className="text-xl font-black text-purple-950 dark:text-white">DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
               </div>
               <div className="space-y-4 pt-2">
                 {modules.map(mod => (
                   <div key={mod.id} className="border-l-4 border-pink-400 pl-3 py-1">
-                    <h3 className="text-xs font-black text-purple-500 uppercase mb-2">{mod.title.split(":")[0]}</h3>
+                    <h3 className="text-xs font-black text-purple-600 uppercase mb-2">{mod.title.split(":")[0]}</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {mod.lessons.flatMap(l => l.content).map((item, idx) => (
-                        <div key={idx} className="p-2 rounded-xl flex justify-between items-center border bg-slate-50 dark:bg-slate-800/40 text-slate-900 dark:text-white">
+                        <div key={idx} className="p-2 rounded-xl flex justify-between items-center border border-pink-100/50 bg-white dark:bg-slate-800/40 text-purple-950 dark:text-white">
                           <div className="flex items-center space-x-2">
-                            <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-purple-600 text-white rounded-lg"><Volume2 size={12} /></button>
+                            <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700"><Volume2 size={12} /></button>
                             <span className="text-[12px] font-black">{item.en}</span>
                           </div>
-                          <span className="text-[11px] font-bold text-slate-400">🗣️ {item.es}</span>
+                          <span className="text-[11px] font-bold text-purple-400 dark:text-slate-400">🗣️ {item.es}</span>
                         </div>
                       ))}
                     </div>
@@ -767,27 +763,27 @@ export default function App() {
           )}
 
           {activeTab === 'games' && (
-            <div className="bg-white border-2 border-amber-300 rounded-3xl p-6 text-center text-slate-950 space-y-4">
-              <h2 className="text-xl font-black text-amber-500">🎡 LA FERIA DE JUEGOS DE VOCABULARIO 🕹️</h2>
+            <div className="bg-white border-2 border-pink-200 rounded-3xl p-6 text-center text-purple-950 space-y-4">
+              <h2 className="text-xl font-black text-pink-500">🎡 LA FERIA DE JUEGOS DE VOCABULARIO 🕹️</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="border-2 p-4 rounded-2xl bg-purple-50 text-center space-y-2">
+                <div className="border-2 border-pink-100 p-4 rounded-2xl bg-purple-50 text-center space-y-2">
                   <span className="text-2xl">🎯</span>
-                  <h4 className="text-xs font-black">Saludos (Clase 1)</h4>
+                  <h4 className="text-xs font-black text-purple-950">Saludos (Clase 1)</h4>
                   <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-purple-600 text-white py-1.5 rounded-xl">¡Jugar!</a>
                 </div>
-                <div className="border-2 p-4 rounded-2xl bg-pink-50 text-center space-y-2">
+                <div className="border-2 border-pink-100 p-4 rounded-2xl bg-pink-50 text-center space-y-2">
                   <span className="text-2xl">🧪</span>
-                  <h4 className="text-xs font-black">Keratina (Clase 2)</h4>
+                  <h4 className="text-xs font-black text-purple-950">Keratina (Clase 2)</h4>
                   <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-pink-500 text-white py-1.5 rounded-xl">¡Jugar!</a>
                 </div>
-                <div className="border-2 p-4 rounded-2xl bg-amber-50 text-center space-y-2">
+                <div className="border-2 border-pink-100 p-4 rounded-2xl bg-purple-50 text-center space-y-2">
                   <span className="text-2xl">🧴</span>
-                  <h4 className="text-xs font-black">Cuidado (Clase 3)</h4>
-                  <a href="https://wordwall.net/resource/116065664" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-amber-500 text-white py-1.5 rounded-xl">¡Jugar!</a>
+                  <h4 className="text-xs font-black text-purple-950">Cuidado (Clase 3)</h4>
+                  <a href="https://wordwall.net/resource/116065664" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-purple-500 text-white py-1.5 rounded-xl">¡Jugar!</a>
                 </div>
-                <div className="border-2 p-4 rounded-2xl bg-emerald-50 text-center space-y-2">
+                <div className="border-2 border-pink-100 p-4 rounded-2xl bg-pink-50 text-center space-y-2">
                   <span className="text-2xl">🎉</span>
-                  <h4 className="text-xs font-black">Kahoot (Clase 5)</h4>
+                  <h4 className="text-xs font-black text-purple-950">Kahoot (Clase 5)</h4>
                   <a href="https://create.kahoot.it/share/class-5/16e72ba0-e8fc-4910-9400-b7a3c94c3586" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-emerald-600 text-white py-1.5 rounded-xl">¡Jugar!</a>
                 </div>
               </div>
