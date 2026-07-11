@@ -8,9 +8,11 @@ import {
   Volume2, 
   Smile, 
   Heart, 
-  List, 
   FileText, 
-  Activity
+  Activity,
+  Gamepad2,
+  Video,
+  Upload
 } from 'lucide-react';
 
 export default function App() {
@@ -22,16 +24,28 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
 
+  // --- ESTADO MÁGICO PARA EL VIDEO ---
+  const [videoUrl, setVideoUrl] = useState(null);
+
   // --- FUNCIÓN DE PRONUNCIACIÓN (LA BOCINA MÁGICA) ---
   const escucharPalabra = (textoEnIngles) => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(textoEnIngles);
       u.lang = 'en-US';
-      u.rate = 0.85; // Un poquito lento para practicar perfecto
+      u.rate = 0.85;
       window.speechSynthesis.speak(u);
     } else {
       alert("¡Tu navegador no tiene activada la magia de la voz!");
+    }
+  };
+
+  // --- FUNCIÓN PARA SUBIR EL VIDEO ---
+  const handleVideoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setVideoUrl(url);
     }
   };
 
@@ -138,7 +152,7 @@ export default function App() {
             { en: "Of course.", es: "Por supuesto." }
           ],
           gameUrl: "Dinámica de preguntas rápidas en el salón",
-          task: "Grabar un audio practicando las expresiones y preguntas que aprendieron en esta clase."
+          task: "Grabar un audio practicando las expresiones y preguntas que aprendieron en esta clase[cite: 6]."
         },
         {
           title: "CLASE 6: Despedir al Cliente de manera amable 👋💖",
@@ -153,7 +167,7 @@ export default function App() {
             { en: "We hope to see you again.", es: "Esperamos verla nuevamente." }
           ],
           gameUrl: "Evaluación del Gran Salón de Belleza",
-          task: "EVALUACIÓN FINAL (ROLE-PLAY): Hacer un juego completo con un compañero que incluya: Saludo, Explicación, Instrucciones, Precio/Duración y Despedida. ¡Se calificará sobre 10 puntos con la rúbrica oficial!"
+          task: "EVALUACIÓN FINAL (ROLE-PLAY): Hacer un juego completo con un compañero que incluya: Saludo, Explicación, Instrucciones, Precio/Duración y Despedida. ¡Se calificará sobre 10 puntos con la rúbrica oficial![cite: 7]"
         }
       ]
     }
@@ -183,7 +197,7 @@ export default function App() {
               <GraduationCap size={32} />
             </div>
             <h2 className="text-2xl font-black text-purple-900 text-center">Beauty English ✨</h2>
-            <p className="text-xs text-purple-600 font-bold bg-purple-50 px-3 py-1 rounded-full mt-1">👑 SALÓN INTERACTIVO ORDENADO 👑</p>
+            <p className="text-xs text-purple-600 font-bold bg-purple-50 px-3 py-1 rounded-full mt-1">👑 MÓDULO CON JUEGOS Y VIDEO 👑</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -212,7 +226,7 @@ export default function App() {
             <div className="bg-purple-600 p-2 rounded-xl text-white"><GraduationCap size={24} /></div>
             <div>
               <span className="font-black text-base text-purple-900 block leading-tight">Beauty English</span>
-              <span className="text-[10px] text-pink-500 font-bold tracking-wide uppercase">¡Todo organizado! 🎀</span>
+              <span className="text-[10px] text-pink-500 font-bold tracking-wide uppercase">¡Diversión Activa! 🎀</span>
             </div>
           </div>
 
@@ -226,7 +240,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* BARRA DE MENÚ DE COLORES (LAS SECCIONES QUE PEDISTE) */}
+      {/* BARRA DE MENÚ DE COLORES */}
       <div className="bg-purple-900 text-white p-2 sticky top-16 z-30 shadow-md">
         <div className="max-w-4xl mx-auto flex flex-wrap gap-1 justify-center">
           <button onClick={() => setActiveTab('dashboard')} className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${activeTab === 'dashboard' ? 'bg-pink-500 text-white shadow' : 'hover:bg-purple-800'}`}>🏠 Inicio</button>
@@ -234,37 +248,45 @@ export default function App() {
           <button onClick={() => setActiveTab('unit1')} className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${activeTab === 'unit1' ? 'bg-pink-500 text-white shadow' : 'hover:bg-purple-800'}`}>📦 Unit 1</button>
           <button onClick={() => setActiveTab('unit2')} className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${activeTab === 'unit2' ? 'bg-pink-500 text-white shadow' : 'hover:bg-purple-800'}`}>🛍️ Unit 2</button>
           <button onClick={() => setActiveTab('unit3')} className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${activeTab === 'unit3' ? 'bg-pink-500 text-white shadow' : 'hover:bg-purple-800'}`}>💬 Unit 3</button>
-          <button onClick={() => setActiveTab('activities')} className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${activeTab === 'activities' ? 'bg-pink-500 text-white shadow' : 'hover:bg-purple-800'}`}>🎯 Tareas/Actividades</button>
+          <button onClick={() => setActiveTab('activities')} className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${activeTab === 'activities' ? 'bg-pink-500 text-white shadow' : 'hover:bg-purple-800'}`}>🎯 Tareas</button>
           <button onClick={() => setActiveTab('vocabulary')} className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${activeTab === 'vocabulary' ? 'bg-pink-500 text-white shadow' : 'hover:bg-purple-800'}`}>🔊 Vocabulario</button>
+          <button onClick={() => setActiveTab('games')} className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${activeTab === 'games' ? 'bg-amber-500 text-purple-950 shadow scale-105' : 'hover:bg-purple-800'}`}>🕹️ Juegos</button>
         </div>
       </div>
 
       {/* CONTENIDO PRINCIPAL */}
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
         
-        {/* PESTAÑA: INICIO */}
+        {/* PESTAÑA: INICIO CON SUBIDA DE VIDEO */}
         {activeTab === 'dashboard' && (
-          <div className="space-y-6 text-center">
-            <div className="bg-gradient-to-r from-purple-600 to-pink-500 rounded-3xl p-8 text-white shadow-xl transform transition-all">
-              <h1 className="text-3xl font-black">¡Hola de nuevo, {currentUser.name}! ✨</h1>
-              <p className="text-purple-100 text-sm mt-2">¡Mira arriba! Tienes botones mágicos para ir directo a lo que buscas sin perderte nada.</p>
+          <div className="space-y-6">
+            <div className="bg-gradient-to-r from-purple-600 to-pink-500 rounded-3xl p-6 text-white shadow-xl text-center">
+              <h1 className="text-2xl font-black">¡Hola, {currentUser.name}! ✨</h1>
+              <p className="text-purple-100 text-xs mt-1">¡Ahora puedes subir tus videos practicando inglés y jugar en la nueva pestaña!</p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-white p-5 rounded-2xl shadow-sm border border-purple-100">
-                <span className="text-2xl">📖</span>
-                <h3 className="font-black text-purple-950 mt-1">3 Unidades Listas</h3>
-                <p className="text-xs text-slate-500">Clases de la 1 a la 6 completas.</p>
+
+            {/* RECUADRO MÁGICO PARA SUBIR UN VIDEO */}
+            <div className="bg-white border-2 border-purple-200 rounded-3xl p-6 shadow-sm text-center space-y-4">
+              <div className="flex flex-col items-center justify-center">
+                <Video className="text-pink-500 mb-2 animate-pulse" size={32} />
+                <h3 className="text-sm font-black text-purple-950">📺 El Televisor de Práctica</h3>
+                <p className="text-xs text-slate-500 max-w-xs mx-auto mt-0.5">¡Sube un video tuyo hablando inglés para verlo aquí en el salón!</p>
               </div>
-              <div className="bg-white p-5 rounded-2xl shadow-sm border border-purple-100">
-                <span className="text-2xl">🔊</span>
-                <h3 className="font-black text-purple-950 mt-1">Bocinas Activas</h3>
-                <p className="text-xs text-slate-500">Escucha la pronunciación cuando quieras.</p>
-              </div>
-              <div className="bg-white p-5 rounded-2xl shadow-sm border border-purple-100">
-                <span className="text-2xl">🏆</span>
-                <h3 className="font-black text-purple-950 mt-1">Rúbrica Final</h3>
-                <p className="text-xs text-slate-500">Lista para calificar el juego final.</p>
-              </div>
+
+              {!videoUrl ? (
+                <label className="mx-auto max-w-xs flex flex-col items-center justify-center border-2 border-dashed border-purple-300 hover:border-purple-500 bg-purple-50/50 p-4 rounded-xl cursor-pointer transition-all group">
+                  <Upload size={24} className="text-purple-600 group-hover:scale-110 transition-transform mb-1" />
+                  <span className="text-xs font-black text-purple-900">Seleccionar mi video</span>
+                  <input type="file" accept="video/*" onChange={handleVideoUpload} className="hidden" />
+                </label>
+              ) : (
+                <div className="space-y-2">
+                  <div className="rounded-xl overflow-hidden border-4 border-purple-900 max-w-md mx-auto shadow-md bg-black">
+                    <video src={videoUrl} controls className="w-full h-auto" />
+                  </div>
+                  <button onClick={() => setVideoUrl(null)} className="text-[10px] font-black text-rose-600 bg-rose-50 px-3 py-1 rounded-lg hover:bg-rose-100">❌ Quitar este video</button>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -276,8 +298,6 @@ export default function App() {
               <FileText className="text-purple-600" size={24} />
               <h2 className="text-xl font-black text-purple-950">SYLLABUS OFICIAL DEL CURSO 📋</h2>
             </div>
-            <p className="text-xs font-bold text-slate-600">Este es el mapa del tesoro de lo que aprendemos en el curso Beauty English: Keratin Talk.</p>
-            
             <div className="space-y-3 pt-2">
               <div className="p-3 bg-purple-50 rounded-xl border border-purple-100">
                 <h3 className="text-xs font-black text-purple-900">📦 UNIDAD 1: Welcome to the Client</h3>
@@ -291,23 +311,21 @@ export default function App() {
               </div>
               <div className="p-3 bg-amber-50 rounded-xl border border-amber-100">
                 <h3 className="text-xs font-black text-amber-900">💬 UNIDAD 3: Customer Interaction</h3>
-                <p className="text-[11px] text-slate-600 font-semibold mt-0.5">• Clase 5: Preguntar por alergias y si el cabello está teñido 💇‍♂️</p>
-                <p className="text-[11px] text-slate-600 font-semibold">• Clase 6: Despedida amable y Evaluación con Rúbrica Final 🏆</p>
+                <p className="text-[11px] text-slate-600 font-semibold mt-0.5">• Clase 5: Preguntar por alergias y si el cabello está teñido 💇‍♂️[cite: 6]</p>
+                <p className="text-[11px] text-slate-600 font-semibold">• Clase 6: Despedida amable y Evaluación con Rúbrica Final 🏆[cite: 7]</p>
               </div>
             </div>
           </div>
         )}
 
-        {/* FUNCIÓN AUXILIAR PARA RENDERIZAR UNA UNIDAD EN ESPECÍFICO */}
+        {/* PESTAÑAS DE UNIDADES INTERACTIVAS */}
         {['unit1', 'unit2', 'unit3'].includes(activeTab) && (
           <div className="space-y-4">
             {modules.filter((_, idx) => (activeTab === 'unit1' && idx === 0) || (activeTab === 'unit2' && idx === 1) || (activeTab === 'unit3' && idx === 2)).map(mod => (
               <div key={mod.id} className="space-y-4">
-                <div className="bg-purple-900 text-white p-4 rounded-2xl shadow-sm flex justify-between items-center">
-                  <div>
-                    <h2 className="text-xs font-black uppercase tracking-wider">{mod.title}</h2>
-                    <p className="text-[10px] text-purple-200 font-bold mt-0.5">{mod.duration}</p>
-                  </div>
+                <div className="bg-purple-900 text-white p-4 rounded-2xl shadow-sm">
+                  <h2 className="text-xs font-black uppercase tracking-wider">{mod.title}</h2>
+                  <p className="text-[10px] text-purple-200 font-bold mt-0.5">{mod.duration}</p>
                 </div>
 
                 {mod.lessons.map((les, index) => (
@@ -318,7 +336,6 @@ export default function App() {
                     </div>
 
                     <div className="space-y-2">
-                      <p className="text-[10px] font-black text-slate-400 uppercase">Vocabulario de la clase:</p>
                       <div className="grid grid-cols-1 gap-1.5">
                         {les.content.map((item, i) => (
                           <div key={i} className="bg-slate-50 p-2.5 rounded-xl flex justify-between items-center border border-slate-100">
@@ -370,7 +387,7 @@ export default function App() {
           </div>
         )}
 
-        {/* PESTAÑA: TAREAS / ACTIVIDADES */}
+        {/* PESTAÑA: TAREAS */}
         {activeTab === 'activities' && (
           <div className="bg-white border-2 border-purple-200 rounded-3xl p-6 shadow-sm space-y-4">
             <div className="flex items-center space-x-2 border-b-2 border-purple-100 pb-3">
@@ -378,30 +395,12 @@ export default function App() {
               <h2 className="text-xl font-black text-purple-950">TODAS LAS TAREAS DEL CURSO 🎯</h2>
             </div>
             <div className="space-y-3">
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                <span className="font-black text-xs text-purple-900 block">🔹 Clase 1: Greetings 👋</span>
-                <p className="text-xs text-slate-600 mt-1">Role-Play en Parejas: Estilista da la bienvenida y el Cliente responde amablemente.</p>
-              </div>
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                <span className="font-black text-xs text-purple-900 block">🔹 Clase 2: Explain the Process 🧪</span>
-                <p className="text-xs text-slate-600 mt-1">🎤 TAREA: Grabar un audio explicando el proceso completo usando First, Then, Next y Finally.</p>
-              </div>
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                <span className="font-black text-xs text-purple-900 block">🔹 Clase 3: Aftercare Instructions 🧴</span>
-                <p className="text-xs text-slate-600 mt-1">🎤 TAREA: Grabar un audio dando las instrucciones de cuidado después del tratamiento de keratina.</p>
-              </div>
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                <span className="font-black text-xs text-purple-900 block">🔹 Clase 4: Price and Time 💰</span>
-                <p className="text-xs text-slate-600 mt-1">🎭 ROLE-PLAY: Jugar con un compañero a preguntar precios, tiempos y formas de pago.</p>
-              </div>
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                <span className="font-black text-xs text-purple-900 block">🔹 Clase 5: Conversar con el Cliente 💇‍♂️</span>
-                <p className="text-xs text-slate-600 mt-1">🎤 TAREA OFICIAL: Grabar un audio practicando las expresiones y preguntas que aprendieron en esta clase[cite: 6].</p>
-              </div>
-              <div className="p-3 bg-purple-100 rounded-xl border border-purple-200">
-                <span className="font-black text-xs text-purple-950 block">🏆 Clase 6: EVALUACIÓN FINAL DE JUEGO DE ROLES[cite: 7]</span>
-                <p className="text-xs text-purple-900 mt-1 font-semibold">Hacer un juego completo con un compañero que incluya todo lo aprendido. ¡Se calificará sobre 10 puntos![cite: 7]</p>
-              </div>
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"><span className="font-black text-purple-900 block">🔹 Clase 1</span>Role-Play en Parejas: Saludos amables.</div>
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"><span className="font-black text-purple-900 block">🔹 Clase 2</span>Grabar un audio explicando el proceso completo (First, Then...).</div>
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"><span className="font-black text-purple-900 block">🔹 Clase 3</span>Grabar un audio dando instrucciones de cuidado (Sulfate-free).</div>
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"><span className="font-black text-purple-900 block">🔹 Clase 4</span>Preguntar precios, tiempos y formas de pago.</div>
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs"><span className="font-black text-purple-900 block">🔹 Clase 5</span>Grabar un audio con preguntas de alergias y cabello teñido[cite: 6].</div>
+              <div className="p-3 bg-purple-100 rounded-xl border border-purple-200 text-xs"><span className="font-black text-purple-950 block">🏆 Clase 6: EVALUACIÓN FINAL DE JUEGO DE ROLES[cite: 7]</span>Juego de roles completo desde que el cliente entra hasta que se va[cite: 7].</div>
             </div>
           </div>
         )}
@@ -413,17 +412,15 @@ export default function App() {
               <Volume2 className="text-purple-600" size={24} />
               <h2 className="text-xl font-black text-purple-950">DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
             </div>
-            <p className="text-xs font-bold text-slate-500">¡Aquí están todas las palabras reunidas! Presiona cualquier bocina morada para escuchar.</p>
-            
             <div className="space-y-4 pt-2">
               {modules.map(mod => (
                 <div key={mod.id} className="border-l-4 border-pink-400 pl-3 py-1">
-                  <h3 className="text-xs font-black text-purple-900 uppercase tracking-wider mb-2">{mod.title.split(":")[0]}</h3>
+                  <h3 className="text-xs font-black text-purple-900 uppercase mb-2">{mod.title.split(":")[0]}</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {mod.lessons.flatMap(l => l.content).map((item, idx) => (
-                      <div key={idx} className="bg-slate-50 p-2 rounded-xl flex justify-between items-center border border-slate-100 hover:bg-purple-50 transition-colors">
+                      <div key={idx} className="bg-slate-50 p-2 rounded-xl flex justify-between items-center border border-slate-100">
                         <div className="flex items-center space-x-2">
-                          <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-purple-600 text-white rounded-lg shadow-sm"><Volume2 size={12} /></button>
+                          <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-purple-600 text-white rounded-lg"><Volume2 size={12} /></button>
                           <span className="text-[12px] font-black text-purple-950">{item.en}</span>
                         </div>
                         <span className="text-[11px] font-bold text-slate-500">🗣️ {item.es}</span>
@@ -432,6 +429,52 @@ export default function App() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* 🕹️ NUEVA PESTAÑA: JUEGOS INTERACTIVOS DEL VOCABULARIO */}
+        {activeTab === 'games' && (
+          <div className="bg-white border-2 border-amber-300 rounded-3xl p-6 shadow-md space-y-6">
+            <div className="flex items-center space-x-2 border-b-2 border-amber-100 pb-3 text-center justify-center">
+              <Gamepad2 className="text-amber-500 animate-bounce" size={28} />
+              <h2 className="text-xl font-black text-amber-950">¡LA FERIA DE JUEGOS DE VOCABULARIO! 🎡🕹️</h2>
+            </div>
+            
+            <p className="text-xs font-bold text-slate-600 text-center">¡Haz clic en cualquiera de estas atracciones del salón para jugar y aprender!</p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* JUEGO 1: WORDWALL DIRECTO */}
+              <div className="bg-purple-50 border-2 border-purple-200 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2">
+                <span className="text-3xl">🎯</span>
+                <h3 className="text-xs font-black text-purple-950">El Gran Laberinto de Saludos</h3>
+                <p className="text-[11px] text-slate-500">Encuentra las palabras correctas para decir "¡Bienvenido!" en inglés.</p>
+                <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noreferrer" className="w-full text-center text-xs font-black bg-purple-600 text-white py-2 rounded-xl shadow-sm hover:bg-purple-700 transition-transform active:scale-95">🕹️ ¡Jugar en Wordwall!</a>
+              </div>
+
+              {/* JUEGO 2: LA RULETA LOCAL DE PALABRAS PRO */}
+              <div className="bg-pink-50 border-2 border-pink-200 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2">
+                <span className="text-3xl">🎡</span>
+                <h3 className="text-xs font-black text-pink-950">La Ruleta Loca del Salón</h3>
+                <p className="text-[11px] text-slate-500">¿Qué te tocará? Gira la ruleta imaginaria y practica decir en voz alta los pasos de la keratina.</p>
+                <button onClick={() => alert("🎡 ¡Girando la Ruleta Mágica! Te tocó: 'First, we wash your hair' 🧴 ¡Pica tu bocina en la Unidad 1 para escucharla!")} className="w-full text-center text-xs font-black bg-pink-500 text-white py-2 rounded-xl shadow-sm hover:bg-pink-600 transition-transform active:scale-95">🎰 ¡Girar la Ruleta!</button>
+              </div>
+
+              {/* JUEGO 3: MEMORIA DE TARJETAS */}
+              <div className="bg-amber-50 border-2 border-amber-200 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2">
+                <span className="text-3xl">🃏</span>
+                <h3 className="text-xs font-black text-amber-950">Adivina las Instrucciones</h3>
+                <p className="text-[11px] text-slate-500">Pon a prueba tu mente recordando qué significa "Don't tie your hair".</p>
+                <button onClick={() => alert("🃏 ¡Cartas volteadas! Recuerda: 'Don't wash your hair for 3 days' significa 'No lavar por 3 días'. ¡Tú puedes ganarle al juego!")} className="w-full text-center text-xs font-black bg-amber-500 text-purple-950 py-2 rounded-xl shadow-sm hover:bg-amber-600 transition-transform active:scale-95">🃏 Voltear Cartas</button>
+              </div>
+
+              {/* JUEGO 4: RETO RELÁMPAGO */}
+              <div className="bg-emerald-50 border-2 border-emerald-200 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2">
+                <span className="text-3xl">⚡</span>
+                <h3 className="text-xs font-black text-emerald-950">Desafío Final: Alergias</h3>
+                <p className="text-[11px] text-slate-500">¿Cómo le preguntas a un cliente si tiene alguna alergia antes de empezar?[cite: 6]</p>
+                <button onClick={() => { escucharPalabra("Do you have any allergies?"); alert("⚡ ¡Correcto! Se dice: 'Do you have any allergies?'[cite: 6] ¡Punto para ti!"); }} className="w-full text-center text-xs font-black bg-emerald-600 text-white py-2 rounded-xl shadow-sm hover:bg-emerald-700 transition-transform active:scale-95">⚡ Lanzar Desafío</button>
+              </div>
             </div>
           </div>
         )}
