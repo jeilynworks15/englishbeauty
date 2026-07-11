@@ -249,7 +249,7 @@ export default function App() {
             { en: "Good morning.", es: "Buenos días" },
             { en: "Good afternoon.", es: "Buenas tardes" },
             { en: "Welcome!", es: "¡Bienvenido(a)!" },
-            { en: "How are you?", es: "¿Cómo está?" },
+            { en: "How are you?", es: "How are you?" },
             { en: "My name is...", es: "Mi nombre es..." },
             { en: "Nice to meet you.", es: "Mucho gusto." },
             { en: "Please, have a seat.", es: "Por favor, tome asiento." },
@@ -397,8 +397,21 @@ export default function App() {
   const targetStudent = esProfesora ? selectedStudent : currentUser.username;
   const progresoActual = calcularProgreso(targetStudent);
 
+  // Generador de clases para los botones del menú lateral con excelente legibilidad
+  const getSidebarBtnClass = (tabId) => {
+    const isActive = activeTab === tabId;
+    if (isActive) {
+      return 'w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white shadow-md';
+    }
+    return `w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${
+      darkMode 
+        ? 'text-pink-100 hover:bg-slate-800 hover:text-pink-300' 
+        : 'text-purple-950 hover:bg-pink-100 hover:text-fuchsia-700'
+    }`;
+  };
+
   return (
-    <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-pink-50/20 text-slate-900'}`}>
+    <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-white' : 'bg-[#FFF2F5] text-slate-900'}`}>
       
       {/* --- HEADER ESTILO GLAM --- */}
       <header className={`border-b sticky top-0 z-40 shadow-sm transition-colors ${darkMode ? 'bg-slate-900 border-purple-950 text-white' : 'bg-white border-pink-100 text-slate-900'}`}>
@@ -429,17 +442,17 @@ export default function App() {
 
       <div className="flex flex-1 flex-col md:flex-row">
         
-        {/* --- 📁 MENÚ LATERAL VIBRANTE ROSA & MORADO --- */}
-        <aside className={`w-full md:w-56 p-4 flex flex-col gap-1.5 md:min-h-[calc(100vh-4rem)] md:sticky md:top-16 z-30 shadow-sm ${darkMode ? 'bg-slate-900 text-pink-100' : 'bg-gradient-to-b from-pink-50 to-purple-50 text-purple-950 border-r border-pink-100'}`}>
+        {/* --- 📁 MENÚ LATERAL VIBRANTE ROSA & MORADO SÓLIDO (Para evitar transparencias del navegador) --- */}
+        <aside className={`w-full md:w-56 p-4 flex flex-col gap-1.5 md:min-h-[calc(100vh-4rem)] md:sticky md:top-16 z-30 shadow-sm ${darkMode ? 'bg-slate-900 text-pink-100 border-r border-purple-950' : 'bg-[#FFF9FB] text-purple-950 border-r border-pink-100'}`}>
           <p className={`text-[10px] uppercase font-black tracking-wider mb-2 px-2 hidden md:block ${darkMode ? 'text-pink-300' : 'text-purple-500'}`}>Menú Principal</p>
           
-          <button onClick={() => setActiveTab('dashboard')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'dashboard' ? 'bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white shadow-md' : 'text-purple-950/80 hover:bg-pink-100 hover:text-pink-700 dark:hover:bg-slate-800 dark:text-slate-200'}`}><span>🏠</span> Inicio</button>
-          <button onClick={() => setActiveTab('unit1')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit1' ? 'bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white shadow-md' : 'text-purple-950/80 hover:bg-pink-100 hover:text-pink-700 dark:hover:bg-slate-800 dark:text-slate-200'}`}><span>📦</span> Unit 1</button>
-          <button onClick={() => setActiveTab('unit2')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit2' ? 'bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white shadow-md' : 'text-purple-950/80 hover:bg-pink-100 hover:text-pink-700 dark:hover:bg-slate-800 dark:text-slate-200'}`}><span>🛍️</span> Unit 2</button>
-          <button onClick={() => setActiveTab('unit3')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit3' ? 'bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white shadow-md' : 'text-purple-950/80 hover:bg-pink-100 hover:text-pink-700 dark:hover:bg-slate-800 dark:text-slate-200'}`}><span>💬</span> Unit 3</button>
-          <button onClick={() => setActiveTab('activities')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'activities' ? 'bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white shadow-md' : 'text-purple-950/80 hover:bg-pink-100 hover:text-pink-700 dark:hover:bg-slate-800 dark:text-slate-200'}`}><span>🎒</span> Mochila de Tareas</button>
-          <button onClick={() => setActiveTab('gradesTab')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'gradesTab' ? 'bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white shadow-md' : 'text-purple-950/80 hover:bg-pink-100 hover:text-pink-700 dark:hover:bg-slate-800 dark:text-slate-200'}`}><span>⭐</span> Calificaciones</button>
-          <button onClick={() => setActiveTab('vocabulary')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'vocabulary' ? 'bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white shadow-md' : 'text-purple-950/80 hover:bg-pink-100 hover:text-pink-700 dark:hover:bg-slate-800 dark:text-slate-200'}`}><span>🔊</span> Vocabulario</button>
+          <button onClick={() => setActiveTab('dashboard')} className={getSidebarBtnClass('dashboard')}><span>🏠</span> Inicio</button>
+          <button onClick={() => setActiveTab('unit1')} className={getSidebarBtnClass('unit1')}><span>📦</span> Unit 1</button>
+          <button onClick={() => setActiveTab('unit2')} className={getSidebarBtnClass('unit2')}><span>🛍️</span> Unit 2</button>
+          <button onClick={() => setActiveTab('unit3')} className={getSidebarBtnClass('unit3')}><span>💬</span> Unit 3</button>
+          <button onClick={() => setActiveTab('activities')} className={getSidebarBtnClass('activities')}><span>🎒</span> Mochila de Tareas</button>
+          <button onClick={() => setActiveTab('gradesTab')} className={getSidebarBtnClass('gradesTab')}><span>⭐</span> Calificaciones</button>
+          <button onClick={() => setActiveTab('vocabulary')} className={getSidebarBtnClass('vocabulary')}><span>🔊</span> Vocabulario</button>
           
           <div className="border-t border-pink-200 dark:border-slate-800 my-2 pt-2">
             <button onClick={() => setActiveTab('games')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'games' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md' : 'bg-purple-100/60 text-purple-950 hover:bg-purple-200/80 border border-purple-200 dark:border-none'}`}><span>🕹️</span> Área de Juegos</button>
@@ -461,7 +474,7 @@ export default function App() {
               {!esProfesora && (
                 <div className={`border rounded-3xl p-5 shadow-md space-y-3 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-pink-100'}`}>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs font-black flex items-center gap-1 text-purple-950 dark:text-slate-300">📊 Progreso de tus Tareas</span>
+                    <span className={`text-xs font-black flex items-center gap-1 ${darkMode ? 'text-slate-300' : 'text-purple-950'}`}>📊 Progreso de tus Tareas</span>
                     <span className="text-xs font-black text-fuchsia-700 bg-pink-50 dark:bg-purple-950 px-2 py-0.5 rounded-md border border-pink-100 dark:border-none">{progresoActual}%</span>
                   </div>
                   <div className="w-full bg-pink-50/50 dark:bg-slate-800 rounded-full h-3.5 overflow-hidden p-0.5 border border-pink-100 dark:border-slate-700">
@@ -518,23 +531,24 @@ export default function App() {
                     const recordCalificacion = grades[targetStudent]?.[les.taskKey];
                     return (
                       <div key={index} className={`border rounded-2xl p-5 shadow-lg space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-pink-100'}`}>
-                        <h3 className="text-base font-black text-purple-950 dark:text-white">{les.title}</h3>
+                        <h3 className={`text-base font-black ${darkMode ? 'text-white' : 'text-purple-950'}`}>{les.title}</h3>
                         
-                        <p className={`text-xs font-bold p-3 rounded-lg italic border leading-relaxed ${darkMode ? 'bg-slate-800 text-slate-100 border-slate-700' : 'bg-purple-50/50 text-purple-900 border-purple-100'}`}>{les.objective}</p>
+                        <p className={`text-xs font-bold p-3 rounded-lg italic border leading-relaxed ${darkMode ? 'bg-slate-800 text-slate-100 border-slate-700' : 'bg-purple-50 text-purple-950 border-purple-100'}`}>{les.objective}</p>
 
                         <div className="grid grid-cols-1 gap-2.5">
                           {les.content.map((item, i) => (
                             <div key={i} className={`p-3.5 rounded-xl flex justify-between items-center border shadow-sm transition-all ${darkMode ? 'border-purple-950 bg-slate-900 text-white' : 'border-pink-100 bg-white text-slate-800 hover:border-pink-300'}`}>
                               <div className="flex items-center space-x-2">
-                                <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white rounded-lg hover:opacity-95 shadow-sm"><Volume2 size={14} /></button>
-                                <span className="text-xs font-bold text-slate-900 dark:text-white">{item.en}</span>
+                                <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white rounded-lg hover:opacity-90 shadow-sm"><Volume2 size={14} /></button>
+                                {/* TEXTO EN INGLÉS SÓLIDO: Se fuerza el color de texto según darkMode local de React para evitar bugs del navegador */}
+                                <span className={`text-xs font-bold ${darkMode ? 'text-white' : 'text-slate-900'}`}>{item.en}</span>
                               </div>
                               <span className={`text-[12px] font-black px-3 py-1 rounded-md border ${darkMode ? 'text-pink-300 bg-purple-950 border-purple-900' : 'text-purple-950 bg-pink-50 border-pink-100'}`}>🗣 {item.es}</span>
                             </div>
                           ))}
                         </div>
 
-                        <div className={`p-4 rounded-xl border text-xs transition-all ${darkMode ? 'bg-slate-900 border-purple-950 text-amber-200' : 'bg-amber-50/40 border-amber-200 text-slate-800'}`}>
+                        <div className={`p-4 rounded-xl border text-xs transition-all ${darkMode ? 'bg-slate-900 border-purple-950 text-amber-200' : 'bg-[#FFFDF5] border-amber-200 text-slate-800'}`}>
                           <p className={`font-black uppercase tracking-wide text-xs ${darkMode ? 'text-pink-400' : 'text-fuchsia-800'}`}>🎯 Actividad Obligatoria:</p>
                           <p className="my-2 font-bold text-xs leading-relaxed">{les.task}</p>
                           
@@ -605,7 +619,7 @@ export default function App() {
                   return (
                     <div key={key} className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md transition-all ${darkMode ? 'border-purple-950 bg-purple-950/20 text-white' : 'border-pink-100 bg-pink-50/30 text-slate-800'}`}>
                       <div className="text-xs max-w-md space-y-1">
-                        <span className="font-black block leading-relaxed text-xs text-purple-950 dark:text-pink-300">{infoTareas[key]}</span>
+                        <span className={`font-black block leading-relaxed text-xs ${darkMode ? 'text-pink-300' : 'text-purple-950'}`}>{infoTareas[key]}</span>
                         <span className="font-bold block text-[11px] text-slate-500">Mochila de: <b className="text-fuchsia-950 dark:text-slate-300 font-black">{targetStudent.toUpperCase()}</b></span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
@@ -677,9 +691,9 @@ export default function App() {
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
                     const studentRecord = grades[currentUser.username]?.[key] || { nota: '-', comentario: '' };
                     return (
-                      <div key={key} className={`p-4 rounded-2xl text-xs font-bold flex flex-col gap-2 border shadow-md ${darkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-pink-50/30 border-pink-100 text-slate-800'}`}>
+                      <div key={key} className={`p-4 rounded-2xl text-xs font-bold flex flex-col gap-2 border shadow-md ${darkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-[#FFF9FB] border-pink-100 text-slate-800'}`}>
                         <div className="flex justify-between items-start gap-4">
-                          <span className="font-black leading-relaxed text-purple-950 dark:text-pink-300">{infoTareas[key]}</span>
+                          <span className={`font-black leading-relaxed ${darkMode ? 'text-pink-300' : 'text-purple-950'}`}>{infoTareas[key]}</span>
                           <span className="bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white font-black px-2.5 py-1 rounded-lg text-xs shrink-0 shadow-sm">Nota: {studentRecord.nota} / 10</span>
                         </div>
                         {studentRecord.comentario && (
@@ -704,14 +718,15 @@ export default function App() {
               
               <div className="space-y-6 pt-2">
                 {modules.map(mod => (
-                  <div key={mod.id} className={`border-l-4 border-fuchsia-500 pl-3 py-1 rounded-r-xl p-2 ${darkMode ? 'bg-transparent' : 'bg-pink-50/10'}`}>
+                  <div key={mod.id} className={`border-l-4 border-fuchsia-500 pl-3 py-1 rounded-r-xl p-2 ${darkMode ? 'bg-transparent' : 'bg-[#FFF5F7]'}`}>
                     <h3 className={`text-xs font-black uppercase mb-3 tracking-wider ${darkMode ? 'text-pink-400' : 'text-fuchsia-900'}`}>{mod.title}</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {mod.lessons.flatMap(l => l.content).map((item, idx) => (
                         <div key={idx} className={`p-3 rounded-xl flex justify-between items-center border shadow-sm transition-all ${darkMode ? 'border-purple-950 bg-slate-900 text-white' : 'border-pink-100 bg-white text-slate-800 hover:border-pink-300'}`}>
                           <div className="flex items-center space-x-2">
                             <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white rounded-lg hover:opacity-90 shrink-0"><Volume2 size={12} /></button>
-                            <span className="text-[12px] font-bold leading-tight text-slate-900 dark:text-white">{item.en}</span>
+                            {/* TEXTO EN INGLÉS SÓLIDO EN EL DICCIONARIO */}
+                            <span className={`text-[12px] font-bold leading-tight ${darkMode ? 'text-white' : 'text-slate-900'}`}>{item.en}</span>
                           </div>
                           <span className={`text-[11px] font-black px-2.5 py-1 rounded border shrink-0 text-right ${darkMode ? 'text-pink-300 bg-purple-950 border-purple-900' : 'text-purple-950 bg-pink-50 border-pink-100'}`}>🗣️ {item.es}</span>
                         </div>
@@ -727,22 +742,22 @@ export default function App() {
             <div className={`border rounded-3xl p-6 shadow-lg space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-pink-100'}`}>
               <h2 className="text-xl font-black text-center text-fuchsia-600 dark:text-pink-400">🎡 LA FERIA DE JUEGOS DE VOCABULARIO 🕹️</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
-                <div className="border border-pink-100 dark:border-slate-800 p-4 rounded-2xl bg-pink-50/20 dark:bg-slate-800 text-center space-y-2 shadow-sm">
+                <div className="border border-pink-100 dark:border-slate-800 p-4 rounded-2xl bg-[#FFF9FB] dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">🎯</span>
                   <h4 className="text-xs font-black text-purple-950 dark:text-white">Saludos (Clase 1)</h4>
                   <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white py-1.5 rounded-xl hover:opacity-95">¡Jugar Wordwall!</a>
                 </div>
-                <div className="border border-pink-100 dark:border-slate-800 p-4 rounded-2xl bg-pink-50/20 dark:bg-slate-800 text-center space-y-2 shadow-sm">
+                <div className="border border-pink-100 dark:border-slate-800 p-4 rounded-2xl bg-[#FFF9FB] dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">🧪</span>
                   <h4 className="text-xs font-black text-purple-950 dark:text-white">Proceso (Clase 2)</h4>
                   <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white py-1.5 rounded-xl hover:opacity-95">¡Jugar Interacty!</a>
                 </div>
-                <div className="border border-pink-100 dark:border-slate-800 p-4 rounded-2xl bg-pink-50/20 dark:bg-slate-800 text-center space-y-2 shadow-sm">
+                <div className="border border-pink-100 dark:border-slate-800 p-4 rounded-2xl bg-[#FFF9FB] dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">🧴</span>
                   <h4 className="text-xs font-black text-purple-950 dark:text-white">Cuidado (Clase 3)</h4>
                   <a href="https://wordwall.net/resource/116065664" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white py-1.5 rounded-xl hover:opacity-95">¡Jugar Wordwall!</a>
                 </div>
-                <div className="border border-pink-100 dark:border-slate-800 p-4 rounded-2xl bg-pink-50/20 dark:bg-slate-800 text-center space-y-2 shadow-sm">
+                <div className="border border-pink-100 dark:border-slate-800 p-4 rounded-2xl bg-[#FFF9FB] dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">💰</span>
                   <h4 className="text-xs font-black text-purple-950 dark:text-white">Precios (Clase 4)</h4>
                   <a href="https://create.kahoot.it/share/class-5/16e72ba0-e8fc-4910-9400-b7a3c94c3586" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white py-1.5 rounded-xl hover:opacity-95">¡Jugar Kahoot!</a>
