@@ -17,7 +17,7 @@ import {
   Moon,
   FileCheck,
   Eye,
-  Star // ⭐ Agregamos el icono de estrella para las notas
+  Star
 } from 'lucide-react';
 
 export default function App() {
@@ -43,8 +43,7 @@ export default function App() {
     clase6: null
   });
 
-  // --- 🌟 NUEVO ESTADO: EL CUADERNO DE CALIFICACIONES MÁGICAS 🌟 ---
-  // Guarda las notas que las Misses le ponen a cada estudiante
+  // --- CUADERNO DE CALIFICACIONES MÁGICAS ---
   const [grades, setGrades] = useState({
     jean: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
     ricardo: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' },
@@ -54,7 +53,7 @@ export default function App() {
     melany: { clase2: '-', clase3: '-', clase5: '-', clase6: '-' }
   });
 
-  // Estado temporal para saber a qué alumno está revisando la Miss
+  // Estado temporal para la revisión de las Misses
   const [selectedStudent, setSelectedStudent] = useState('jean');
 
   // --- FUNCIÓN DE PRONUNCIACIÓN ---
@@ -99,7 +98,7 @@ export default function App() {
     }
   };
 
-  // --- 🌟 NUEVA FUNCIÓN: PARA QUE LAS MISSES PONGAN NOTAS 🌟 ---
+  // --- FUNCIÓN PARA ASIGNAR NOTAS ---
   const asignarNota = (estudiante, claseKey, nota) => {
     setGrades(prev => ({
       ...prev,
@@ -189,7 +188,7 @@ export default function App() {
             { en: "Don't get your hair wet.", es: "No moje su cabello." },
             { en: "Use sulfate-free shampoo.", es: "Use un shampoo sin sulfatos." }
           ],
-          gameUrl: "https://wordwall.net/resource/116065664", // 🌟 ¡AQUÍ ESTÁ TU NUEVO LINK MÁGICO!
+          gameUrl: "https://wordwall.net/resource/116065664",
           task: "Grabar un audio dando las instrucciones de cuidado después del tratamiento de keratina.",
           taskKey: "clase3"
         },
@@ -197,13 +196,13 @@ export default function App() {
           title: "CLASE 4: Price and Time (Hablar sobre Precio y Tiempo) 💰", 
           objective: "Objetivo: Al finalizar la clase, podrás informar el precio, la duración del tratamiento y las formas de pago en una conversation sencilla.",
           content: [
-            { en: "The price is $40.", es: "The price is $40." },
+            { en: "The price is $40.", es: "El precio es $40." },
             { en: "The treatment takes around two hours.", es: "El tratamiento dura aproximadamente dos horas." },
-            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutes." },
+            { en: "We will finish in 30 minutes.", es: "Terminaremos en 30 minutos." },
             { en: "You can pay by cash.", es: "Puede pagar en efectivo." },
             { en: "You can pay by card.", es: "Puede pagar con tarjeta." }
           ],
-          gameUrl: "Role-Play de la Tiendita en Clase",
+          gameUrl: "https://wordwall.net/resource/116065924", // 🌟 ¡AQUÍ ESTÁ TU NUEVO LINK DE LA CLASE 4!
           task: "ROLE-PLAY: Jugar con un compañero a preguntar precios, tiempos y formas de pago."
         }
       ]
@@ -278,7 +277,7 @@ export default function App() {
               <GraduationCap size={32} />
             </div>
             <h2 className={`text-2xl font-black text-center ${darkMode ? 'text-purple-300' : 'text-purple-900'}`}>Beauty English ✨</h2>
-            <p className="text-xs text-purple-600 font-bold bg-purple-50 px-3 py-1 rounded-full mt-1">👑 MODO NOTAS Y JUEGO NUEVO ACTIVADO 👑</p>
+            <p className="text-xs text-purple-600 font-bold bg-purple-50 px-3 py-1 rounded-full mt-1">👑 FERIA DE JUEGOS EXPANDIDA 👑</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -340,10 +339,7 @@ export default function App() {
           <button onClick={() => setActiveTab('unit2')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit2' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}><span>🛍️</span> Unit 2</button>
           <button onClick={() => setActiveTab('unit3')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'unit3' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}><span>💬</span> Unit 3</button>
           <button onClick={() => setActiveTab('activities')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'activities' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}><span>🎒</span> Mochila de Tareas</button>
-          
-          {/* 🌟 PESTAÑA DE CALIFICACIONES ACCESIBLE PARA TODOS 🌟 */}
           <button onClick={() => setActiveTab('gradesTab')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'gradesTab' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}><span>⭐</span> Calificaciones</button>
-          
           <button onClick={() => setActiveTab('vocabulary')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'vocabulary' ? 'bg-pink-500 text-white shadow-md' : 'hover:bg-purple-900/50'}`}><span>🔊</span> Vocabulario</button>
           
           <div className="border-t border-purple-900 my-2 pt-2">
@@ -357,7 +353,7 @@ export default function App() {
             <div className="space-y-6">
               <div className="bg-gradient-to-r from-purple-600 to-pink-500 rounded-3xl p-6 text-white shadow-xl text-center">
                 <h1 className="text-2xl font-black">¡Hola, {currentUser.name}! ✨</h1>
-                <p className="text-purple-100 text-xs mt-1">¡Nuevo juego añadido en la Clase 3 y registro de calificaciones sobre 10!</p>
+                <p className="text-purple-100 text-xs mt-1">¡Nuevo juego añadido en la Clase 4! Diviértete aprendiendo sobre precios y tiempo.</p>
               </div>
 
               <div className={`border-2 rounded-3xl p-6 shadow-sm text-center space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
@@ -468,7 +464,6 @@ export default function App() {
                               <p className="text-[10px] text-emerald-500 font-bold mt-1">✅ Listo: {uploadedTasks[les.taskKey].name}</p>
                             )}
 
-                            {/* Muestra la calificación si ya fue asignada */}
                             {!esProfesora && (
                               <p className="text-[11px] font-black text-purple-600 mt-2 bg-purple-50 p-1.5 rounded-md inline-block">
                                 ⭐ Mi Calificación: {grades[currentUser.username]?.[les.taskKey] || '-'} / 10
@@ -529,7 +524,6 @@ export default function App() {
             </div>
           )}
 
-          {/* 🌟 📋 NUEVA VISTA CENTRAL DE CALIFICACIONES 🌟 */}
           {activeTab === 'gradesTab' && (
             <div className={`border-2 rounded-3xl p-6 shadow-sm space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-200'}`}>
               <div className="flex items-center space-x-2 border-b-2 border-purple-100 pb-3">
@@ -628,7 +622,7 @@ export default function App() {
                 <Gamepad2 className="text-amber-500 animate-bounce" size={28} />
                 <h2 className="text-xl font-black">¡LA FERIA DE JUEGOS DE VOCABULARIO! 🎡🕹️</h2>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4"> {/* Cambiado a grid-cols-3 para acomodar el tercer juego */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"> {/* Cambiado el diseño de cuadricula para que entren los 4 juegos ordenados */}
                 <div className={`border-2 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2 ${darkMode ? 'bg-slate-800 border-purple-900' : 'bg-purple-50 border-purple-200'}`}>
                   <span className="text-3xl">🎯</span>
                   <h3 className="text-xs font-black">El Gran Laberinto de Saludos (Clase 1)</h3>
@@ -639,11 +633,16 @@ export default function App() {
                   <h3 className="text-xs font-black">El Proceso de la Keratina (Clase 2)</h3>
                   <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noreferrer" className="w-full text-center text-xs font-black bg-pink-500 text-white py-2 rounded-xl shadow-sm">🕹️ ¡Jugar!</a>
                 </div>
-                {/* 🌟 ¡NUEVO JUEGO DE LA CLASE 3 AGREGADO A LA FERIA! 🌟 */}
                 <div className={`border-2 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2 ${darkMode ? 'bg-slate-800 border-amber-900' : 'bg-amber-50 border-amber-200'}`}>
                   <span className="text-3xl">🧴</span>
                   <h3 className="text-xs font-black">Instrucciones de Cuidado (Clase 3)</h3>
                   <a href="https://wordwall.net/resource/116065664" target="_blank" rel="noreferrer" className="w-full text-center text-xs font-black bg-amber-500 text-white py-2 rounded-xl shadow-sm">🕹️ ¡Jugar!</a>
+                </div>
+                {/* 🌟 ¡EL NUEVO JUEGO DE PRECIOS Y DURACIÓN EN LA FERIA! 🌟 */}
+                <div className={`border-2 p-4 rounded-2xl flex flex-col justify-between items-center text-center space-y-2 ${darkMode ? 'bg-slate-800 border-emerald-900' : 'bg-emerald-50 border-emerald-200'}`}>
+                  <span className="text-3xl">💰</span>
+                  <h3 className="text-xs font-black">Precio y Tiempo en el Salón (Clase 4)</h3>
+                  <a href="https://wordwall.net/resource/116065924" target="_blank" rel="noreferrer" className="w-full text-center text-xs font-black bg-emerald-600 text-white py-2 rounded-xl shadow-sm">🕹️ ¡Jugar!</a>
                 </div>
               </div>
             </div>
