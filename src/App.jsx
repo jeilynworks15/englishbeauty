@@ -67,7 +67,7 @@ export default function App() {
   const [toast, setToast] = useState({
     show: false,
     message: '',
-    type: 'success' // 'success' o 'error'
+    type: 'success' 
   });
 
   const showToast = (message, type = 'success') => {
@@ -84,6 +84,7 @@ export default function App() {
     yaritza: { clase2: null, clase3: null, clase5: null, clase6: null },
     annelys: { clase2: null, clase3: null, clase5: null, clase6: null },
     melany: { clase2: null, clase3: null, clase5: null, clase6: null },
+    legna: { clase2: null, clase3: null, clase5: null, clase6: null }, // ¡Bienvenida Legna! 🌸
   });
 
   const [grades, setGrades] = useState({
@@ -92,7 +93,8 @@ export default function App() {
     victoria: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
     yaritza: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
     annelys: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
-    melany: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } }
+    melany: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+    legna: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } } // ¡Calificaciones para Legna! 🎀
   });
 
   const [selectedStudent, setSelectedStudent] = useState('jean');
@@ -134,7 +136,7 @@ export default function App() {
       const { data: tareasDB, error: err1 } = await supabase.from('tareas').select('*');
       if (!err1 && tareasDB) {
         const clonTareas = {
-          jean: {}, ricardo: {}, victoria: {}, yaritza: {}, annelys: {}, melany: {}
+          jean: {}, ricardo: {}, victoria: {}, yaritza: {}, annelys: {}, melany: {}, legna: {}
         };
         tareasDB.forEach(t => {
           if (clonTareas[t.estudiante]) {
@@ -148,9 +150,9 @@ export default function App() {
       const { data: notasDB, error: err2 } = await supabase.from('calificaciones').select('*');
       if (!err2 && notasDB) {
         const clonNotas = {
-          jean: {}, ricardo: {}, victoria: {}, yaritza: {}, annelys: {}, melany: {}
+          jean: {}, ricardo: {}, victoria: {}, yaritza: {}, annelys: {}, melany: {}, legna: {}
         };
-        ['jean', 'ricardo', 'victoria', 'yaritza', 'annelys', 'melany'].forEach(est => {
+        ['jean', 'ricardo', 'victoria', 'yaritza', 'annelys', 'melany', 'legna'].forEach(est => {
           clonNotas[est] = {};
           ['clase2', 'clase3', 'clase5', 'clase6'].forEach(cl => {
             clonNotas[est][cl] = { nota: '-', comentario: '' };
@@ -164,7 +166,7 @@ export default function App() {
         setGrades(clonNotas);
       }
 
-      // 3. Traer video de bienvenida desde tabla configuraciones
+      // 3. Traer video de bienvenida
       const { data: videoDB, error: err3 } = await supabase.from('configuracion').select('*').eq('clave', 'welcoming_video');
       if (!err3 && videoDB && videoDB.length > 0) {
         const videoData = JSON.parse(videoDB[0].valor);
@@ -274,7 +276,6 @@ export default function App() {
     }
 
     let processedUrl = videoInputUrl.trim();
-    // Convertir enlaces normales de youtube a formato embed
     if (processedUrl.includes('youtube.com/watch?v=')) {
       const videoId = processedUrl.split('v=')[1]?.split('&')[0];
       processedUrl = `https://www.youtube.com/embed/${videoId}`;
@@ -308,7 +309,7 @@ export default function App() {
   const handleVideoFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 15 * 1024 * 1024) { // límite de 15MB para base64
+      if (file.size > 15 * 1024 * 1024) { 
         showToast("Este video es muy gigante. Para videos grandes usa un enlace de YouTube. 🦕", "error");
         return;
       }
@@ -351,7 +352,8 @@ export default function App() {
     'victoria': { username: 'victoria', name: "Victoria", role: "Estudiante" },
     'yaritza': { username: 'yaritza', name: "Yaritza", role: "Estudiante" },
     'annelys': { username: 'annelys', name: "Annelys", role: "Estudiante" },
-    'melany': { username: 'melany', name: "Melany", role: "Estudiante" }
+    'melany': { username: 'melany', name: "Melany", role: "Estudiante" },
+    'legna': { username: 'legna', name: "Legna", role: "Estudiante" } // ¡Legna registrada con éxito! ✨
   };
 
   const estudiantesLista = [
@@ -360,7 +362,8 @@ export default function App() {
     { id: 'victoria', name: 'Victoria' },
     { id: 'yaritza', name: 'Yaritza' },
     { id: 'annelys', name: 'Annelys' },
-    { id: 'melany', name: 'Melany' }
+    { id: 'melany', name: 'Melany' },
+    { id: 'legna', name: 'Legna' } // ¡Legna en la lista escolar! 📝
   ];
 
   const infoTareas = {
@@ -491,7 +494,7 @@ export default function App() {
     { en: "Don't wash your hair for 3 days.", es: "No lave su cabello durante 3 días.", cat: "cuidados" },
     { en: "Don't tie your hair.", es: "No se recoja el cabello.", cat: "cuidados" },
     { en: "The price is $40.", es: "El precio es $40.", cat: "precio" },
-    { en: "The treatment takes around two hours.", es: "The treatment takes around two hours.", cat: "precio" },
+    { en: "The treatment takes around two hours.", es: "El tratamiento dura alrededor de dos horas.", cat: "precio" },
     { en: "You can pay by cash.", es: "Puede pagar en efectivo.", cat: "precio" },
     { en: "Is this your first keratin treatment?", es: "¿Es este su primer tratamiento de keratina?", cat: "interaccion" },
     { en: "Do you have any allergies?", es: "¿Tiene alguna alergia?", cat: "interaccion" },
@@ -680,7 +683,8 @@ export default function App() {
               <div className="bg-gradient-to-r from-pink-500 to-purple-600 p-6 rounded-3xl text-white shadow-lg relative overflow-hidden">
                 <Sparkles className="absolute right-4 top-4 text-pink-200 animate-spin" size={48} />
                 <h1 className="text-2xl font-black">¡Bienvenida de vuelta, {currentUser.name}! 💇‍♀️✨</h1>
-                <p className="text-xs mt-1.5 font-bold">¡Toda la magia del diseño, del vocabulario y tus juegos ha regresado! Aquí tienes tus carpetas de clases, tu mochila conectada a la nube, y tu reproductor de cine.</p>
+                {/* TEXTO PERSONALIZADO SEGÚN TU DESEO MÁGICO */}
+                <p className="text-xs mt-1.5 font-bold">Disfruta cada etapa de tu aprendizaje con los juegos interactivos y más</p>
               </div>
 
               {/* SECCIÓN REPRODUCTOR DE VIDEO DE BIENVENIDA */}
@@ -689,7 +693,8 @@ export default function App() {
                   <Video className="text-pink-600 animate-pulse" size={18} />
                   Cine Mágico: Video de Bienvenida 🎬🌸
                 </h2>
-                <p className="text-[11px] text-slate-500 font-bold">¡Mira este súper video para aprender con alegría todo lo que tenemos hoy!</p>
+                {/* SUBTÍTULO PERSONALIZADO SEGÚN TU DESEO MÁGICO */}
+                <p className="text-[11px] text-slate-500 font-bold">Con nosotras aprenderás de forma práctica y sencilla. Somos un equipo</p>
 
                 {/* VISUALIZADOR DE VIDEO */}
                 <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-slate-950 border-4 border-pink-100 dark:border-slate-800 shadow-md">
@@ -869,7 +874,7 @@ export default function App() {
                               <DownloadCloud size={12} /> Descargar PDF enviado 👁️
                             </a>
                             
-                            {/* BOTÓN MAGICO DE BORRAR PDF TAREA - ¡SÓLO PARA ESTUDIANTES! */}
+                            {/* BOTÓN MÁGICO DE BORRAR PDF TAREA - ¡SÓLO PARA ESTUDIANTES! */}
                             {!esProfesora && (
                               <button 
                                 onClick={() => openDeleteConfirmModal(key, targetStudent)} 
@@ -1095,7 +1100,7 @@ export default function App() {
         </main>
       </div>
 
-      {/* MODAL DE CONFIRMACIÓN DE BORRADO DE PDF (PERSONALIZADO DE HADAS) */}
+      {/* MODAL DE CONFIRMACIÓN DE BORRADO DE PDF */}
       {deleteConfirm.show && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-slide-in">
           <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl max-w-sm w-full border border-pink-300 dark:border-pink-800 shadow-2xl text-center space-y-4">
