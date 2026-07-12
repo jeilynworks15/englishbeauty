@@ -20,7 +20,9 @@ import {
   Heart,
   UploadCloud,
   Video,
-  Link
+  Link,
+  Music,
+  Send
 } from 'lucide-react';
 
 const SUPABASE_URL = 'https://fiuphtskrnwdftsrspip.supabase.co'; 
@@ -56,6 +58,21 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('inicio');
   const [searchTerm, setSearchTerm] = useState('');
   const [activeVocabFilter, setActiveVocabFilter] = useState('todos');
+
+  // Estado para el Mural de Música Feliz
+  const [musicList, setMusicList] = useState(() => {
+    const savedMusic = localStorage.getItem('beauty_salon_music_list');
+    return savedMusic ? JSON.parse(savedMusic) : {
+      jean: { nombre_cancion: 'Happy 🌸', enlace: 'https://www.youtube.com/watch?v=ZbZSe6N_BXs', likes: ['ricardo'], comentarios: [{ usuario: 'ricardo', nombre: 'Ricardo', texto: '¡Qué gran ritmo Jean!' }] },
+      ricardo: { nombre_cancion: 'Can\'t Stop the Feeling! ⚡', enlace: 'https://www.youtube.com/watch?v=ru0K8uYEZWw', likes: ['jean'], comentarios: [] },
+      legna: { nombre_cancion: 'Sparkle 🎀', enlace: 'https://www.youtube.com/watch?v=a2GujJZfALL', likes: [], comentarios: [] },
+      daniela: { nombre_cancion: 'A Thousand Years ✨', enlace: 'https://www.youtube.com/watch?v=rtOvBOTyX00', likes: [], comentarios: [] }
+    };
+  });
+
+  const [newSongName, setNewSongName] = useState('');
+  const [newSongUrl, setNewSongUrl] = useState('');
+  const [commentInput, setCommentInput] = useState({});
 
   const [deleteConfirm, setDeleteConfirm] = useState({
     show: false,
@@ -173,8 +190,24 @@ export default function App() {
         setWelcomingVideo(videoData);
         localStorage.setItem('beauty_salon_welcoming_video', JSON.stringify(videoData));
       }
+
+      // 4. Traer canciones felices
+      const { data: cancionesDB, error: err4 } = await supabase.from('canciones_felices').select('*');
+      if (!err4 && cancionesDB) {
+        const clonCanciones = { ...musicList };
+        cancionesDB.forEach(c => {
+          clonCanciones[c.usuario] = {
+            nombre_cancion: c.nombre_cancion,
+            enlace: c.enlace,
+            likes: typeof c.likes === 'string' ? JSON.parse(c.likes) : (c.likes || []),
+            comentarios: typeof c.comentarios === 'string' ? JSON.parse(c.comentarios) : (c.comentarios || [])
+          };
+        });
+        setMusicList(clonCanciones);
+        localStorage.setItem('beauty_salon_music_list', JSON.stringify(clonCanciones));
+      }
     } catch (e) {
-      console.log("Error al traer datos de la nube:", e);
+      console.log("Error al traer datos de la nube, usando almacenamiento local mágico:", e);
     }
     setLoadingCloud(false);
   };
@@ -339,6 +372,129 @@ export default function App() {
         setUploadingVideo(false);
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  // Métodos mágicos de la sección de Música
+  const handleGuardarCancion = async () => {
+    if (!newSongName.trim() || !newSongUrl.trim()) {
+      showToast("Por favor pon un nombre y enlace de tu canción 🎵", "error");
+      return;
+    }
+
+    const autor = currentUser.username;
+    const cancionActualizada = {
+      nombre_cancion: newSongName.trim(),
+      enlace: newSongUrl.trim(),
+      likes: musicList[autor]?.likes || [],
+      comentarios: musicList[autor]?.comentarios || []
+    };
+
+    const nuevaLista = { ...musicList, [autor]: cancionActualizada };
+    setMusicList(nuevaLista);
+    localStorage.setItem('beauty_salon_music_list', JSON.stringify(nuevaLista));
+
+    if (supabase) {
+      setLoadingCloud(true);
+      const { error } = await supabase.from('canciones_felices').upsert(
+        { 
+          usuario: autor, 
+          nombre_cancion: cancionActualizada.nombre_cancion, 
+          enlace: cancionActualizada.enlace,
+          likes: JSON.stringify(cancionActualizada.likes),
+          comentarios: JSON.stringify(cancionActualizada.comentarios)
+        },
+        { onConflict: 'usuario' }
+      );
+      setLoadingCloud(false);
+      if (!error) {
+        showToast("¡Tu canción feliz fue colgada en el Mural! 🎵✨", "success");
+      } else {
+        showToast("Guardada localmente. ¡Nube ocupada!", "success");
+      }
+    } else {
+      showToast("¡Guardado mágicamente en tu computadora! 🎧💖", "success");
+    }
+
+    setNewSongName('');
+    setNewSongUrl('');
+  };
+
+  const handleDarLike = async (usuarioDueno) => {
+    if (currentUser.username === 'isabel') {
+      showToast("Miss Isabel está en modo observadora. 🌸", "error");
+      return;
+    }
+
+    const cancion = musicList[usuarioDueno];
+    if (!cancion) return;
+
+    let nuevosLikes = [...(cancion.likes || [])];
+    const miUsuario = currentUser.username;
+
+    if (nuevosLikes.includes(miUsuario)) {
+      nuevosLikes = nuevosLikes.filter(u => u !== miUsuario);
+    } else {
+      nuevosLikes.push(miUsuario);
+    }
+
+    const cancionActualizada = { ...cancion, likes: nuevosLikes };
+    const nuevaLista = { ...musicList, [usuarioDueno]: cancionActualizada };
+    setMusicList(nuevaLista);
+    localStorage.setItem('beauty_salon_music_list', JSON.stringify(nuevaLista));
+
+    if (supabase) {
+      await supabase.from('canciones_felices').upsert(
+        { 
+          usuario: usuarioDueno, 
+          nombre_cancion: cancionActualizada.nombre_cancion, 
+          enlace: cancionActualizada.enlace,
+          likes: JSON.stringify(cancionActualizada.likes),
+          comentarios: JSON.stringify(cancionActualizada.comentarios)
+        },
+        { onConflict: 'usuario' }
+      );
+    }
+  };
+
+  const handleAgregarComentario = async (usuarioDueno) => {
+    if (currentUser.username === 'isabel') {
+      showToast("Miss Isabel está en modo observadora. 🌸", "error");
+      return;
+    }
+
+    const textoComentario = commentInput[usuarioDueno];
+    if (!textoComentario || !textoComentario.trim()) return;
+
+    const cancion = musicList[usuarioDueno];
+    if (!cancion) return;
+
+    const nuevoComentario = {
+      usuario: currentUser.username,
+      nombre: currentUser.name,
+      texto: textoComentario.trim()
+    };
+
+    const nuevosComentarios = [...(cancion.comentarios || []), nuevoComentario];
+    const cancionActualizada = { ...cancion, comentarios: nuevosComentarios };
+    const nuevaLista = { ...musicList, [usuarioDueno]: cancionActualizada };
+    
+    setMusicList(nuevaLista);
+    localStorage.setItem('beauty_salon_music_list', JSON.stringify(nuevaLista));
+
+    setCommentInput(prev => ({ ...prev, [usuarioDueno]: '' }));
+
+    if (supabase) {
+      await supabase.from('canciones_felices').upsert(
+        { 
+          usuario: usuarioDueno, 
+          nombre_cancion: cancionActualizada.nombre_cancion, 
+          enlace: cancionActualizada.enlace,
+          likes: JSON.stringify(cancionActualizada.likes),
+          comentarios: JSON.stringify(cancionActualizada.comentarios)
+        },
+        { onConflict: 'usuario' }
+      );
     }
   };
 
@@ -571,6 +727,7 @@ export default function App() {
   }
 
   const esProfesora = currentUser.role === "Profesora";
+  const esIsabel = currentUser.username === 'isabel';
   const targetStudent = esProfesora ? selectedStudent : currentUser.username;
 
   return (
@@ -646,6 +803,14 @@ export default function App() {
             className={`w-full text-left px-3.5 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'calificaciones' ? 'bg-gradient-to-r from-pink-500 to-pink-600 text-white shadow-md transform scale-102' : 'text-slate-950 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-800'}`}
           >
             <Star size={14} /> Calificaciones ⭐
+          </button>
+
+          {}
+          <button 
+            onClick={() => setActiveTab('musica')} 
+            className={`w-full text-left px-3.5 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'musica' ? 'bg-gradient-to-r from-pink-500 to-pink-600 text-white shadow-md transform scale-102' : 'text-slate-950 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-800'}`}
+          >
+            <Music size={14} className="text-pink-500 dark:text-pink-300" /> Música Feliz 🎵
           </button>
 
           <button 
@@ -771,7 +936,7 @@ export default function App() {
                   <ul className="text-[11px] space-y-2 text-slate-600 dark:text-slate-300 font-bold">
                     <li className="flex items-center gap-1.5">🌸 <span className="text-pink-500">Unidades:</span> Escucha la pronunciación en inglés haciendo clic en el parlante rosa.</li>
                     <li className="flex items-center gap-1.5">🎒 <span className="text-pink-500">Mochila:</span> Sube tus PDFs. ¡Y si eres estudiante y te equivocas, usa el nuevo botón de eliminar!</li>
-                    <li className="flex items-center gap-1.5">🎮 <span className="text-pink-500">Juegos:</span> Juega en los 4 tableros interactivos para ganar estrellitas.</li>
+                    <li className="flex items-center gap-1.5">🎵 <span className="text-pink-500">Música Feliz:</span> Comparte tu canción favorita, regala corazones y deja tiernos comentarios a todos.</li>
                   </ul>
                 </div>
 
@@ -985,6 +1150,156 @@ export default function App() {
                   })}
                 </div>
               )}
+            </div>
+          )}
+
+          {}
+          {/* TAB: MÚSICA FELIZ */}
+          {activeTab === 'musica' && (
+            <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-5 animate-slide-in shadow-sm">
+              <div className="flex items-center justify-between border-b pb-4 border-slate-200 dark:border-slate-700">
+                <div className="flex items-center space-x-2">
+                  <Music className="text-pink-600 animate-pulse" size={22} />
+                  <h2 className="text-sm font-black text-slate-950 dark:text-white uppercase tracking-wider">MURAL DE MÚSICA FELIZ 🎵✨</h2>
+                </div>
+                {esIsabel && (
+                  <span className="bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300 text-[9px] font-black uppercase px-2.5 py-1.5 rounded-xl border border-purple-200">
+                    Modo Observadora Activo 🌸
+                  </span>
+                )}
+              </div>
+
+              <p className="text-[11px] text-slate-500 font-bold">
+                ¡La música llena de polvos de hadas nuestro salón! Comparte el enlace de la canción que te hace sonreír y llena de amor los recuadros de tus compañeros.
+              </p>
+
+              {/* Formulario de Colgar Canción (No para Miss Isabel) */}
+              {!esIsabel ? (
+                <div className="p-4 bg-pink-50/50 dark:bg-slate-800/40 rounded-2xl border border-pink-100 dark:border-slate-700/50 space-y-3">
+                  <span className="text-[10px] font-black uppercase text-pink-600 tracking-wider flex items-center gap-1">
+                    🎶 Comparte o Actualiza tu Melodía Favorita
+                  </span>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <input 
+                      type="text" 
+                      placeholder="Nombre de la canción (ej: Happy - Pharrell)" 
+                      value={newSongName}
+                      onChange={(e) => setNewSongName(e.target.value)}
+                      className="p-2.5 border border-pink-200 rounded-xl bg-white text-slate-950 font-bold text-xs outline-none"
+                    />
+                    <div className="flex gap-1.5">
+                      <input 
+                        type="text" 
+                        placeholder="Enlace de la canción (YouTube/Spotify/etc)" 
+                        value={newSongUrl}
+                        onChange={(e) => setNewSongUrl(e.target.value)}
+                        className="flex-1 p-2.5 border border-pink-200 rounded-xl bg-white text-slate-950 font-bold text-xs outline-none"
+                      />
+                      <button 
+                        onClick={handleGuardarCancion}
+                        className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-black text-[10px] px-3 rounded-xl shadow-md active:scale-95 transition-all flex items-center gap-1"
+                      >
+                        Colgar 🎵
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-3 bg-purple-50/50 dark:bg-purple-950/20 text-purple-700 dark:text-purple-300 text-[10px] font-bold rounded-2xl text-center border border-purple-100">
+                  Como Miss Isabel es observadora, puede escuchar todas las bellas recomendaciones sin editar el muro. 🌸✨
+                </div>
+              )}
+
+              {/* Muro de Tarjetas Musicales */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                {Object.keys(musicList).map((userKey) => {
+                  const item = musicList[userKey];
+                  const userAccount = accounts[userKey] || { name: userKey.toUpperCase(), role: "Estudiante" };
+                  const tieneMiHeart = (item.likes || []).includes(currentUser.username);
+
+                  return (
+                    <div key={userKey} className="bg-slate-50/50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 p-4 rounded-3xl shadow-sm relative overflow-hidden flex flex-col justify-between space-y-3">
+                      <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-purple-400 to-pink-500"></div>
+                      
+                      {/* Cabecera de la Tarjeta */}
+                      <div className="flex justify-between items-start pl-2">
+                        <div>
+                          <span className="text-[10px] font-black uppercase tracking-wider text-pink-600">
+                            Música de: {userAccount.name}
+                          </span>
+                          <span className="text-[8px] block text-slate-400 font-bold uppercase tracking-widest">
+                            ({userAccount.role})
+                          </span>
+                        </div>
+                        {/* Botón de Corazón */}
+                        <button 
+                          onClick={() => handleDarLike(userKey)}
+                          disabled={esIsabel}
+                          className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[10px] font-black transition-all ${tieneMiHeart ? 'bg-pink-100 text-pink-600 dark:bg-pink-900/40 dark:text-pink-300' : 'bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'} ${esIsabel ? 'opacity-50 cursor-not-allowed' : 'active:scale-90'}`}
+                        >
+                          <Heart size={11} className={tieneMiHeart ? 'fill-pink-600 text-pink-600' : ''} />
+                          {(item.likes || []).length}
+                        </button>
+                      </div>
+
+                      {/* Detalles de la canción */}
+                      <div className="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-pink-50 dark:border-slate-800 pl-4 space-y-2">
+                        <p className="text-xs font-black text-slate-950 dark:text-white flex items-center gap-1.5">
+                          🎧 {item.nombre_cancion}
+                        </p>
+                        <a 
+                          href={item.enlace} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="inline-flex items-center gap-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[9px] font-black px-3 py-1.5 rounded-xl shadow-sm hover:scale-102 transition-all active:scale-95"
+                        >
+                          <PlayCircle size={10} /> Escuchar Canción 🎵
+                        </a>
+                      </div>
+
+                      {/* Seccion de Comentarios */}
+                      <div className="space-y-2 bg-slate-100/50 dark:bg-slate-900/40 p-3 rounded-2xl">
+                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block">
+                          Comentarios:
+                        </span>
+                        
+                        {/* Listado de comentarios */}
+                        <div className="space-y-1.5 max-h-24 overflow-y-auto pr-1">
+                          {(item.comentarios || []).length === 0 ? (
+                            <span className="text-[9px] italic text-slate-400 font-bold block">Sé la primera en comentar... 🌸</span>
+                          ) : (
+                            item.comentarios.map((c, idx) => (
+                              <div key={idx} className="bg-white/80 dark:bg-slate-800/80 p-1.5 rounded-xl text-[9px] border border-slate-100 dark:border-slate-700">
+                                <span className="font-black text-purple-600 dark:text-purple-300 block">{c.nombre}:</span>
+                                <span className="text-slate-600 dark:text-slate-300 font-bold">{c.texto}</span>
+                              </div>
+                            ))
+                          )}
+                        </div>
+
+                        {/* Caja para agregar comentario (Excepto para Isabel) */}
+                        {!esIsabel && (
+                          <div className="flex gap-1 pt-1 border-t border-slate-200/50">
+                            <input 
+                              type="text" 
+                              placeholder="Escribe un mensaje lindo..." 
+                              value={commentInput[userKey] || ''}
+                              onChange={(e) => setCommentInput(prev => ({ ...prev, [userKey]: e.target.value }))}
+                              className="flex-1 p-1.5 text-[10px] text-slate-950 font-bold border rounded-lg bg-white outline-none"
+                            />
+                            <button 
+                              onClick={() => handleAgregarComentario(userKey)}
+                              className="bg-purple-600 hover:bg-purple-700 text-white p-1.5 rounded-lg flex items-center justify-center active:scale-90"
+                            >
+                              <Send size={10} />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
 
