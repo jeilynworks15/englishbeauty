@@ -46,6 +46,7 @@ export default function App() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('dashboard');
+<<<<<<< HEAD
 
   // --- ☁️ REPOSITORIO NUBE (CONECTADO A SUPABASE) ---
   const [allStudentsTasks, setAllStudentsTasks] = useState({
@@ -66,6 +67,31 @@ export default function App() {
     melany: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } }
   });
 
+=======
+  const [videoUrl, setVideoUrl] = useState(() => {
+    return localStorage.getItem('beauty_salon_video_url') || null;
+  });
+
+  // --- ☁️ REPOSITORIO NUBE (CONECTADO A SUPABASE) ---
+  const [allStudentsTasks, setAllStudentsTasks] = useState({
+    jean: { clase2: null, clase3: null, clase5: null, clase6: null },
+    ricardo: { clase2: null, clase3: null, clase5: null, clase6: null },
+    victoria: { clase2: null, clase3: null, clase5: null, clase6: null },
+    yaritza: { clase2: null, clase3: null, clase5: null, clase6: null },
+    annelys: { clase2: null, clase3: null, clase5: null, clase6: null },
+    melany: { clase2: null, clase3: null, clase5: null, clase6: null },
+  });
+
+  const [grades, setGrades] = useState({
+    jean: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+    ricardo: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+    victoria: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+    yaritza: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+    annelys: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
+    melany: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } }
+  });
+
+>>>>>>> e6363d305c8903829c5cccc8d89ee44f4a5d8a84
   const [selectedStudent, setSelectedStudent] = useState('jean');
   const [loadingCloud, setLoadingCloud] = useState(false);
 
@@ -129,6 +155,21 @@ export default function App() {
     }
   };
 
+<<<<<<< HEAD
+=======
+  const handleVideoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setVideoUrl(event.target.result);
+        localStorage.setItem('beauty_salon_video_url', event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+>>>>>>> e6363d305c8903829c5cccc8d89ee44f4a5d8a84
   // --- 📤 PROCESADOR DE SUBIDA REAL PARA ESTUDIANTES ---
   const handlePdfUpload = async (e, claseKey, studentUser) => {
     const file = e.target.files[0];
@@ -376,7 +417,11 @@ export default function App() {
         
         {/* SIDEBAR */}
         <aside className={`w-full md:w-52 p-4 flex flex-col gap-1 ${darkMode ? 'bg-slate-900' : 'bg-white border-r border-pink-100'}`}>
+<<<<<<< HEAD
           {['dashboard', 'unit1', 'unit2', 'unit3', 'gradesTab'].map((tab) => (
+=======
+          {['dashboard', 'unit1', 'unit2', 'unit3', 'activities', 'gradesTab', 'vocabulary', 'games'].map((tab) => (
+>>>>>>> e6363d305c8903829c5cccc8d89ee44f4a5d8a84
             <button 
               key={tab} 
               onClick={() => setActiveTab(tab)} 
@@ -574,6 +619,31 @@ export default function App() {
             </div>
           )}
 
+<<<<<<< HEAD
+=======
+          {/* VISTAS EXTRAS SIMPLIFICADAS SIN CAMBIOS NEGATIVOS */}
+          {activeTab === 'activities' && (
+            <div className="bg-white dark:bg-slate-900 border p-6 rounded-3xl space-y-3">
+              <h3 className="text-sm font-black text-slate-950 dark:text-white">Buzón consolidado 🎒</h3>
+              <p className="text-xs font-bold text-slate-500">Aquí se unifican las entregas de tareas del curso.</p>
+            </div>
+          )}
+
+          {activeTab === 'vocabulary' && (
+            <div className="bg-white dark:bg-slate-900 border p-6 rounded-3xl space-y-2">
+              <h3 className="text-sm font-black text-slate-950 dark:text-white">Diccionario de Salón de Belleza 📖</h3>
+              <p className="text-xs font-bold text-slate-500">Repasa las palabras cuantas veces quieras presionando el parlante.</p>
+            </div>
+          )}
+
+          {activeTab === 'games' && (
+            <div className="bg-white dark:bg-slate-900 border p-6 rounded-3xl space-y-2">
+              <h3 className="text-sm font-black text-slate-950 dark:text-white">Juegos Interactivos 🎮</h3>
+              <p className="text-xs font-bold text-slate-500">Diviértete con los links de Wordwall e Interacty asignados en cada lección.</p>
+            </div>
+          )}
+
+>>>>>>> e6363d305c8903829c5cccc8d89ee44f4a5d8a84
         </main>
       </div>
     </div>
