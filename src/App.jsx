@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import { 
   GraduationCap, 
   Volume2, 
   Sun, 
   Moon, 
-  Star
+  Star,
+  BookOpen,
+  FolderHeart,
+  Gamepad2,
+  Home,
+  LogOut,
+  Sparkles,
+  Smile,
+  FileCheck2,
+  DownloadCloud
 } from 'lucide-react';
 
-// ========================================================
-// 🔑 TUS LLAVES REALES DE SUPABASE INTEGRADAS CON ÉXITO
-// ========================================================
 const SUPABASE_URL = 'https://fiuphtskrnwdftsrspip.supabase.co'; 
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpdXBodHNrcm53ZGZ0c3JzcGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDQ4MTAsImV4cCI6MjA5OTM4MDgxMH0.EORFoOj4ssM9z5Q7xGQdbzFUMTldXqI9LyQ-Kvcgj5I';
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
 export default function App() {
-  // --- 🕶️ MODO OSCURO / CLARO ---
   const [darkMode, setDarkMode] = useState(() => {
     const savedDarkMode = localStorage.getItem('beauty_salon_dark_mode_v2');
     return savedDarkMode === 'true';
@@ -32,7 +34,6 @@ export default function App() {
     }
   }, [darkMode]);
 
-  // --- 🔐 CONTROL DE SESIÓN ---
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return localStorage.getItem('beauty_salon_logged') === 'true';
   });
@@ -45,10 +46,8 @@ export default function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [activeTab, setActiveTab] = useState('dashboard');
-<<<<<<< HEAD
+  const [activeTab, setActiveTab] = useState('inicio');
 
-  // --- ☁️ REPOSITORIO NUBE (CONECTADO A SUPABASE) ---
   const [allStudentsTasks, setAllStudentsTasks] = useState({
     jean: { clase2: null, clase3: null, clase5: null, clase6: null },
     ricardo: { clase2: null, clase3: null, clase5: null, clase6: null },
@@ -67,39 +66,34 @@ export default function App() {
     melany: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } }
   });
 
-=======
-  const [videoUrl, setVideoUrl] = useState(() => {
-    return localStorage.getItem('beauty_salon_video_url') || null;
-  });
-
-  // --- ☁️ REPOSITORIO NUBE (CONECTADO A SUPABASE) ---
-  const [allStudentsTasks, setAllStudentsTasks] = useState({
-    jean: { clase2: null, clase3: null, clase5: null, clase6: null },
-    ricardo: { clase2: null, clase3: null, clase5: null, clase6: null },
-    victoria: { clase2: null, clase3: null, clase5: null, clase6: null },
-    yaritza: { clase2: null, clase3: null, clase5: null, clase6: null },
-    annelys: { clase2: null, clase3: null, clase5: null, clase6: null },
-    melany: { clase2: null, clase3: null, clase5: null, clase6: null },
-  });
-
-  const [grades, setGrades] = useState({
-    jean: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
-    ricardo: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
-    victoria: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
-    yaritza: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
-    annelys: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
-    melany: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } }
-  });
-
->>>>>>> e6363d305c8903829c5cccc8d89ee44f4a5d8a84
   const [selectedStudent, setSelectedStudent] = useState('jean');
   const [loadingCloud, setLoadingCloud] = useState(false);
+  const [supabase, setSupabase] = useState(null);
 
-  // --- 📡 SISTEMA DE DESCARGA DESDE LA BASE DE DATOS DE INTERNET ---
+  useEffect(() => {
+    const initSupabase = () => {
+      if (window.supabase) {
+        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        setSupabase(client);
+      }
+    };
+
+    if (window.supabase) {
+      initSupabase();
+    } else {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+      script.async = true;
+      script.onload = initSupabase;
+      document.body.appendChild(script);
+    }
+  }, []);
+
   const descargarDeSupabase = async () => {
+    if (!supabase) return;
     setLoadingCloud(true);
     try {
-      // 1. Descargar Tareas en Base64
+      // 1. Descargar Tareas
       const { data: tareasDB, error: err1 } = await supabase.from('tareas').select('*');
       if (!err1 && tareasDB) {
         const clonTareas = {
@@ -113,14 +107,14 @@ export default function App() {
         setAllStudentsTasks(prev => ({ ...prev, ...clonTareas }));
       }
 
-      // 2. Descargar Calificaciones y Comentarios
+      // 2. Descargar Notas
       const { data: notasDB, error: err2 } = await supabase.from('calificaciones').select('*');
       if (!err2 && notasDB) {
         const clonNotas = {
           jean: {}, ricardo: {}, victoria: {}, yaritza: {}, annelys: {}, melany: {}
         };
-        // Inicialización base limpia
         ['jean', 'ricardo', 'victoria', 'yaritza', 'annelys', 'melany'].forEach(est => {
+          clonNotas[est] = {};
           ['clase2', 'clase3', 'clase5', 'clase6'].forEach(cl => {
             clonNotas[est][cl] = { nota: '-', comentario: '' };
           });
@@ -133,17 +127,16 @@ export default function App() {
         setGrades(clonNotas);
       }
     } catch (e) {
-      console.log("Error de sincronización pasiva:", e);
+      console.log("Error al sincronizar con internet:", e);
     }
     setLoadingCloud(false);
   };
 
-  // Sincronizar automáticamente cada vez que entramos a la app o cambiamos de vista
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && supabase) {
       descargarDeSupabase();
     }
-  }, [isLoggedIn, activeTab]);
+  }, [isLoggedIn, supabase]);
 
   const escucharPalabra = (textoEnIngles) => {
     if ('speechSynthesis' in window) {
@@ -155,23 +148,11 @@ export default function App() {
     }
   };
 
-<<<<<<< HEAD
-=======
-  const handleVideoUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setVideoUrl(event.target.result);
-        localStorage.setItem('beauty_salon_video_url', event.target.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
->>>>>>> e6363d305c8903829c5cccc8d89ee44f4a5d8a84
-  // --- 📤 PROCESADOR DE SUBIDA REAL PARA ESTUDIANTES ---
   const handlePdfUpload = async (e, claseKey, studentUser) => {
+    if (!supabase) {
+      alert("⚠️ El sistema de conexión no está listo todavía. Por favor, espera un segundo.");
+      return;
+    }
     const file = e.target.files[0];
     if (file) {
       if (file.type === "application/pdf") {
@@ -187,9 +168,10 @@ export default function App() {
           setLoadingCloud(false);
 
           if (error) {
-            alert("No se pudo conectar a internet para enviar tu tarea. Inténtalo de nuevo.");
+            console.error("Error al subir archivo:", error);
+            alert("⚠️ No se pudo guardar en la base de datos de internet. ¡Revisa que el RLS esté desactivado!");
           } else {
-            alert(`¡Éxito total! Tu tarea "${file.name}" ha sido subida a la nube. Tus 4 profesoras ya pueden verla desde sus dispositivos. 📄✨`);
+            alert(`¡Listo! La tarea "${file.name}" ya llegó de verdad al buzón de la profesora en la nube. 📄✨`);
             descargarDeSupabase();
           }
         };
@@ -200,8 +182,8 @@ export default function App() {
     }
   };
 
-  // --- ✍️ PROCESADOR DE NOTAS REAL PARA PROFESORAS ---
   const enviarNotaASupabase = async (estudiante, claseKey, notaSeleccionada, comentarioEscrito) => {
+    if (!supabase) return;
     const { error } = await supabase.from('calificaciones').upsert(
       { estudiante: estudiante, clase: claseKey, nota: notaSeleccionada, comentario: comentarioEscrito },
       { onConflict: 'estudiante,clase' }
@@ -209,18 +191,8 @@ export default function App() {
     if (error) {
       console.error("Error guardando nota:", error);
     } else {
-      descargarDeSupabase(); // Refrescar instantáneo
+      descargarDeSupabase();
     }
-  };
-
-  const calcularProgreso = (estudianteKey) => {
-    const tareasEstudiante = allStudentsTasks[estudianteKey] || {};
-    const llavesTareas = ['clase2', 'clase3', 'clase5', 'clase6'];
-    let entregadas = 0;
-    llavesTareas.forEach(key => {
-      if (tareasEstudiante[key] && tareasEstudiante[key].url) entregadas++;
-    });
-    return Math.round((entregadas / llavesTareas.length) * 100);
   };
 
   const accounts = {
@@ -263,7 +235,7 @@ export default function App() {
           content: [
             { en: "Hello! / Hi!", es: "Hola" },
             { en: "Good morning.", es: "Buenos días" },
-            { en: "Good afternoon.", es: "Buenas tardes" },
+            { en: "Good afternoon.", es: "Buenos tardes" },
             { en: "Welcome!", es: "¡Bienvenido(a)!" },
             { en: "How are you?", es: "How are you?" },
             { en: "My name is...", es: "Mi nombre es..." },
@@ -302,7 +274,7 @@ export default function App() {
             { en: "Don't wash your hair for 3 days.", es: "No lave su cabello durante 3 días." },
             { en: "Don't tie your hair.", es: "No se recoja el cabello." }
           ],
-          gameUrl: "https://wordwall.resource/116065664",
+          gameUrl: "https://wordwall.net/es/resource/116065664",
           task: "Grabar un audio dando las instrucciones de cuidado después del tratamiento de keratina.",
           taskKey: "clase3"
         },
@@ -393,7 +365,6 @@ export default function App() {
 
   const esProfesora = currentUser.role === "Profesora";
   const targetStudent = esProfesora ? selectedStudent : currentUser.username;
-  const progresoActual = calcularProgreso(targetStudent);
 
   return (
     <div className={`min-h-screen font-sans flex flex-col ${darkMode ? 'bg-slate-950 text-white' : 'bg-pink-50/40 text-slate-900'}`}>
@@ -401,146 +372,239 @@ export default function App() {
       {/* HEADER */}
       <header className={`border-b h-16 flex items-center justify-between px-6 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-pink-100'}`}>
         <div className="flex items-center space-x-2">
-          <GraduationCap className="text-pink-600" size={24} />
-          <span className="font-black text-slate-950 dark:text-white text-sm">Beauty English Course</span>
+          <GraduationCap className="text-pink-600 animate-pulse" size={24} />
+          <span className="font-black text-slate-950 dark:text-white text-sm">Beauty English Course System 👩‍🏫✨</span>
         </div>
         <div className="flex items-center space-x-4">
           <button onClick={() => setDarkMode(!darkMode)} className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg">
             {darkMode ? <Sun size={16} className="text-yellow-400" /> : <Moon size={16} className="text-slate-700" />}
           </button>
-          <span className="text-xs font-black text-slate-950 dark:text-pink-300">{currentUser.name} ({currentUser.role})</span>
-          <button onClick={handleLogout} className="text-[11px] bg-red-100 text-red-700 font-bold px-3 py-1.5 rounded-lg">Salir</button>
+          <span className="text-xs font-black text-slate-950 dark:text-pink-300 uppercase bg-pink-100 dark:bg-slate-800 px-3 py-1 rounded-full flex items-center gap-1">
+            <Smile size={12} className="text-pink-600" /> {currentUser.name} ({currentUser.role})
+          </span>
+          <button onClick={handleLogout} className="text-[11px] bg-red-100 hover:bg-red-200 text-red-700 font-bold px-3 py-1.5 rounded-lg flex items-center gap-1">
+            <LogOut size={12} /> Salir
+          </button>
         </div>
       </header>
 
       <div className="flex flex-1 flex-col md:flex-row">
         
-        {/* SIDEBAR */}
-        <aside className={`w-full md:w-52 p-4 flex flex-col gap-1 ${darkMode ? 'bg-slate-900' : 'bg-white border-r border-pink-100'}`}>
-<<<<<<< HEAD
-          {['dashboard', 'unit1', 'unit2', 'unit3', 'gradesTab'].map((tab) => (
-=======
-          {['dashboard', 'unit1', 'unit2', 'unit3', 'activities', 'gradesTab', 'vocabulary', 'games'].map((tab) => (
->>>>>>> e6363d305c8903829c5cccc8d89ee44f4a5d8a84
-            <button 
-              key={tab} 
-              onClick={() => setActiveTab(tab)} 
-              className={`w-full text-left px-3 py-2 rounded-xl text-xs font-black capitalize ${activeTab === tab ? 'bg-pink-600 text-white' : 'text-slate-950 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-800'}`}
-            >
-              {tab === 'gradesTab' ? '⭐ Calificaciones' : tab === 'dashboard' ? '🏠 Dashboard' : tab === 'unit1' ? '📦 Unidad 1' : tab === 'unit2' ? '📦 Unidad 2' : tab === 'unit3' ? '📦 Unidad 3' : tab}
-            </button>
-          ))}
-          <button onClick={descargarDeSupabase} className="mt-4 w-full bg-slate-200 dark:bg-slate-800 text-slate-950 dark:text-white text-[10px] font-black py-1.5 rounded-lg transition-all active:scale-95">
-             🔄 Sincronizar Nube ☁️
+        {/* SIDEBAR MÁGICA CON TODOS LOS TABS QUE AMAS */}
+        <aside className={`w-full md:w-56 p-4 flex flex-col gap-1 ${darkMode ? 'bg-slate-900' : 'bg-white border-r border-pink-100'}`}>
+          <div className="text-[10px] uppercase tracking-wider font-black text-pink-500 mb-2 px-3">Menú Principal</div>
+          
+          <button 
+            onClick={() => setActiveTab('inicio')} 
+            className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 ${activeTab === 'inicio' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-950 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-800'}`}
+          >
+            <Home size={14} /> Inicio
           </button>
+
+          <button 
+            onClick={() => setActiveTab('unit1')} 
+            className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 ${activeTab === 'unit1' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-950 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-800'}`}
+          >
+            <BookOpen size={14} /> Unit 1
+          </button>
+
+          <button 
+            onClick={() => setActiveTab('unit2')} 
+            className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 ${activeTab === 'unit2' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-950 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-800'}`}
+          >
+            <BookOpen size={14} /> Unit 2
+          </button>
+
+          <button 
+            onClick={() => setActiveTab('unit3')} 
+            className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 ${activeTab === 'unit3' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-950 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-800'}`}
+          >
+            <BookOpen size={14} /> Unit 3
+          </button>
+
+          <button 
+            onClick={() => setActiveTab('mochila')} 
+            className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 ${activeTab === 'mochila' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-950 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-800'}`}
+          >
+            <FolderHeart size={14} /> Mochila de Tareas
+          </button>
+
+          <button 
+            onClick={() => setActiveTab('calificaciones')} 
+            className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 ${activeTab === 'calificaciones' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-950 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-800'}`}
+          >
+            <Star size={14} /> Calificaciones
+          </button>
+
+          <button 
+            onClick={() => setActiveTab('vocabulario')} 
+            className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 ${activeTab === 'vocabulario' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-950 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-800'}`}
+          >
+            <Volume2 size={14} /> Vocabulario
+          </button>
+
+          <button 
+            onClick={() => setActiveTab('juegos')} 
+            className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 ${activeTab === 'juegos' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-950 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-800'}`}
+          >
+            <Gamepad2 size={14} /> Área de Juegos
+          </button>
+
+          <div className="border-t border-slate-200 dark:border-slate-800 my-4 pt-4">
+            <button onClick={descargarDeSupabase} className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-950 dark:text-white text-[10px] font-black py-2 rounded-lg flex items-center justify-center gap-1 active:scale-95 transition-all">
+               🔄 Sincronizar Nube ☁️
+            </button>
+          </div>
         </aside>
 
         {/* MAIN CONTAINER */}
         <main className="flex-1 p-6 max-w-4xl w-full mx-auto">
           {loadingCloud && (
-            <div className="text-center p-2 mb-4 bg-pink-100 text-pink-700 font-black rounded-lg text-xs animate-pulse">
-              ☁️ Conectando con la base de datos Supabase en tiempo real...
+            <div className="text-center p-2 mb-4 bg-pink-100 text-pink-700 font-black rounded-lg text-xs animate-pulse flex items-center justify-center gap-1">
+              ☁️ Sincronizando con Supabase en tiempo real...
             </div>
           )}
           
-          {activeTab === 'dashboard' && (
+          {/* TAB: INICIO */}
+          {activeTab === 'inicio' && (
             <div className="space-y-4">
-              <div className="bg-pink-600 p-6 rounded-3xl text-white shadow-md">
+              <div className="bg-pink-600 p-6 rounded-3xl text-white shadow-md relative overflow-hidden">
+                <Sparkles className="absolute right-4 top-4 text-pink-300 animate-spin" size={48} />
                 <h1 className="text-xl font-black">¡Bienvenido, {currentUser.name}! 💇‍♀️✨</h1>
-                <p className="text-xs mt-1 font-bold">Todo tu progreso y calificaciones se encuentran resguardados en Supabase.</p>
+                <p className="text-xs mt-1 font-bold">Tus datos, tareas y calificaciones se encuentran resguardados con total éxito en la base de datos de internet.</p>
               </div>
-              {!esProfesora && (
-                <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-4 rounded-2xl">
-                  <div className="flex justify-between text-xs font-black mb-1 text-slate-950 dark:text-white">
-                    <span>Progreso Global del Alumno</span>
-                    <span>{progresoActual}%</span>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-4 rounded-2xl flex items-center gap-3">
+                  <div className="p-3 bg-pink-100 dark:bg-pink-900 rounded-xl">
+                    <FolderHeart className="text-pink-600" size={24} />
                   </div>
-                  <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
-                    <div className="bg-pink-600 h-full" style={{ width: `${progresoActual}%` }}></div>
+                  <div>
+                    <h3 className="font-black text-xs">Mochila de Tareas</h3>
+                    <p className="text-[11px] text-slate-500">Sube y visualiza tus PDFs listos en la nube.</p>
                   </div>
                 </div>
-              )}
+                <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-4 rounded-2xl flex items-center gap-3">
+                  <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-xl">
+                    <Gamepad2 className="text-purple-600" size={24} />
+                  </div>
+                  <div>
+                    <h3 className="font-black text-xs">Área de Juegos</h3>
+                    <p className="text-[11px] text-slate-500">Diviértete aprendiendo inglés en Wordwall y Kahoot.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
-          {/* UNIDADES Y CONTENIDO */}
+          {/* TAB: UNIDADES DE CONTENIDO */}
           {['unit1', 'unit2', 'unit3'].includes(activeTab) && (
             <div className="space-y-4">
-              {esProfesora && (
-                <div className="p-4 bg-slate-900 text-white rounded-2xl flex items-center justify-between border border-pink-500">
-                  <span className="text-xs font-black text-white">⚙️ Selecciona Alumno para Revisar / Calificar:</span>
-                  <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-2 rounded bg-white text-slate-950 outline-none border">
-                    {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
-                  </select>
-                </div>
-              )}
-
               {modules.filter((_, idx) => (activeTab === 'unit1' && idx === 0) || (activeTab === 'unit2' && idx === 1) || (activeTab === 'unit3' && idx === 2)).map(mod => (
                 <div key={mod.id} className="space-y-4">
-                  <div className="bg-gradient-to-r from-pink-600 to-purple-600 text-white p-4 rounded-xl font-black text-xs uppercase tracking-wide">
-                    {mod.title}
+                  <div className="bg-gradient-to-r from-pink-600 to-purple-600 text-white p-4 rounded-xl font-black text-xs uppercase tracking-wide flex items-center gap-2">
+                    <Sparkles size={14} /> {mod.title}
                   </div>
-                  {mod.lessons.map((les, index) => {
-                    const taskData = allStudentsTasks[targetStudent]?.[les.taskKey];
-                    const gradeData = grades[targetStudent]?.[les.taskKey] || { nota: '-', comentario: '' };
-                    return (
-                      <div key={index} className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-5 rounded-2xl space-y-4 shadow-sm">
-                        <h3 className="text-sm font-black text-slate-950 dark:text-white">{les.title}</h3>
-                        <p className="text-xs bg-slate-50 dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 italic text-slate-950 dark:text-slate-200">{les.objective}</p>
-                        
-                        {/* Vocabulario Interactivo */}
-                        <div className="space-y-1.5">
-                          {les.content.map((item, i) => (
-                            <div key={i} className="flex justify-between items-center bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700">
-                              <div className="flex items-center space-x-2">
-                                <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-pink-600 text-white rounded-lg"><Volume2 size={12} /></button>
-                                <span className="text-xs font-black text-slate-950 dark:text-white">{item.en}</span>
-                              </div>
-                              <span className="text-xs font-bold text-slate-950 dark:text-slate-300">🗣️ {item.es}</span>
+                  {mod.lessons.map((les, index) => (
+                    <div key={index} className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-5 rounded-2xl space-y-4 shadow-sm">
+                      <h3 className="text-sm font-black text-slate-950 dark:text-white flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-pink-500"></span> {les.title}
+                      </h3>
+                      <p className="text-xs bg-slate-50 dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 italic text-slate-950 dark:text-slate-200">{les.objective}</p>
+                      
+                      {/* Vocabulario Interactivo dentro de la lección */}
+                      <div className="space-y-1.5">
+                        {les.content.map((item, i) => (
+                          <div key={i} className="flex justify-between items-center bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <div className="flex items-center space-x-2">
+                              <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition-all"><Volume2 size={12} /></button>
+                              <span className="text-xs font-black text-slate-950 dark:text-white">{item.en}</span>
                             </div>
-                          ))}
-                        </div>
-
-                        {/* Caja de Actividades */}
-                        {les.taskKey && (
-                          <div className="bg-pink-50/50 dark:bg-slate-800/80 p-4 rounded-xl border border-pink-200 dark:border-slate-700 text-xs text-slate-950 dark:text-white space-y-3">
-                            <p className="font-black text-pink-700 dark:text-pink-400">🎯 Tarea para el estudiante: {targetStudent.toUpperCase()}</p>
-                            <p className="font-bold">{les.task}</p>
-                            <div className="flex flex-wrap gap-2 items-center">
-                              {!esProfesora && (
-                                <label className="bg-pink-600 text-white px-3 py-1.5 rounded-lg font-black cursor-pointer shadow-sm active:scale-95 transition-all">
-                                  Subir PDF de Tarea ☁️
-                                  <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, les.taskKey, currentUser.username)} className="hidden" />
-                                </label>
-                              )}
-                              {taskData ? (
-                                <a href={taskData.url} download={taskData.name} className="bg-emerald-600 text-white px-3 py-1.5 rounded-lg font-black shadow-sm hover:bg-emerald-700 transition-all">Descargar / Ver PDF enviado</a>
-                              ) : (
-                                <span className="text-slate-500 font-bold italic">Sin archivo enviado todavía</span>
-                              )}
-                            </div>
-                            <div className="border-t pt-2 border-pink-200 dark:border-slate-700">
-                              <span className="font-black block text-pink-700 dark:text-pink-300">⭐ Nota: {gradeData?.nota || '-'} / 10</span>
-                              {gradeData?.comentario && (
-                                <p className="bg-white dark:bg-slate-900 p-2 rounded-lg mt-1 border text-slate-950 dark:text-slate-200 font-bold">💬 Retroalimentación de Miss: {gradeData.comentario}</p>
-                              )}
-                            </div>
+                            <span className="text-xs font-bold text-slate-950 dark:text-slate-300">🗣️ {item.es}</span>
                           </div>
-                        )}
+                        ))}
                       </div>
-                    );
-                  })}
+
+                      {/* Botón rápido a su juego */}
+                      {les.gameUrl && (
+                        <div className="pt-2">
+                          <a href={les.gameUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[11px] bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-lg font-black transition-all">
+                            <Gamepad2 size={12} /> Jugar actividad de esta clase 🎮
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
           )}
 
-          {/* TABLA DE CALIFICACIONES COMPLETA MULTIUSUARIO */}
-          {activeTab === 'gradesTab' && (
+          {/* TAB: MOCHILA DE TAREAS (INTERACTIVA CON SUPABASE) */}
+          {activeTab === 'mochila' && (
+            <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4">
+              <div className="flex items-center justify-between border-b pb-4 border-slate-200 dark:border-slate-700">
+                <div className="flex items-center space-x-2">
+                  <FolderHeart className="text-pink-600 animate-bounce" size={20} />
+                  <h2 className="text-sm font-black text-slate-950 dark:text-white">MOCHILA DE TAREAS EN LA NUBE</h2>
+                </div>
+                {esProfesora && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-black text-slate-500">Revisando mochila de:</span>
+                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1.5 rounded bg-white text-slate-950 border border-pink-300 outline-none">
+                      {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
+                    </select>
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-4">
+                {['clase2', 'clase3', 'clase5', 'clase6'].map((key) => {
+                  const taskData = allStudentsTasks[targetStudent]?.[key];
+                  const gradeData = grades[targetStudent]?.[key] || { nota: '-', comentario: '' };
+
+                  return (
+                    <div key={key} className="bg-pink-50/50 dark:bg-slate-800/80 p-4 rounded-xl border border-pink-100 dark:border-slate-700 text-xs text-slate-950 dark:text-white space-y-3">
+                      <p className="font-black text-pink-700 dark:text-pink-400">🎯 {infoTareas[key]}</p>
+                      <p className="text-[11px] text-slate-500 font-bold">Propietario de la mochila: <span className="uppercase text-pink-600">{targetStudent}</span></p>
+                      
+                      <div className="flex flex-wrap gap-2 items-center">
+                        {!esProfesora && (
+                          <label className="bg-pink-600 hover:bg-pink-700 text-white px-3 py-1.5 rounded-lg font-black cursor-pointer shadow-sm active:scale-95 transition-all flex items-center gap-1 text-[11px]">
+                            Subir PDF de Tarea ☁️
+                            <input type="file" accept=".pdf" onChange={(e) => handlePdfUpload(e, key, currentUser.username)} className="hidden" />
+                          </label>
+                        )}
+                        {taskData ? (
+                          <a href={taskData.url} download={taskData.name} className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-black shadow-sm transition-all flex items-center gap-1 text-[11px]">
+                            <DownloadCloud size={12} /> Descargar / Ver PDF enviado 👁️
+                          </a>
+                        ) : (
+                          <span className="text-slate-400 font-bold italic text-[11px]">Sin archivo enviado todavía</span>
+                        )}
+                      </div>
+
+                      <div className="border-t pt-2 border-pink-200 dark:border-slate-700 flex justify-between items-center flex-wrap gap-2">
+                        <span className="font-black text-pink-700 dark:text-pink-300">⭐ Calificación: {gradeData.nota} / 10</span>
+                        {gradeData.comentario && (
+                          <p className="bg-white dark:bg-slate-900 p-2.5 rounded-lg border text-slate-950 dark:text-slate-200 font-bold italic w-full">
+                            💬 Retroalimentación de Miss: {gradeData.comentario}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* TAB: CALIFICACIONES */}
+          {activeTab === 'calificaciones' && (
             <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4">
               <div className="flex items-center space-x-2 border-b pb-2 border-slate-200 dark:border-slate-700">
                 <Star className="text-amber-500 fill-amber-500" size={20} />
-                <h2 className="text-sm font-black text-slate-950 dark:text-white">SISTEMA DE CALIFICACIONES OFICIAL EN LA NUBE</h2>
+                <h2 className="text-sm font-black text-slate-950 dark:text-white">SISTEMA DE CALIFICACIONES EN LA NUBE</h2>
               </div>
 
               {esProfesora ? (
@@ -588,7 +652,7 @@ export default function App() {
                             }));
                           }}
                           onBlur={(e) => enviarNotaASupabase(selectedStudent, key, currentRecord.nota, e.target.value)}
-                          placeholder="Escribe la retroalimentación aquí y haz clic fuera del recuadro para guardar..." 
+                          placeholder="Escribe la retroalimentación aquí y haz clic fuera de este cuadro para guardar..." 
                           className="w-full p-2.5 text-xs text-slate-950 font-bold border rounded-lg bg-white outline-none"
                           rows={2}
                         />
@@ -619,31 +683,66 @@ export default function App() {
             </div>
           )}
 
-<<<<<<< HEAD
-=======
-          {/* VISTAS EXTRAS SIMPLIFICADAS SIN CAMBIOS NEGATIVOS */}
-          {activeTab === 'activities' && (
-            <div className="bg-white dark:bg-slate-900 border p-6 rounded-3xl space-y-3">
-              <h3 className="text-sm font-black text-slate-950 dark:text-white">Buzón consolidado 🎒</h3>
-              <p className="text-xs font-bold text-slate-500">Aquí se unifican las entregas de tareas del curso.</p>
+          {/* TAB: VOCABULARIO INTERACTIVO COMPLETO */}
+          {activeTab === 'vocabulario' && (
+            <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4">
+              <div className="flex items-center space-x-2 border-b pb-4 border-slate-200 dark:border-slate-700">
+                <Volume2 className="text-pink-600 animate-pulse" size={20} />
+                <h2 className="text-sm font-black text-slate-950 dark:text-white">DICCIONARIO DE VOCABULARIO INTERACTIVO 🗣️✨</h2>
+              </div>
+              <p className="text-xs text-slate-500 font-bold">Haz clic en el botón rosa de reproducción para escuchar cómo se pronuncian las frases de keratina en inglés por un hablante nativo.</p>
+              
+              <div className="grid grid-cols-1 gap-2">
+                {[
+                  { en: "Hello! Welcome to our salon.", es: "¡Hola! Bienvenido a nuestro salón." },
+                  { en: "Today, we will do a keratin treatment.", es: "Hoy, haremos un tratamiento de keratina." },
+                  { en: "First, we wash your hair.", es: "Primero, lavamos tu cabello." },
+                  { en: "Then, we apply the keratin.", es: "Luego, aplicamos la keratina." },
+                  { en: "Finally, we use the flat iron.", es: "Finalmente, usamos la plancha." },
+                  { en: "Don't wash your hair for 3 days.", es: "No lave su cabello durante 3 días." },
+                  { en: "Do you have any allergies?", es: "¿Tiene alguna alergia?" },
+                  { en: "Thank you for coming. Have a nice day!", es: "Gracias por venir. ¡Que tenga un lindo día!" }
+                ].map((item, i) => (
+                  <div key={i} className="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <div className="flex items-center space-x-2">
+                      <button onClick={() => escucharPalabra(item.en)} className="p-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition-all">
+                        <Volume2 size={14} />
+                      </button>
+                      <span className="text-xs font-black text-slate-950 dark:text-white">{item.en}</span>
+                    </div>
+                    <span className="text-xs font-bold text-slate-500">🗣️ {item.es}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
-          {activeTab === 'vocabulary' && (
-            <div className="bg-white dark:bg-slate-900 border p-6 rounded-3xl space-y-2">
-              <h3 className="text-sm font-black text-slate-950 dark:text-white">Diccionario de Salón de Belleza 📖</h3>
-              <p className="text-xs font-bold text-slate-500">Repasa las palabras cuantas veces quieras presionando el parlante.</p>
+          {/* TAB: ÁREA DE JUEGOS */}
+          {activeTab === 'juegos' && (
+            <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4">
+              <div className="flex items-center space-x-2 border-b pb-4 border-slate-200 dark:border-slate-700">
+                <Gamepad2 className="text-purple-600 animate-spin" size={20} />
+                <h2 className="text-sm font-black text-slate-950 dark:text-white">ÁREA DE JUEGOS MÁGICOS 🎮✨</h2>
+              </div>
+              <p className="text-xs text-slate-500 font-bold">¡Pon a prueba tus habilidades! Elige un juego de la lista, haz clic en él para abrirlo y diviértete respondiendo las preguntas en inglés.</p>
+              
+              <div className="space-y-3">
+                <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noopener noreferrer" className="block p-4 bg-purple-50 hover:bg-purple-100 dark:bg-slate-800 rounded-2xl border border-purple-200 dark:border-slate-700 transition-all active:scale-95">
+                  <span className="text-xs font-black block text-purple-700 dark:text-purple-400">🎮 Wordwall: Greetings & Saludos 👋</span>
+                  <span className="text-[11px] text-slate-500 font-bold mt-1 block">Juego de cartas y emparejamiento para repasar cómo recibir a tus clientes.</span>
+                </a>
+                <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noopener noreferrer" className="block p-4 bg-pink-50 hover:bg-pink-100 dark:bg-slate-800 rounded-2xl border border-pink-200 dark:border-slate-700 transition-all active:scale-95">
+                  <span className="text-xs font-black block text-pink-700 dark:text-pink-400">🎮 Interacty: Keratin Process Challenge 🧪</span>
+                  <span className="text-[11px] text-slate-500 font-bold mt-1 block">Crucigrama interactivo sobre el paso a paso del tratamiento de keratina.</span>
+                </a>
+                <a href="https://create.kahoot.it/share/class-5/16e72ba0-e8fc-4910-9400-b7a3c94c3586" target="_blank" rel="noopener noreferrer" className="block p-4 bg-sky-50 hover:bg-sky-100 dark:bg-slate-800 rounded-2xl border border-sky-200 dark:border-slate-700 transition-all active:scale-95">
+                  <span className="text-xs font-black block text-sky-700 dark:text-sky-400">🎮 Kahoot: Price and Time Game 💰</span>
+                  <span className="text-[11px] text-slate-500 font-bold mt-1 block">Trivia veloz para calcular precios y tiempos en inglés bajo presión.</span>
+                </a>
+              </div>
             </div>
           )}
 
-          {activeTab === 'games' && (
-            <div className="bg-white dark:bg-slate-900 border p-6 rounded-3xl space-y-2">
-              <h3 className="text-sm font-black text-slate-950 dark:text-white">Juegos Interactivos 🎮</h3>
-              <p className="text-xs font-bold text-slate-500">Diviértete con los links de Wordwall e Interacty asignados en cada lección.</p>
-            </div>
-          )}
-
->>>>>>> e6363d305c8903829c5cccc8d89ee44f4a5d8a84
         </main>
       </div>
     </div>
