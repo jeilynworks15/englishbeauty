@@ -12,8 +12,11 @@ import {
   LogOut,
   Sparkles,
   Smile,
-  FileCheck2,
-  DownloadCloud
+  DownloadCloud,
+  Trash2,
+  CheckCircle,
+  HelpCircle,
+  PlayCircle
 } from 'lucide-react';
 
 const SUPABASE_URL = 'https://fiuphtskrnwdftsrspip.supabase.co'; 
@@ -173,6 +176,25 @@ export default function App() {
     }
   };
 
+  const handlePdfDelete = async (claseKey, studentUser) => {
+    if (!supabase) return;
+    const seguro = window.confirm("¿Segura que quieres borrar tu tarea para subir otra?");
+    if (!seguro) return;
+
+    setLoadingCloud(true);
+    const { error } = await supabase
+      .from('tareas')
+      .delete()
+      .match({ estudiante: studentUser, clase: claseKey });
+    setLoadingCloud(false);
+
+    if (error) {
+      console.error("Error al borrar el archivo:", error);
+    } else {
+      descargarDeSupabase();
+    }
+  };
+
   const enviarNotaASupabase = async (estudiante, claseKey, notaSeleccionada, comentarioEscrito) => {
     if (!supabase) return;
     const { error } = await supabase.from('calificaciones').upsert(
@@ -224,9 +246,9 @@ export default function App() {
           content: [
             { en: "Hello! / Hi!", es: "Hola" },
             { en: "Good morning.", es: "Buenos días" },
-            { en: "Good afternoon.", es: "Buenos tardes" },
+            { en: "Good afternoon.", es: "Buenas tardes" },
             { en: "Welcome!", es: "¡Bienvenido(a)!" },
-            { en: "How are you?", es: "How are you?" },
+            { en: "How are you?", es: "¿Cómo está?" },
             { en: "My name is...", es: "Mi nombre es..." },
             { en: "Nice to meet you.", es: "Mucho gusto." },
             { en: "Please, have a seat.", es: "Por favor, tome asiento." }
@@ -324,7 +346,7 @@ export default function App() {
       setError('');
       return;
     }
-    setError('Credenciales inválidas.');
+    setError('Credenciales incorrectas o usuario no registrado.');
   };
 
   const handleLogout = () => {
@@ -338,15 +360,18 @@ export default function App() {
       <div className="min-h-screen bg-gradient-to-tr from-pink-200 to-purple-200 flex flex-col items-center justify-center p-4">
         <form onSubmit={handleLogin} className="bg-white p-8 rounded-3xl shadow-xl max-w-sm w-full space-y-4 border border-pink-300">
           <div className="text-center">
-            <span className="text-4xl">💇‍♀️</span>
-            <h2 className="text-xl font-black text-slate-950 mt-1">Beauty English Salón</h2>
+            <span className="text-5xl animate-bounce inline-block">💇‍♀️</span>
+            <h2 className="text-2xl font-black text-slate-950 mt-1">Beauty English</h2>
+            <p className="text-xs font-bold text-pink-500">Aprende inglés interactivo en el salón</p>
           </div>
           <div className="space-y-2">
-            <input type="text" placeholder="Usuario" value={username} onChange={e => setUsername(e.target.value)} className="w-full p-3 border border-slate-300 rounded-xl text-slate-950 font-bold bg-white outline-none" />
-            <input type="password" placeholder="Contraseña" value={password} onChange={e => setPassword(e.target.value)} className="w-full p-3 border border-slate-300 rounded-xl text-slate-950 font-bold bg-white outline-none" />
+            <input type="text" placeholder="Tu Usuario" value={username} onChange={e => setUsername(e.target.value)} className="w-full p-3 border border-slate-300 rounded-xl text-slate-950 font-bold bg-slate-50 outline-none" />
+            <input type="password" placeholder="Tu Contraseña" value={password} onChange={e => setPassword(e.target.value)} className="w-full p-3 border border-slate-300 rounded-xl text-slate-950 font-bold bg-slate-50 outline-none" />
           </div>
-          {error && <p className="text-red-600 text-xs font-bold text-center">{error}</p>}
-          <button type="submit" className="w-full bg-pink-600 text-white font-black p-3 rounded-xl text-xs shadow-md">Ingresar</button>
+          {error && <p className="text-red-600 text-xs font-black text-center">{error}</p>}
+          <button type="submit" className="w-full bg-pink-600 hover:bg-pink-700 text-white font-black p-3.5 rounded-2xl text-xs shadow-md transition-all">
+            Ingresar al Aula de Clase 🚀
+          </button>
         </form>
       </div>
     );
@@ -356,7 +381,7 @@ export default function App() {
   const targetStudent = esProfesora ? selectedStudent : currentUser.username;
 
   return (
-    <div className={`min-h-screen font-sans flex flex-col ${darkMode ? 'bg-slate-950 text-white' : 'bg-pink-50/40 text-slate-900'}`}>
+    <div className={`min-h-screen font-sans flex flex-col ${darkMode ? 'bg-slate-950 text-white' : 'bg-pink-50/20 text-slate-900'}`}>
       
       {}
       <header className={`border-b h-16 flex items-center justify-between px-6 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-pink-100'}`}>
@@ -365,10 +390,10 @@ export default function App() {
           <span className="font-black text-slate-950 dark:text-white text-sm">Beauty English Course System 👩‍🏫✨</span>
         </div>
         <div className="flex items-center space-x-4">
-          <button onClick={() => setDarkMode(!darkMode)} className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg">
+          <button onClick={() => setDarkMode(!darkMode)} className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg transition-all active:scale-95">
             {darkMode ? <Sun size={16} className="text-yellow-400" /> : <Moon size={16} className="text-slate-700" />}
           </button>
-          <span className="text-xs font-black text-slate-950 dark:text-pink-300 uppercase bg-pink-100 dark:bg-slate-800 px-3 py-1 rounded-full flex items-center gap-1">
+          <span className="text-xs font-black text-slate-950 dark:text-pink-300 uppercase bg-pink-100 dark:bg-slate-800 px-3 py-1.5 rounded-full flex items-center gap-1">
             <Smile size={12} className="text-pink-600" /> {currentUser.name} ({currentUser.role})
           </span>
           <button onClick={handleLogout} className="text-[11px] bg-red-100 hover:bg-red-200 text-red-700 font-bold px-3 py-1.5 rounded-lg flex items-center gap-1">
@@ -394,21 +419,21 @@ export default function App() {
             onClick={() => setActiveTab('unit1')} 
             className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 ${activeTab === 'unit1' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-950 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-800'}`}
           >
-            <BookOpen size={14} /> Unit 1
+            <BookOpen size={14} /> Unidad 1: Welcome
           </button>
 
           <button 
             onClick={() => setActiveTab('unit2')} 
             className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 ${activeTab === 'unit2' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-950 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-800'}`}
           >
-            <BookOpen size={14} /> Unit 2
+            <BookOpen size={14} /> Unidad 2: Info
           </button>
 
           <button 
             onClick={() => setActiveTab('unit3')} 
             className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-black flex items-center gap-2 ${activeTab === 'unit3' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-950 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-800'}`}
           >
-            <BookOpen size={14} /> Unit 3
+            <BookOpen size={14} /> Unidad 3: Client
           </button>
 
           <button 
@@ -450,24 +475,148 @@ export default function App() {
         <main className="flex-1 p-6 max-w-4xl w-full mx-auto">
           {loadingCloud && (
             <div className="text-center p-2 mb-4 bg-pink-100 text-pink-700 font-black rounded-lg text-xs animate-pulse flex items-center justify-center gap-1">
-              ☁️ Conectando con Supabase...
+              ☁️ Conectando con Supabase en la nube...
             </div>
           )}
           
           {/* TAB: INICIO */}
           {activeTab === 'inicio' && (
-            <div className="space-y-4">
+            <div className="space-y-4 animate-slide-in">
               <div className="bg-pink-600 p-6 rounded-3xl text-white shadow-md relative overflow-hidden">
                 <Sparkles className="absolute right-4 top-4 text-pink-300 animate-spin" size={48} />
-                <h1 className="text-xl font-black">¡Bienvenido, {currentUser.name}! 💇‍♀️✨</h1>
-                <p className="text-xs mt-1 font-bold">¡La maleta está limpia de juguetes pesados y lista para conectarse directamente con Supabase!</p>
+                <h1 className="text-xl font-black">¡Bienvenida, {currentUser.name}! 💇‍♀️✨</h1>
+                <p className="text-xs mt-1 font-bold">¡Toda la magia está en su lugar! Explora las unidades, practica con audio en inglés, sube tus tareas en PDF o juega en las dinámicas interactivas.</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white dark:bg-slate-900 border border-pink-100 dark:border-slate-800 p-4 rounded-2xl">
+                  <h3 className="font-black text-xs text-pink-600 mb-2">📢 Instrucciones Generales</h3>
+                  <ul className="text-xs space-y-2 text-slate-600 dark:text-slate-300 font-bold">
+                    <li>🎯 Haz clic en el botón rosa de volumen en cualquier clase para escuchar el inglés.</li>
+                    <li>🎒 Usa la "Mochila de Tareas" para subir y borrar tus entregas PDF.</li>
+                    <li>⭐ Si te equivocas de archivo, ¡usa el botón de eliminar tarea!</li>
+                  </ul>
+                </div>
+
+                <div className="bg-white dark:bg-slate-900 border border-pink-100 dark:border-slate-800 p-4 rounded-2xl flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-black text-xs text-purple-600 mb-1">🎮 Zona Interactiva</h3>
+                    <p className="text-xs text-slate-500 font-bold">Disfruta de juegos para repasar vocabulario de keratina.</p>
+                  </div>
+                  <button onClick={() => setActiveTab('juegos')} className="mt-4 bg-purple-600 hover:bg-purple-700 text-white text-xs font-black py-2 rounded-xl transition-all">
+                    ¡Ir a los Juegos ahora! 🎮
+                  </button>
+                </div>
               </div>
             </div>
           )}
 
+          {/* TAB: UNIDAD 1 */}
+          {activeTab === 'unit1' && (
+            <div className="space-y-4 animate-slide-in">
+              <h2 className="text-sm font-black text-pink-600 tracking-wider">UNIDAD 1: WELCOME TO THE CLIENT (BIENVENIDA) 🚪</h2>
+              {modules[0].lessons.map((lesson, idx) => (
+                <div key={idx} className="bg-white dark:bg-slate-900 border border-pink-100 dark:border-slate-800 p-5 rounded-2xl space-y-3 shadow-sm">
+                  <div className="border-b pb-2">
+                    <h3 className="text-xs font-black text-slate-950 dark:text-white uppercase">{lesson.title}</h3>
+                    <p className="text-[11px] text-pink-600 font-bold">{lesson.objective}</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-2">
+                    {lesson.content.map((item, keyIdx) => (
+                      <div key={keyIdx} className="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-2.5 rounded-xl">
+                        <div className="flex items-center space-x-2">
+                          <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-pink-100 hover:bg-pink-200 text-pink-700 dark:bg-slate-700 dark:text-pink-300 rounded-lg transition-all active:scale-90">
+                            <Volume2 size={12} />
+                          </button>
+                          <span className="text-xs font-black text-slate-950 dark:text-white">{item.en}</span>
+                        </div>
+                        <span className="text-[11px] font-bold text-slate-500">{item.es}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="p-3 bg-pink-50/50 dark:bg-slate-800 rounded-xl border border-pink-100 dark:border-slate-700 text-[11px]">
+                    <p className="font-black text-pink-600">🎯 Actividad Evaluativa:</p>
+                    <p className="font-bold text-slate-600 dark:text-slate-300 mt-0.5">{lesson.task}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* TAB: UNIDAD 2 */}
+          {activeTab === 'unit2' && (
+            <div className="space-y-4 animate-slide-in">
+              <h2 className="text-sm font-black text-pink-600 tracking-wider">UNIDAD 2: GIVING INFORMATION (BRINDAR INFORMACIÓN) 📢</h2>
+              {modules[1].lessons.map((lesson, idx) => (
+                <div key={idx} className="bg-white dark:bg-slate-900 border border-pink-100 dark:border-slate-800 p-5 rounded-2xl space-y-3 shadow-sm">
+                  <div className="border-b pb-2">
+                    <h3 className="text-xs font-black text-slate-950 dark:text-white uppercase">{lesson.title}</h3>
+                    <p className="text-[11px] text-pink-600 font-bold">{lesson.objective}</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-2">
+                    {lesson.content.map((item, keyIdx) => (
+                      <div key={keyIdx} className="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-2.5 rounded-xl">
+                        <div className="flex items-center space-x-2">
+                          <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-pink-100 hover:bg-pink-200 text-pink-700 dark:bg-slate-700 dark:text-pink-300 rounded-lg transition-all active:scale-90">
+                            <Volume2 size={12} />
+                          </button>
+                          <span className="text-xs font-black text-slate-950 dark:text-white">{item.en}</span>
+                        </div>
+                        <span className="text-[11px] font-bold text-slate-500">{item.es}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="p-3 bg-pink-50/50 dark:bg-slate-800 rounded-xl border border-pink-100 dark:border-slate-700 text-[11px]">
+                    <p className="font-black text-pink-600">🎯 Actividad Evaluativa:</p>
+                    <p className="font-bold text-slate-600 dark:text-slate-300 mt-0.5">{lesson.task}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* TAB: UNIDAD 3 */}
+          {activeTab === 'unit3' && (
+            <div className="space-y-4 animate-slide-in">
+              <h2 className="text-sm font-black text-pink-600 tracking-wider">UNIDAD 3: CUSTOMER INTERACTION (INTERACTUAR CON EL CLIENTE) 💬</h2>
+              {modules[2].lessons.map((lesson, idx) => (
+                <div key={idx} className="bg-white dark:bg-slate-900 border border-pink-100 dark:border-slate-800 p-5 rounded-2xl space-y-3 shadow-sm">
+                  <div className="border-b pb-2">
+                    <h3 className="text-xs font-black text-slate-950 dark:text-white uppercase">{lesson.title}</h3>
+                    <p className="text-[11px] text-pink-600 font-bold">{lesson.objective}</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-2">
+                    {lesson.content.map((item, keyIdx) => (
+                      <div key={keyIdx} className="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-2.5 rounded-xl">
+                        <div className="flex items-center space-x-2">
+                          <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-pink-100 hover:bg-pink-200 text-pink-700 dark:bg-slate-700 dark:text-pink-300 rounded-lg transition-all active:scale-90">
+                            <Volume2 size={12} />
+                          </button>
+                          <span className="text-xs font-black text-slate-950 dark:text-white">{item.en}</span>
+                        </div>
+                        <span className="text-[11px] font-bold text-slate-500">{item.es}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="p-3 bg-pink-50/50 dark:bg-slate-800 rounded-xl border border-pink-100 dark:border-slate-700 text-[11px]">
+                    <p className="font-black text-pink-600">🎯 Actividad Evaluativa:</p>
+                    <p className="font-bold text-slate-600 dark:text-slate-300 mt-0.5">{lesson.task}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {}
           {/* TAB: MOCHILA DE TAREAS */}
           {activeTab === 'mochila' && (
-            <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4">
+            <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4 animate-slide-in">
               <div className="flex items-center justify-between border-b pb-4 border-slate-200 dark:border-slate-700">
                 <div className="flex items-center space-x-2">
                   <FolderHeart className="text-pink-600 animate-bounce" size={20} />
@@ -491,7 +640,7 @@ export default function App() {
                   return (
                     <div key={key} className="bg-pink-50/50 dark:bg-slate-800/80 p-4 rounded-xl border border-pink-100 dark:border-slate-700 text-xs text-slate-950 dark:text-white space-y-3">
                       <p className="font-black text-pink-700 dark:text-pink-400">🎯 {infoTareas[key]}</p>
-                      <p className="text-[11px] text-slate-500 font-bold">Mochila de: <span className="uppercase text-pink-600">{targetStudent}</span></p>
+                      <p className="text-[11px] text-slate-500 font-bold">Mochila de: <span className="uppercase text-pink-600 font-black">{targetStudent}</span></p>
                       
                       <div className="flex flex-wrap gap-2 items-center">
                         {!esProfesora && (
@@ -501,9 +650,19 @@ export default function App() {
                           </label>
                         )}
                         {taskData ? (
-                          <a href={taskData.url} download={taskData.name} className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-black shadow-sm transition-all flex items-center gap-1 text-[11px]">
-                            <DownloadCloud size={12} /> Descargar PDF enviado 👁️
-                          </a>
+                          <>
+                            <a href={taskData.url} download={taskData.name} className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-black shadow-sm transition-all flex items-center gap-1 text-[11px]">
+                              <DownloadCloud size={12} /> Descargar PDF enviado 👁️
+                            </a>
+                            
+                            {/* BOTÓN MAGICO DE BORRAR PDF TAREA */}
+                            <button 
+                              onClick={() => handlePdfDelete(key, targetStudent)} 
+                              className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg font-black shadow-sm transition-all flex items-center gap-1 text-[11px] active:scale-95"
+                            >
+                              <Trash2 size={12} /> Eliminar PDF 🗑️
+                            </button>
+                          </>
                         ) : (
                           <span className="text-slate-400 font-bold italic text-[11px]">Aún no has subido tu PDF</span>
                         )}
@@ -525,10 +684,11 @@ export default function App() {
           )}
 
           {}
+          {/* TAB: CALIFICACIONES */}
           {activeTab === 'calificaciones' && (
-            <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4">
+            <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4 animate-slide-in">
               <div className="flex items-center space-x-2 border-b pb-2 border-slate-200 dark:border-slate-700">
-                <Star className="text-amber-500 fill-amber-500" size={20} />
+                <Star className="text-amber-500 fill-amber-500 animate-spin" size={20} />
                 <h2 className="text-sm font-black text-slate-950 dark:text-white">CALIFICACIONES DE LA NUBE</h2>
               </div>
 
@@ -577,7 +737,7 @@ export default function App() {
                             }));
                           }}
                           onBlur={(e) => enviarNotaASupabase(selectedStudent, key, currentRecord.nota, e.target.value)}
-                          placeholder="Escribe un comentario..." 
+                          placeholder="Escribe un comentario que el estudiante pueda ver en su cuenta..." 
                           className="w-full p-2.5 text-xs text-slate-950 font-bold border rounded-lg bg-white outline-none"
                           rows={2}
                         />
@@ -608,27 +768,35 @@ export default function App() {
             </div>
           )}
 
+          {}
           {/* TAB: VOCABULARIO */}
           {activeTab === 'vocabulario' && (
-            <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4">
+            <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4 animate-slide-in">
               <div className="flex items-center space-x-2 border-b pb-4 border-slate-200 dark:border-slate-700">
-                <Volume2 className="text-pink-600" size={20} />
+                <Volume2 className="text-pink-600 animate-pulse" size={20} />
                 <h2 className="text-sm font-black text-slate-950 dark:text-white">DICCIONARIO INTERACTIVO 👋✨</h2>
               </div>
               <div className="grid grid-cols-1 gap-2">
                 {[
-                  { en: "Hello! Welcome to our salon.", es: "¡Hola! Bienvenido a nuestro salón." },
-                  { en: "Today, we will do a keratin treatment.", es: "Hoy, haremos un tratamiento de keratina." },
-                  { en: "First, we wash your hair.", es: "Primero, lavamos tu cabello." },
-                  { en: "Then, we apply the keratin.", es: "Luego, aplicamos la keratina." },
-                  { en: "Finally, we use the flat iron.", es: "Finalmente, usamos la plancha." }
+                  { en: "Hello! Welcome to our salon.", es: "¡Hola! Bienvenido a nuestro salón.", cat: "Greetings" },
+                  { en: "Today, we will do a keratin treatment.", es: "Hoy, haremos un tratamiento de keratina.", cat: "Process" },
+                  { en: "First, we wash your hair.", es: "Primero, lavamos tu cabello.", cat: "Process" },
+                  { en: "Then, we dry your hair.", es: "Luego, secamos tu cabello.", cat: "Process" },
+                  { en: "Next, we apply the keratin.", es: "Después, aplicamos la keratina.", cat: "Process" },
+                  { en: "Finally, we use the flat iron.", es: "Finalmente, usamos la plancha.", cat: "Process" },
+                  { en: "Please, don't move.", es: "Por favor, no se mueva.", cat: "Aftercare" },
+                  { en: "Don't wash your hair for 3 days.", es: "No lave su cabello durante 3 días.", cat: "Aftercare" },
+                  { en: "Do you have any allergies?", es: "¿Tiene alguna alergia?", cat: "Interaction" }
                 ].map((item, i) => (
-                  <div key={i} className="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
+                  <div key={i} className="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:scale-[1.01] transition-all">
                     <div className="flex items-center space-x-2">
-                      <button onClick={() => escucharPalabra(item.en)} className="p-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition-all">
+                      <button onClick={() => escucharPalabra(item.en)} className="p-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition-all active:scale-90">
                         <Volume2 size={14} />
                       </button>
-                      <span className="text-xs font-black text-slate-950 dark:text-white">{item.en}</span>
+                      <div className="flex flex-col">
+                        <span className="text-xs font-black text-slate-950 dark:text-white">{item.en}</span>
+                        <span className="text-[9px] bg-pink-100 dark:bg-slate-700 text-pink-700 dark:text-pink-300 w-max px-1.5 rounded-md font-bold mt-0.5">{item.cat}</span>
+                      </div>
                     </div>
                     <span className="text-xs font-bold text-slate-500">🗣️ {item.es}</span>
                   </div>
@@ -637,19 +805,47 @@ export default function App() {
             </div>
           )}
 
+          {}
           {/* TAB: JUEGOS */}
           {activeTab === 'juegos' && (
-            <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4">
+            <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4 animate-slide-in">
               <div className="flex items-center space-x-2 border-b pb-4 border-slate-200 dark:border-slate-700">
-                <Gamepad2 className="text-purple-600" size={20} />
+                <Gamepad2 className="text-purple-600 animate-bounce" size={20} />
                 <h2 className="text-sm font-black text-slate-950 dark:text-white">ÁREA DE JUEGOS 🎮✨</h2>
               </div>
-              <div className="space-y-3">
-                <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noopener noreferrer" className="block p-4 bg-purple-50 hover:bg-purple-100 dark:bg-slate-800 rounded-2xl border border-purple-200 dark:border-slate-700 transition-all">
-                  <span className="text-xs font-black block text-purple-700">🎮 Wordwall: Greetings & Saludos 👋</span>
+              <p className="text-xs text-slate-500 font-bold">¡Haz clic en cualquiera de los juegos para repasar y divertirte al máximo!</p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noopener noreferrer" className="block p-4 bg-purple-50 hover:bg-purple-100 dark:bg-slate-800 rounded-2xl border border-purple-200 dark:border-slate-700 transition-all active:scale-95">
+                  <div className="flex items-center space-x-2">
+                    <PlayCircle className="text-purple-600" size={16} />
+                    <span className="text-xs font-black text-purple-700 dark:text-purple-300">Juego 1: Wordwall 👋</span>
+                  </div>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-1">Greetings & Saludos iniciales para recibir clientes.</span>
                 </a>
-                <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noopener noreferrer" className="block p-4 bg-pink-50 hover:bg-pink-100 dark:bg-slate-800 rounded-2xl border border-pink-200 dark:border-slate-700 transition-all">
-                  <span className="text-xs font-black block text-pink-700">🎮 Interacty: Keratin Challenge 🧪</span>
+
+                <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noopener noreferrer" className="block p-4 bg-pink-50 hover:bg-pink-100 dark:bg-slate-800 rounded-2xl border border-pink-200 dark:border-slate-700 transition-all active:scale-95">
+                  <div className="flex items-center space-x-2">
+                    <PlayCircle className="text-pink-600" size={16} />
+                    <span className="text-xs font-black text-pink-700 dark:text-pink-300">Juego 2: Interacty 🧪</span>
+                  </div>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-1">Keratin Process Challenge y orden de aplicación.</span>
+                </a>
+
+                <a href="https://wordwall.net/es/resource/116065664" target="_blank" rel="noopener noreferrer" className="block p-4 bg-blue-50 hover:bg-blue-100 dark:bg-slate-800 rounded-2xl border border-blue-200 dark:border-slate-700 transition-all active:scale-95">
+                  <div className="flex items-center space-x-2">
+                    <PlayCircle className="text-blue-600" size={16} />
+                    <span className="text-xs font-black text-blue-700 dark:text-blue-300">Juego 3: Wordwall Aftercare 🧴</span>
+                  </div>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-1">Cuidado posterior y recomendaciones al cliente.</span>
+                </a>
+
+                <a href="https://create.kahoot.it/share/class-5/16e72ba0-e8fc-4910-9400-b7a3c94c3586" target="_blank" rel="noopener noreferrer" className="block p-4 bg-amber-50 hover:bg-amber-100 dark:bg-slate-800 rounded-2xl border border-amber-200 dark:border-slate-700 transition-all active:scale-95">
+                  <div className="flex items-center space-x-2">
+                    <PlayCircle className="text-amber-600" size={16} />
+                    <span className="text-xs font-black text-amber-700 dark:text-amber-300">Juego 4: Kahoot Price & Time 💰</span>
+                  </div>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-1">Preguntas y respuestas sobre precios y métodos de pago.</span>
                 </a>
               </div>
             </div>
