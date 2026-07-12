@@ -59,11 +59,10 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeVocabFilter, setActiveVocabFilter] = useState('todos');
 
-  // Estado para el Mural de Música Feliz
   const [musicList, setMusicList] = useState(() => {
     const savedMusic = localStorage.getItem('beauty_salon_music_list');
     return savedMusic ? JSON.parse(savedMusic) : {
-      jean: { nombre_cancion: 'Happy 🌸', enlace: 'https://www.youtube.com/watch?v=ZbZSe6N_BXs', likes: ['ricardo'], comentarios: [{ usuario: 'ricardo', nombre: 'Ricardo', texto: '¡Qué gran ritmo Jean!' }] },
+      jean: { nombre_cancion: 'Happy 🌸', enlace: 'https://www.youtube.com/watch?v=ZbZSe6N_BXs', likes: ['ricardo'], comentarios: [{ usuario: 'ricardo', nombre: 'Ricardo', texto: '¡Qué gran ritmo Jean!', likes: [] }] },
       ricardo: { nombre_cancion: 'Can\'t Stop the Feeling! ⚡', enlace: 'https://www.youtube.com/watch?v=ru0K8uYEZWw', likes: ['jean'], comentarios: [] },
       legna: { nombre_cancion: 'Sparkle 🎀', enlace: 'https://www.youtube.com/watch?v=a2GujJZfALL', likes: [], comentarios: [] },
       daniela: { nombre_cancion: 'A Thousand Years ✨', enlace: 'https://www.youtube.com/watch?v=rtOvBOTyX00', likes: [], comentarios: [] }
@@ -80,7 +79,6 @@ export default function App() {
     studentUser: null
   });
 
-  // Alerta mágica personalizada
   const [toast, setToast] = useState({
     show: false,
     message: '',
@@ -101,7 +99,7 @@ export default function App() {
     yaritza: { clase2: null, clase3: null, clase5: null, clase6: null },
     annelys: { clase2: null, clase3: null, clase5: null, clase6: null },
     melany: { clase2: null, clase3: null, clase5: null, clase6: null },
-    legna: { clase2: null, clase3: null, clase5: null, clase6: null }, // ¡Bienvenida Legna! 🌸
+    legna: { clase2: null, clase3: null, clase5: null, clase6: null }, 
   });
 
   const [grades, setGrades] = useState({
@@ -111,14 +109,13 @@ export default function App() {
     yaritza: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
     annelys: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
     melany: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } },
-    legna: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } } // ¡Calificaciones para Legna! 🎀
+    legna: { clase2: { nota: '-', comentario: '' }, clase3: { nota: '-', comentario: '' }, clase5: { nota: '-', comentario: '' }, clase6: { nota: '-', comentario: '' } } 
   });
 
   const [selectedStudent, setSelectedStudent] = useState('jean');
   const [loadingCloud, setLoadingCloud] = useState(false);
   const [supabase, setSupabase] = useState(null);
 
-  // Video de Bienvenida
   const [welcomingVideo, setWelcomingVideo] = useState(() => {
     const saved = localStorage.getItem('beauty_salon_welcoming_video');
     return saved ? JSON.parse(saved) : { type: 'url', source: 'https://www.youtube.com/embed/dQw4w9WgXcQ' };
@@ -375,7 +372,6 @@ export default function App() {
     }
   };
 
-  // Métodos mágicos de la sección de Música
   const handleGuardarCancion = async () => {
     if (!newSongName.trim() || !newSongUrl.trim()) {
       showToast("Por favor pon un nombre y enlace de tu canción 🎵", "error");
@@ -472,7 +468,8 @@ export default function App() {
     const nuevoComentario = {
       usuario: currentUser.username,
       nombre: currentUser.name,
-      texto: textoComentario.trim()
+      texto: textoComentario.trim(),
+      likes: [] 
     };
 
     const nuevosComentarios = [...(cancion.comentarios || []), nuevoComentario];
@@ -483,6 +480,80 @@ export default function App() {
     localStorage.setItem('beauty_salon_music_list', JSON.stringify(nuevaLista));
 
     setCommentInput(prev => ({ ...prev, [usuarioDueno]: '' }));
+
+    if (supabase) {
+      await supabase.from('canciones_felices').upsert(
+        { 
+          usuario: usuarioDueno, 
+          nombre_cancion: cancionActualizada.nombre_cancion, 
+          enlace: cancionActualizada.enlace,
+          likes: JSON.stringify(cancionActualizada.likes),
+          comentarios: JSON.stringify(cancionActualizada.comentarios)
+        },
+        { onConflict: 'usuario' }
+      );
+    }
+  };
+
+  const handleLikeComentario = async (usuarioDueno, commentIdx) => {
+    if (currentUser.username === 'isabel') {
+      showToast("Miss Isabel está en modo observadora. 🌸", "error");
+      return;
+    }
+
+    const cancion = musicList[usuarioDueno];
+    if (!cancion) return;
+
+    const comentariosActualizados = [...(cancion.comentarios || [])];
+    const comentario = { ...comentariosActualizados[commentIdx] };
+    
+    if (!comentario.likes) comentario.likes = [];
+    const miUsuario = currentUser.username;
+
+    if (comentario.likes.includes(miUsuario)) {
+      comentario.likes = comentario.likes.filter(u => u !== miUsuario);
+    } else {
+      comentario.likes.push(miUsuario);
+    }
+
+    comentariosActualizados[commentIdx] = comentario;
+    const cancionActualizada = { ...cancion, comentarios: comentariosActualizados };
+    const nuevaLista = { ...musicList, [usuarioDueno]: cancionActualizada };
+    
+    setMusicList(nuevaLista);
+    localStorage.setItem('beauty_salon_music_list', JSON.stringify(nuevaLista));
+
+    if (supabase) {
+      await supabase.from('canciones_felices').upsert(
+        { 
+          usuario: usuarioDueno, 
+          nombre_cancion: cancionActualizada.nombre_cancion, 
+          enlace: cancionActualizada.enlace,
+          likes: JSON.stringify(cancionActualizada.likes),
+          comentarios: JSON.stringify(cancionActualizada.comentarios)
+        },
+        { onConflict: 'usuario' }
+      );
+    }
+  };
+
+  const handleEliminarComentario = async (usuarioDueno, commentIdx) => {
+    if (currentUser.username === 'isabel') {
+      showToast("Miss Isabel está en modo observadora. 🌸", "error");
+      return;
+    }
+
+    const cancion = musicList[usuarioDueno];
+    if (!cancion) return;
+
+    const comentariosActualizados = (cancion.comentarios || []).filter((_, idx) => idx !== commentIdx);
+    const cancionActualizada = { ...cancion, comentarios: comentariosActualizados };
+    const nuevaLista = { ...musicList, [usuarioDueno]: cancionActualizada };
+
+    setMusicList(nuevaLista);
+    localStorage.setItem('beauty_salon_music_list', JSON.stringify(nuevaLista));
+
+    showToast("¡Comentario borrado con polvos de hadas! 🧹🌸", "success");
 
     if (supabase) {
       await supabase.from('canciones_felices').upsert(
@@ -509,7 +580,7 @@ export default function App() {
     'yaritza': { username: 'yaritza', name: "Yaritza", role: "Estudiante" },
     'annelys': { username: 'annelys', name: "Annelys", role: "Estudiante" },
     'melany': { username: 'melany', name: "Melany", role: "Estudiante" },
-    'legna': { username: 'legna', name: "Legna", role: "Estudiante" } // ¡Legna registrada con éxito! ✨
+    'legna': { username: 'legna', name: "Legna", role: "Estudiante" } 
   };
 
   const estudiantesLista = [
@@ -519,7 +590,7 @@ export default function App() {
     { id: 'yaritza', name: 'Yaritza' },
     { id: 'annelys', name: 'Annelys' },
     { id: 'melany', name: 'Melany' },
-    { id: 'legna', name: 'Legna' } // ¡Legna en la lista escolar! 📝
+    { id: 'legna', name: 'Legna' } 
   ];
 
   const infoTareas = {
@@ -805,7 +876,6 @@ export default function App() {
             <Star size={14} /> Calificaciones ⭐
           </button>
 
-          {}
           <button 
             onClick={() => setActiveTab('musica')} 
             className={`w-full text-left px-3.5 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'musica' ? 'bg-gradient-to-r from-pink-500 to-pink-600 text-white shadow-md transform scale-102' : 'text-slate-950 dark:text-slate-300 hover:bg-pink-50 dark:hover:bg-slate-800'}`}
@@ -848,7 +918,6 @@ export default function App() {
               <div className="bg-gradient-to-r from-pink-500 to-purple-600 p-6 rounded-3xl text-white shadow-lg relative overflow-hidden">
                 <Sparkles className="absolute right-4 top-4 text-pink-200 animate-spin" size={48} />
                 <h1 className="text-2xl font-black">¡Bienvenida de vuelta, {currentUser.name}! 💇‍♀️✨</h1>
-                {/* TEXTO PERSONALIZADO SEGÚN TU DESEO MÁGICO */}
                 <p className="text-xs mt-1.5 font-bold">Disfruta cada etapa de tu aprendizaje con los juegos interactivos y más</p>
               </div>
 
@@ -858,7 +927,6 @@ export default function App() {
                   <Video className="text-pink-600 animate-pulse" size={18} />
                   Cine Mágico: Video de Bienvenida 🎬🌸
                 </h2>
-                {/* SUBTÍTULO PERSONALIZADO SEGÚN TU DESEO MÁGICO */}
                 <p className="text-[11px] text-slate-500 font-bold">Con nosotras aprenderás de forma práctica y sencilla. Somos un equipo</p>
 
                 {/* VISUALIZADOR DE VIDEO */}
@@ -1039,7 +1107,6 @@ export default function App() {
                               <DownloadCloud size={12} /> Descargar PDF enviado 👁️
                             </a>
                             
-                            {/* BOTÓN MÁGICO DE BORRAR PDF TAREA - ¡SÓLO PARA ESTUDIANTES! */}
                             {!esProfesora && (
                               <button 
                                 onClick={() => openDeleteConfirmModal(key, targetStudent)} 
@@ -1153,7 +1220,6 @@ export default function App() {
             </div>
           )}
 
-          {}
           {/* TAB: MÚSICA FELIZ */}
           {activeTab === 'musica' && (
             <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-5 animate-slide-in shadow-sm">
@@ -1173,7 +1239,7 @@ export default function App() {
                 ¡La música llena de polvos de hadas nuestro salón! Comparte el enlace de la canción que te hace sonreír y llena de amor los recuadros de tus compañeros.
               </p>
 
-              {/* Formulario de Colgar Canción (No para Miss Isabel) */}
+              {/* Formulario de Colgar Canción */}
               {!esIsabel ? (
                 <div className="p-4 bg-pink-50/50 dark:bg-slate-800/40 rounded-2xl border border-pink-100 dark:border-slate-700/50 space-y-3">
                   <span className="text-[10px] font-black uppercase text-pink-600 tracking-wider flex items-center gap-1">
@@ -1264,16 +1330,46 @@ export default function App() {
                         </span>
                         
                         {/* Listado de comentarios */}
-                        <div className="space-y-1.5 max-h-24 overflow-y-auto pr-1">
+                        <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
                           {(item.comentarios || []).length === 0 ? (
                             <span className="text-[9px] italic text-slate-400 font-bold block">Sé la primera en comentar... 🌸</span>
                           ) : (
-                            item.comentarios.map((c, idx) => (
-                              <div key={idx} className="bg-white/80 dark:bg-slate-800/80 p-1.5 rounded-xl text-[9px] border border-slate-100 dark:border-slate-700">
-                                <span className="font-black text-purple-600 dark:text-purple-300 block">{c.nombre}:</span>
-                                <span className="text-slate-600 dark:text-slate-300 font-bold">{c.texto}</span>
-                              </div>
-                            ))
+                            item.comentarios.map((c, idx) => {
+                              const tieneComentarioHeart = (c.likes || []).includes(currentUser.username);
+                              const puedoEliminarComentario = !esIsabel && (userKey === currentUser.username || c.usuario === currentUser.username);
+
+                              return (
+                                <div key={idx} className="bg-white/80 dark:bg-slate-800/80 p-2 rounded-xl text-[10px] border border-slate-100 dark:border-slate-700 flex justify-between items-start gap-1">
+                                  <div className="flex-1 min-w-0">
+                                    <span className="font-black text-purple-600 dark:text-purple-300 block text-[9px]">{c.nombre}:</span>
+                                    <span className="text-slate-600 dark:text-slate-300 font-bold break-words">{c.texto}</span>
+                                  </div>
+                                  <div className="flex items-center gap-1.5 shrink-0 pt-0.5">
+                                    {/* Dar amor al comentario (Corazón) */}
+                                    <button
+                                      disabled={esIsabel}
+                                      onClick={() => handleLikeComentario(userKey, idx)}
+                                      className={`p-1 rounded-md transition-all active:scale-90 flex items-center gap-0.5 ${tieneComentarioHeart ? 'text-pink-600 bg-pink-50 dark:bg-pink-900/20' : 'text-slate-400 hover:text-slate-500'}`}
+                                      title="Dar amor al comentario"
+                                    >
+                                      <Heart size={9} className={tieneComentarioHeart ? 'fill-pink-600 text-pink-600' : ''} />
+                                      <span className="text-[8px] font-black">{(c.likes || []).length}</span>
+                                    </button>
+                                    
+                                    {/* Borrar comentario */}
+                                    {puedoEliminarComentario && (
+                                      <button
+                                        onClick={() => handleEliminarComentario(userKey, idx)}
+                                        className="p-1 text-slate-400 hover:text-red-500 rounded-md transition-all active:scale-90"
+                                        title="Eliminar comentario"
+                                      >
+                                        <Trash2 size={9} />
+                                      </button>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })
                           )}
                         </div>
 
@@ -1311,7 +1407,6 @@ export default function App() {
                   <Volume2 className="text-pink-600 animate-pulse" size={20} />
                   <h2 className="text-xs font-black text-slate-950 dark:text-white uppercase tracking-wider">DICCIONARIO INTERACTIVO PARLANTE 👋🔊</h2>
                 </div>
-                {/* BARRA DE BÚSQUEDA INTERACTIVA */}
                 <div className="relative flex items-center">
                   <input 
                     type="text" 
@@ -1454,7 +1549,6 @@ export default function App() {
   );
 }
 
-// Función auxiliar para procesar URLs de video de YouTube
 function processedVideoUrl(url) {
   if (!url) return null;
   if (url.includes('youtube.com/embed/')) return url;
