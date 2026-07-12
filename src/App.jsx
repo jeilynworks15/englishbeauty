@@ -93,7 +93,6 @@ export default function App() {
     if (!supabase) return;
     setLoadingCloud(true);
     try {
-      // 1. Descargar Tareas
       const { data: tareasDB, error: err1 } = await supabase.from('tareas').select('*');
       if (!err1 && tareasDB) {
         const clonTareas = {
@@ -107,7 +106,6 @@ export default function App() {
         setAllStudentsTasks(prev => ({ ...prev, ...clonTareas }));
       }
 
-      // 2. Descargar Notas
       const { data: notasDB, error: err2 } = await supabase.from('calificaciones').select('*');
       if (!err2 && notasDB) {
         const clonNotas = {
@@ -127,7 +125,7 @@ export default function App() {
         setGrades(clonNotas);
       }
     } catch (e) {
-      console.log("Error al sincronizar con internet:", e);
+      console.log("Error al traer datos de la nube:", e);
     }
     setLoadingCloud(false);
   };
@@ -149,10 +147,7 @@ export default function App() {
   };
 
   const handlePdfUpload = async (e, claseKey, studentUser) => {
-    if (!supabase) {
-      alert("⚠️ El sistema de conexión no está listo todavía. Por favor, espera un segundo.");
-      return;
-    }
+    if (!supabase) return;
     const file = e.target.files[0];
     if (file) {
       if (file.type === "application/pdf") {
@@ -169,15 +164,11 @@ export default function App() {
 
           if (error) {
             console.error("Error al subir archivo:", error);
-            alert("⚠️ No se pudo guardar en la base de datos de internet. ¡Revisa que el RLS esté desactivado!");
           } else {
-            alert(`¡Listo! La tarea "${file.name}" ya llegó de verdad al buzón de la profesora en la nube. 📄✨`);
             descargarDeSupabase();
           }
         };
         reader.readAsDataURL(file);
-      } else {
-        alert("Por favor, sube únicamente archivos en formato PDF. 📄");
       }
     }
   };
@@ -188,9 +179,7 @@ export default function App() {
       { estudiante: estudiante, clase: claseKey, nota: notaSeleccionada, comentario: comentarioEscrito },
       { onConflict: 'estudiante,clase' }
     );
-    if (error) {
-      console.error("Error guardando nota:", error);
-    } else {
+    if (!error) {
       descargarDeSupabase();
     }
   };
@@ -369,7 +358,7 @@ export default function App() {
   return (
     <div className={`min-h-screen font-sans flex flex-col ${darkMode ? 'bg-slate-950 text-white' : 'bg-pink-50/40 text-slate-900'}`}>
       
-      {/* HEADER */}
+      {}
       <header className={`border-b h-16 flex items-center justify-between px-6 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-pink-100'}`}>
         <div className="flex items-center space-x-2">
           <GraduationCap className="text-pink-600 animate-pulse" size={24} />
@@ -390,7 +379,7 @@ export default function App() {
 
       <div className="flex flex-1 flex-col md:flex-row">
         
-        {/* SIDEBAR MÁGICA CON TODOS LOS TABS QUE AMAS */}
+        {}
         <aside className={`w-full md:w-56 p-4 flex flex-col gap-1 ${darkMode ? 'bg-slate-900' : 'bg-white border-r border-pink-100'}`}>
           <div className="text-[10px] uppercase tracking-wider font-black text-pink-500 mb-2 px-3">Menú Principal</div>
           
@@ -457,11 +446,11 @@ export default function App() {
           </div>
         </aside>
 
-        {/* MAIN CONTAINER */}
+        {}
         <main className="flex-1 p-6 max-w-4xl w-full mx-auto">
           {loadingCloud && (
             <div className="text-center p-2 mb-4 bg-pink-100 text-pink-700 font-black rounded-lg text-xs animate-pulse flex items-center justify-center gap-1">
-              ☁️ Sincronizando con Supabase en tiempo real...
+              ☁️ Conectando con Supabase...
             </div>
           )}
           
@@ -471,76 +460,12 @@ export default function App() {
               <div className="bg-pink-600 p-6 rounded-3xl text-white shadow-md relative overflow-hidden">
                 <Sparkles className="absolute right-4 top-4 text-pink-300 animate-spin" size={48} />
                 <h1 className="text-xl font-black">¡Bienvenido, {currentUser.name}! 💇‍♀️✨</h1>
-                <p className="text-xs mt-1 font-bold">Tus datos, tareas y calificaciones se encuentran resguardados con total éxito en la base de datos de internet.</p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-4 rounded-2xl flex items-center gap-3">
-                  <div className="p-3 bg-pink-100 dark:bg-pink-900 rounded-xl">
-                    <FolderHeart className="text-pink-600" size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-black text-xs">Mochila de Tareas</h3>
-                    <p className="text-[11px] text-slate-500">Sube y visualiza tus PDFs listos en la nube.</p>
-                  </div>
-                </div>
-                <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-4 rounded-2xl flex items-center gap-3">
-                  <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-xl">
-                    <Gamepad2 className="text-purple-600" size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-black text-xs">Área de Juegos</h3>
-                    <p className="text-[11px] text-slate-500">Diviértete aprendiendo inglés en Wordwall y Kahoot.</p>
-                  </div>
-                </div>
+                <p className="text-xs mt-1 font-bold">¡La maleta está limpia de juguetes pesados y lista para conectarse directamente con Supabase!</p>
               </div>
             </div>
           )}
 
-          {/* TAB: UNIDADES DE CONTENIDO */}
-          {['unit1', 'unit2', 'unit3'].includes(activeTab) && (
-            <div className="space-y-4">
-              {modules.filter((_, idx) => (activeTab === 'unit1' && idx === 0) || (activeTab === 'unit2' && idx === 1) || (activeTab === 'unit3' && idx === 2)).map(mod => (
-                <div key={mod.id} className="space-y-4">
-                  <div className="bg-gradient-to-r from-pink-600 to-purple-600 text-white p-4 rounded-xl font-black text-xs uppercase tracking-wide flex items-center gap-2">
-                    <Sparkles size={14} /> {mod.title}
-                  </div>
-                  {mod.lessons.map((les, index) => (
-                    <div key={index} className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-5 rounded-2xl space-y-4 shadow-sm">
-                      <h3 className="text-sm font-black text-slate-950 dark:text-white flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-pink-500"></span> {les.title}
-                      </h3>
-                      <p className="text-xs bg-slate-50 dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 italic text-slate-950 dark:text-slate-200">{les.objective}</p>
-                      
-                      {/* Vocabulario Interactivo dentro de la lección */}
-                      <div className="space-y-1.5">
-                        {les.content.map((item, i) => (
-                          <div key={i} className="flex justify-between items-center bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700">
-                            <div className="flex items-center space-x-2">
-                              <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition-all"><Volume2 size={12} /></button>
-                              <span className="text-xs font-black text-slate-950 dark:text-white">{item.en}</span>
-                            </div>
-                            <span className="text-xs font-bold text-slate-950 dark:text-slate-300">🗣️ {item.es}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Botón rápido a su juego */}
-                      {les.gameUrl && (
-                        <div className="pt-2">
-                          <a href={les.gameUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[11px] bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-lg font-black transition-all">
-                            <Gamepad2 size={12} /> Jugar actividad de esta clase 🎮
-                          </a>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* TAB: MOCHILA DE TAREAS (INTERACTIVA CON SUPABASE) */}
+          {/* TAB: MOCHILA DE TAREAS */}
           {activeTab === 'mochila' && (
             <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4">
               <div className="flex items-center justify-between border-b pb-4 border-slate-200 dark:border-slate-700">
@@ -550,7 +475,7 @@ export default function App() {
                 </div>
                 {esProfesora && (
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-black text-slate-500">Revisando mochila de:</span>
+                    <span className="text-xs font-black text-slate-500">Estudiante:</span>
                     <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1.5 rounded bg-white text-slate-950 border border-pink-300 outline-none">
                       {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                     </select>
@@ -566,7 +491,7 @@ export default function App() {
                   return (
                     <div key={key} className="bg-pink-50/50 dark:bg-slate-800/80 p-4 rounded-xl border border-pink-100 dark:border-slate-700 text-xs text-slate-950 dark:text-white space-y-3">
                       <p className="font-black text-pink-700 dark:text-pink-400">🎯 {infoTareas[key]}</p>
-                      <p className="text-[11px] text-slate-500 font-bold">Propietario de la mochila: <span className="uppercase text-pink-600">{targetStudent}</span></p>
+                      <p className="text-[11px] text-slate-500 font-bold">Mochila de: <span className="uppercase text-pink-600">{targetStudent}</span></p>
                       
                       <div className="flex flex-wrap gap-2 items-center">
                         {!esProfesora && (
@@ -577,18 +502,18 @@ export default function App() {
                         )}
                         {taskData ? (
                           <a href={taskData.url} download={taskData.name} className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-black shadow-sm transition-all flex items-center gap-1 text-[11px]">
-                            <DownloadCloud size={12} /> Descargar / Ver PDF enviado 👁️
+                            <DownloadCloud size={12} /> Descargar PDF enviado 👁️
                           </a>
                         ) : (
-                          <span className="text-slate-400 font-bold italic text-[11px]">Sin archivo enviado todavía</span>
+                          <span className="text-slate-400 font-bold italic text-[11px]">Aún no has subido tu PDF</span>
                         )}
                       </div>
 
                       <div className="border-t pt-2 border-pink-200 dark:border-slate-700 flex justify-between items-center flex-wrap gap-2">
-                        <span className="font-black text-pink-700 dark:text-pink-300">⭐ Calificación: {gradeData.nota} / 10</span>
+                        <span className="font-black text-pink-700 dark:text-pink-300">⭐ Nota: {gradeData.nota} / 10</span>
                         {gradeData.comentario && (
                           <p className="bg-white dark:bg-slate-900 p-2.5 rounded-lg border text-slate-950 dark:text-slate-200 font-bold italic w-full">
-                            💬 Retroalimentación de Miss: {gradeData.comentario}
+                            💬 Comentario de Miss: {gradeData.comentario}
                           </p>
                         )}
                       </div>
@@ -599,18 +524,18 @@ export default function App() {
             </div>
           )}
 
-          {/* TAB: CALIFICACIONES */}
+          {}
           {activeTab === 'calificaciones' && (
             <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4">
               <div className="flex items-center space-x-2 border-b pb-2 border-slate-200 dark:border-slate-700">
                 <Star className="text-amber-500 fill-amber-500" size={20} />
-                <h2 className="text-sm font-black text-slate-950 dark:text-white">SISTEMA DE CALIFICACIONES EN LA NUBE</h2>
+                <h2 className="text-sm font-black text-slate-950 dark:text-white">CALIFICACIONES DE LA NUBE</h2>
               </div>
 
               {esProfesora ? (
                 <div className="space-y-4">
                   <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-between">
-                    <span className="text-xs font-black text-slate-950 dark:text-white">Estudiante bajo revisión:</span>
+                    <span className="text-xs font-black text-slate-950 dark:text-white">Estudiante:</span>
                     <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1.5 rounded bg-white text-slate-950 border">
                       {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                     </select>
@@ -652,7 +577,7 @@ export default function App() {
                             }));
                           }}
                           onBlur={(e) => enviarNotaASupabase(selectedStudent, key, currentRecord.nota, e.target.value)}
-                          placeholder="Escribe la retroalimentación aquí y haz clic fuera de este cuadro para guardar..." 
+                          placeholder="Escribe un comentario..." 
                           className="w-full p-2.5 text-xs text-slate-950 font-bold border rounded-lg bg-white outline-none"
                           rows={2}
                         />
@@ -683,25 +608,20 @@ export default function App() {
             </div>
           )}
 
-          {/* TAB: VOCABULARIO INTERACTIVO COMPLETO */}
+          {/* TAB: VOCABULARIO */}
           {activeTab === 'vocabulario' && (
             <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4">
               <div className="flex items-center space-x-2 border-b pb-4 border-slate-200 dark:border-slate-700">
-                <Volume2 className="text-pink-600 animate-pulse" size={20} />
-                <h2 className="text-sm font-black text-slate-950 dark:text-white">DICCIONARIO DE VOCABULARIO INTERACTIVO 🗣️✨</h2>
+                <Volume2 className="text-pink-600" size={20} />
+                <h2 className="text-sm font-black text-slate-950 dark:text-white">DICCIONARIO INTERACTIVO 👋✨</h2>
               </div>
-              <p className="text-xs text-slate-500 font-bold">Haz clic en el botón rosa de reproducción para escuchar cómo se pronuncian las frases de keratina en inglés por un hablante nativo.</p>
-              
               <div className="grid grid-cols-1 gap-2">
                 {[
                   { en: "Hello! Welcome to our salon.", es: "¡Hola! Bienvenido a nuestro salón." },
                   { en: "Today, we will do a keratin treatment.", es: "Hoy, haremos un tratamiento de keratina." },
                   { en: "First, we wash your hair.", es: "Primero, lavamos tu cabello." },
                   { en: "Then, we apply the keratin.", es: "Luego, aplicamos la keratina." },
-                  { en: "Finally, we use the flat iron.", es: "Finalmente, usamos la plancha." },
-                  { en: "Don't wash your hair for 3 days.", es: "No lave su cabello durante 3 días." },
-                  { en: "Do you have any allergies?", es: "¿Tiene alguna alergia?" },
-                  { en: "Thank you for coming. Have a nice day!", es: "Gracias por venir. ¡Que tenga un lindo día!" }
+                  { en: "Finally, we use the flat iron.", es: "Finalmente, usamos la plancha." }
                 ].map((item, i) => (
                   <div key={i} className="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
                     <div className="flex items-center space-x-2">
@@ -717,27 +637,19 @@ export default function App() {
             </div>
           )}
 
-          {/* TAB: ÁREA DE JUEGOS */}
+          {/* TAB: JUEGOS */}
           {activeTab === 'juegos' && (
             <div className="bg-white dark:bg-slate-900 border border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4">
               <div className="flex items-center space-x-2 border-b pb-4 border-slate-200 dark:border-slate-700">
-                <Gamepad2 className="text-purple-600 animate-spin" size={20} />
-                <h2 className="text-sm font-black text-slate-950 dark:text-white">ÁREA DE JUEGOS MÁGICOS 🎮✨</h2>
+                <Gamepad2 className="text-purple-600" size={20} />
+                <h2 className="text-sm font-black text-slate-950 dark:text-white">ÁREA DE JUEGOS 🎮✨</h2>
               </div>
-              <p className="text-xs text-slate-500 font-bold">¡Pon a prueba tus habilidades! Elige un juego de la lista, haz clic en él para abrirlo y diviértete respondiendo las preguntas en inglés.</p>
-              
               <div className="space-y-3">
-                <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noopener noreferrer" className="block p-4 bg-purple-50 hover:bg-purple-100 dark:bg-slate-800 rounded-2xl border border-purple-200 dark:border-slate-700 transition-all active:scale-95">
-                  <span className="text-xs font-black block text-purple-700 dark:text-purple-400">🎮 Wordwall: Greetings & Saludos 👋</span>
-                  <span className="text-[11px] text-slate-500 font-bold mt-1 block">Juego de cartas y emparejamiento para repasar cómo recibir a tus clientes.</span>
+                <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noopener noreferrer" className="block p-4 bg-purple-50 hover:bg-purple-100 dark:bg-slate-800 rounded-2xl border border-purple-200 dark:border-slate-700 transition-all">
+                  <span className="text-xs font-black block text-purple-700">🎮 Wordwall: Greetings & Saludos 👋</span>
                 </a>
-                <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noopener noreferrer" className="block p-4 bg-pink-50 hover:bg-pink-100 dark:bg-slate-800 rounded-2xl border border-pink-200 dark:border-slate-700 transition-all active:scale-95">
-                  <span className="text-xs font-black block text-pink-700 dark:text-pink-400">🎮 Interacty: Keratin Process Challenge 🧪</span>
-                  <span className="text-[11px] text-slate-500 font-bold mt-1 block">Crucigrama interactivo sobre el paso a paso del tratamiento de keratina.</span>
-                </a>
-                <a href="https://create.kahoot.it/share/class-5/16e72ba0-e8fc-4910-9400-b7a3c94c3586" target="_blank" rel="noopener noreferrer" className="block p-4 bg-sky-50 hover:bg-sky-100 dark:bg-slate-800 rounded-2xl border border-sky-200 dark:border-slate-700 transition-all active:scale-95">
-                  <span className="text-xs font-black block text-sky-700 dark:text-sky-400">🎮 Kahoot: Price and Time Game 💰</span>
-                  <span className="text-[11px] text-slate-500 font-bold mt-1 block">Trivia veloz para calcular precios y tiempos en inglés bajo presión.</span>
+                <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noopener noreferrer" className="block p-4 bg-pink-50 hover:bg-pink-100 dark:bg-slate-800 rounded-2xl border border-pink-200 dark:border-slate-700 transition-all">
+                  <span className="text-xs font-black block text-pink-700">🎮 Interacty: Keratin Challenge 🧪</span>
                 </a>
               </div>
             </div>
