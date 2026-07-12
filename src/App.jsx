@@ -536,7 +536,6 @@ export default function App() {
 
                         <div className="grid grid-cols-1 gap-2.5">
                           {les.content.map((item, i) => (
-                            /* 🎨 RECUADROS MEJORADOS AQUÍ: Implementado fondo Rosa/Lavanda Pastel con interactividad Hover */
                             <div key={i} className={`p-3.5 rounded-xl flex justify-between items-center border shadow-sm transition-all duration-200 transform hover:scale-[1.01] ${darkMode ? 'border-purple-900 bg-slate-900 hover:border-pink-500 text-white' : 'border-pink-200 bg-[#FFF0F5] hover:bg-[#FFE4E1] hover:border-pink-400 text-slate-800'}`}>
                               <div className="flex items-center space-x-2">
                                 <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white rounded-lg hover:opacity-90 shadow-sm"><Volume2 size={14} /></button>
@@ -593,12 +592,13 @@ export default function App() {
 
           {activeTab === 'activities' && (
             <div className={`border rounded-3xl p-6 shadow-lg space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-pink-100'}`}>
+              {/* 🎨 TITULO CORREGIDO: Visible e identificable */}
               <div className={`flex items-center space-x-2 border-b pb-3 ${darkMode ? 'border-purple-950' : 'border-pink-100'}`}>
                 <Activity className="text-fuchsia-600" size={24} />
-                <h2 className="text-xl font-black text-purple-950 dark:text-white">CENTRO DE TAREAS GENERAL 🎒👁️</h2>
+                <h2 className="text-base font-black text-purple-950 dark:text-white">CENTRO DE TAREAS GENERAL 🎒👁️</h2>
               </div>
               
-              <div className={`p-4 rounded-2xl border space-y-3 ${darkMode ? 'bg-slate-800 border-slate-700 text-slate-300' : 'bg-purple-50/40 border-purple-100 text-purple-950'}`}>
+              <div className={`p-4 rounded-2xl border space-y-3 ${darkMode ? 'bg-slate-800 border-slate-700 text-slate-300' : 'bg-[#FFF0F5] border-pink-200 text-purple-950'}`}>
                 {esProfesora ? (
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <span className="text-xs font-black">Selecciona un alumno para revisar:</span>
@@ -616,7 +616,8 @@ export default function App() {
                   const currentTask = allStudentsTasks[targetStudent]?.[key];
 
                   return (
-                    <div key={key} className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md transition-all ${darkMode ? 'border-purple-950 bg-purple-950/20 text-white' : 'border-pink-100 bg-pink-50/30 text-slate-800'}`}>
+                    /* 🎨 RECUADRO CORREGIDO: Fondo agradable con efectos idénticos al diccionario */
+                    <div key={key} className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md transition-all duration-200 transform hover:scale-[1.01] ${darkMode ? 'border-purple-950 bg-slate-900 hover:border-pink-500 text-white' : 'border-pink-200 bg-[#FFF0F5] hover:bg-[#FFE4E1] hover:border-pink-400 text-slate-800'}`}>
                       <div className="text-xs max-w-md space-y-1">
                         <span className={`font-black block leading-relaxed text-xs ${darkMode ? 'text-pink-300' : 'text-purple-950'}`}>{infoTareas[key]}</span>
                         <span className="font-bold block text-[11px] text-slate-500">Mochila de: <b className="text-fuchsia-950 dark:text-slate-300 font-black">{targetStudent.toUpperCase()}</b></span>
@@ -645,9 +646,10 @@ export default function App() {
 
           {activeTab === 'gradesTab' && (
             <div className={`border rounded-3xl p-6 shadow-lg space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-pink-100'}`}>
+              {/* 🎨 TITULO CORREGIDO: Visible e identificable al lado de las estrellas */}
               <div className={`flex items-center space-x-2 border-b pb-3 ${darkMode ? 'border-purple-950' : 'border-pink-100'}`}>
                 <Star className="text-amber-500 fill-amber-500" size={24} />
-                <h2 className="text-xl font-black text-purple-950 dark:text-white">SISTEMA DE CALIFICACIONES ⭐</h2>
+                <h2 className="text-base font-black text-purple-950 dark:text-white">SISTEMA DE CALIFICACIONES ⭐</h2>
               </div>
               
               {esProfesora ? (
@@ -655,7 +657,8 @@ export default function App() {
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
                     const currentRecord = grades[selectedStudent]?.[key] || { nota: '-', comentario: '' };
                     return (
-                      <div key={key} className={`p-4 border rounded-2xl flex flex-col gap-3 text-xs font-bold shadow-md ${darkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-pink-50/40 border-pink-100 text-purple-950'}`}>
+                      /* 🎨 RECUADRO CORREGIDO: Fondo agradable con efectos idénticos al diccionario */
+                      <div key={key} className={`p-4 border rounded-2xl flex flex-col gap-3 text-xs font-bold shadow-md transition-all duration-200 transform hover:scale-[1.01] ${darkMode ? 'border-purple-900 bg-slate-900 hover:border-pink-500 text-white' : 'border-pink-200 bg-[#FFF0F5] hover:bg-[#FFE4E1] hover:border-pink-400 text-purple-950'}`}>
                         <span className="font-black block text-xs leading-relaxed">{infoTareas[key]}</span>
                         
                         <div className="flex items-center space-x-2">
@@ -690,7 +693,8 @@ export default function App() {
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
                     const studentRecord = grades[currentUser.username]?.[key] || { nota: '-', comentario: '' };
                     return (
-                      <div key={key} className={`p-4 rounded-2xl text-xs font-bold flex flex-col gap-2 border shadow-md ${darkMode ? 'bg-slate-800 border-slate-700 text-white' : 'bg-[#FFF9FB] border-pink-100 text-slate-800'}`}>
+                      /* 🎨 RECUADRO CORREGIDO: Fondo agradable con efectos idénticos al diccionario */
+                      <div key={key} className={`p-4 rounded-2xl text-xs font-bold flex flex-col gap-2 border shadow-md transition-all duration-200 transform hover:scale-[1.01] ${darkMode ? 'border-purple-900 bg-slate-900 hover:border-pink-500 text-white' : 'border-pink-200 bg-[#FFF0F5] hover:bg-[#FFE4E1] hover:border-pink-400 text-slate-800'}`}>
                         <div className="flex justify-between items-start gap-4">
                           <span className={`font-black leading-relaxed ${darkMode ? 'text-pink-300' : 'text-purple-950'}`}>{infoTareas[key]}</span>
                           <span className="bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white font-black px-2.5 py-1 rounded-lg text-xs shrink-0 shadow-sm">Nota: {studentRecord.nota} / 10</span>
@@ -712,7 +716,7 @@ export default function App() {
             <div className={`border rounded-3xl p-6 shadow-lg space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-pink-100'}`}>
               <div className={`flex items-center space-x-2 border-b pb-3 ${darkMode ? 'border-purple-950' : 'border-pink-100'}`}>
                 <Volume2 className="text-fuchsia-600" size={24} />
-                <h2 className="text-xl font-black text-purple-950 dark:text-white">DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
+                <h2 className="text-base font-black text-purple-950 dark:text-white">DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
               </div>
               
               <div className="space-y-6 pt-2">
