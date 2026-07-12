@@ -379,7 +379,7 @@ export default function App() {
         <form onSubmit={handleLogin} className="bg-white p-8 rounded-3xl shadow-2xl max-w-sm w-full space-y-4 border-2 border-pink-500">
           <div className="text-center">
             <span className="text-5xl">💇‍♀️✨</span>
-            <h2 className="text-2xl font-black text-purple-950 mt-2">Beauty English Salón</h2>
+            <h2 className="text-2xl font-black text-slate-950 mt-2">Beauty English Salón</h2>
             <p className="text-xs text-fuchsia-700 font-bold">¡Pon tu nombre y tu código mágico!</p>
           </div>
           <div className="space-y-2">
@@ -405,7 +405,7 @@ export default function App() {
     return `w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${
       darkMode 
         ? 'text-pink-100 hover:bg-slate-800 hover:text-pink-300' 
-        : 'text-purple-950 hover:bg-pink-100 hover:text-fuchsia-700'
+        : 'text-slate-950 hover:bg-pink-100 hover:text-fuchsia-700'
     }`;
   };
 
@@ -418,7 +418,7 @@ export default function App() {
           <div className="flex items-center space-x-2">
             <div className="bg-gradient-to-tr from-pink-500 to-fuchsia-600 p-2 rounded-xl text-white shadow-md"><GraduationCap size={24} /></div>
             <div>
-              <span className={`font-black text-base block leading-tight ${darkMode ? 'text-pink-300' : 'text-purple-950'}`}>Beauty English</span>
+              <span className={`font-black text-base block leading-tight ${darkMode ? 'text-pink-300' : 'text-slate-950'}`}>Beauty English</span>
               <span className="text-[11px] text-fuchsia-600 dark:text-pink-400 font-black tracking-wide block">Course System 💇‍♀️✨</span>
             </div>
           </div>
@@ -430,10 +430,10 @@ export default function App() {
 
             <div className="flex items-center space-x-2">
               <div className="text-right hidden sm:block">
-                <p className={`text-xs font-black ${darkMode ? 'text-pink-300' : 'text-purple-950'}`}>{currentUser.name}</p>
+                <p className={`text-xs font-black ${darkMode ? 'text-pink-300' : 'text-slate-950'}`}>{currentUser.name}</p>
                 <p className="text-[9px] text-fuchsia-500 font-bold uppercase">{currentUser.role}</p>
               </div>
-              <button onClick={handleLogout} className="text-[10px] font-black text-purple-950 bg-pink-100/70 hover:bg-pink-200/80 border border-pink-200 px-2.5 py-1.5 rounded-lg transition-all">Salir</button>
+              <button onClick={handleLogout} className="text-[10px] font-black text-slate-950 bg-pink-100/70 hover:bg-pink-200/80 border border-pink-200 px-2.5 py-1.5 rounded-lg transition-all">Salir</button>
             </div>
           </div>
         </div>
@@ -442,7 +442,7 @@ export default function App() {
       <div className="flex flex-1 flex-col md:flex-row">
         
         {/* --- MENÚ LATERAL --- */}
-        <aside className={`w-full md:w-56 p-4 flex flex-col gap-1.5 md:min-h-[calc(100vh-4rem)] md:sticky md:top-16 z-30 shadow-sm ${darkMode ? 'bg-slate-900 text-pink-100 border-r border-purple-950' : 'bg-[#FFF9FB] text-purple-950 border-r border-pink-100'}`}>
+        <aside className={`w-full md:w-56 p-4 flex flex-col gap-1.5 md:min-h-[calc(100vh-4rem)] md:sticky md:top-16 z-30 shadow-sm ${darkMode ? 'bg-slate-900 text-pink-100 border-r border-purple-950' : 'bg-[#FFF9FB] text-slate-950 border-r border-pink-100'}`}>
           <p className={`text-[10px] uppercase font-black tracking-wider mb-2 px-2 hidden md:block ${darkMode ? 'text-pink-300' : 'text-purple-500'}`}>Menú Principal</p>
           
           <button onClick={() => setActiveTab('dashboard')} className={getSidebarBtnClass('dashboard')}><span>🏠</span> Inicio</button>
@@ -454,7 +454,7 @@ export default function App() {
           <button onClick={() => setActiveTab('vocabulary')} className={getSidebarBtnClass('vocabulary')}><span>🔊</span> Vocabulario</button>
           
           <div className="border-t border-pink-200 dark:border-slate-800 my-2 pt-2">
-            <button onClick={() => setActiveTab('games')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'games' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md' : 'bg-purple-100/60 text-purple-950 hover:bg-purple-200/80 border border-purple-200 dark:border-none'}`}><span>🕹️</span> Área de Juegos</button>
+            <button onClick={() => setActiveTab('games')} className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${activeTab === 'games' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md' : 'bg-purple-100/60 text-slate-950 hover:bg-purple-200/80 border border-purple-200 dark:border-none'}`}><span>🕹️</span> Área de Juegos</button>
           </div>
         </aside>
 
@@ -473,7 +473,7 @@ export default function App() {
               {!esProfesora && (
                 <div className={`border rounded-3xl p-5 shadow-md space-y-3 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-pink-100'}`}>
                   <div className="flex justify-between items-center">
-                    <span className={`text-xs font-black flex items-center gap-1 ${darkMode ? 'text-slate-300' : 'text-purple-950'}`}>📊 Progreso de tus Tareas</span>
+                    <span className={`text-xs font-black flex items-center gap-1 ${darkMode ? 'text-slate-300' : 'text-slate-950'}`}>📊 Progreso de tus Tareas</span>
                     <span className="text-xs font-black text-fuchsia-700 bg-pink-50 dark:bg-purple-950 px-2 py-0.5 rounded-md border border-pink-100 dark:border-none">{progresoActual}%</span>
                   </div>
                   <div className="w-full bg-pink-50/50 dark:bg-slate-800 rounded-full h-3.5 overflow-hidden p-0.5 border border-pink-100 dark:border-slate-700">
@@ -488,12 +488,12 @@ export default function App() {
               <div className={`border rounded-3xl p-6 shadow-md text-center space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-pink-100'}`}>
                 <div className="flex flex-col items-center justify-center">
                   <Video className="text-fuchsia-600 mb-2" size={32} />
-                  <h3 className={`text-sm font-black ${darkMode ? 'text-pink-300' : 'text-purple-950'}`}>📺 Welcoming video</h3>
+                  <h3 className={`text-sm font-black ${darkMode ? 'text-pink-300' : 'text-slate-950'}`}>📺 Welcoming video</h3>
                 </div>
                 {!videoUrl ? (
                   <label className="mx-auto max-w-xs flex flex-col items-center justify-center border-2 border-dashed p-4 rounded-xl cursor-pointer bg-pink-50/20 dark:bg-slate-800 border-pink-300 dark:border-slate-700 hover:bg-pink-50 transition-all">
                     <Upload size={24} className="text-fuchsia-500 mb-1" />
-                    <span className="text-xs font-black text-purple-950 dark:text-slate-400">Seleccionar mi video</span>
+                    <span className="text-xs font-black text-slate-950 dark:text-slate-400">Seleccionar mi video</span>
                     <input type="file" accept="video/*" onChange={handleVideoUpload} className="hidden" />
                   </label>
                 ) : (
@@ -511,7 +511,8 @@ export default function App() {
               {esProfesora && (
                 <div className="p-4 bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white rounded-2xl flex flex-col gap-2 shadow-md mb-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-black">Revisando las unidades del alumno:</span>
+                    {/* 🔧 REFUERZO 1: "selecciona alumno para revisar" */}
+                    <span className="text-xs font-black text-white dark:text-white">Selecciona alumno para revisar:</span>
                     <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1.5 rounded border text-slate-900 bg-white outline-none">
                       {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                     </select>
@@ -530,9 +531,9 @@ export default function App() {
                     const recordCalificacion = grades[targetStudent]?.[les.taskKey];
                     return (
                       <div key={index} className={`border rounded-2xl p-5 shadow-lg space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-pink-100'}`}>
-                        <h3 className={`text-base font-black ${darkMode ? 'text-white' : 'text-purple-950'}`}>{les.title}</h3>
+                        <h3 className={`text-base font-black ${darkMode ? 'text-white' : 'text-slate-950'}`}>{les.title}</h3>
                         
-                        <p className={`text-xs font-bold p-3 rounded-lg italic border leading-relaxed ${darkMode ? 'bg-slate-800 text-slate-100 border-slate-700' : 'bg-purple-50 text-purple-950 border-purple-100'}`}>{les.objective}</p>
+                        <p className={`text-xs font-bold p-3 rounded-lg italic border leading-relaxed ${darkMode ? 'bg-slate-800 text-slate-100 border-slate-700' : 'bg-purple-50 text-slate-950 border-purple-100'}`}>{les.objective}</p>
 
                         <div className="grid grid-cols-1 gap-2.5">
                           {les.content.map((item, i) => (
@@ -541,7 +542,7 @@ export default function App() {
                                 <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white rounded-lg hover:opacity-90 shadow-sm"><Volume2 size={14} /></button>
                                 <span className={`text-xs font-black tracking-wide ${darkMode ? 'text-white' : 'text-slate-900'}`}>{item.en}</span>
                               </div>
-                              <span className={`text-[12px] font-black px-3 py-1 rounded-md border ${darkMode ? 'text-pink-300 bg-purple-950 border-purple-900' : 'text-purple-950 bg-white border-pink-200 shadow-xs'}`}>🗣 {item.es}</span>
+                              <span className={`text-[12px] font-black px-3 py-1 rounded-md border ${darkMode ? 'text-pink-300 bg-purple-950 border-purple-900' : 'text-slate-950 bg-white border-pink-200 shadow-xs'}`}>🗣 {item.es}</span>
                             </div>
                           ))}
                         </div>
@@ -558,8 +559,9 @@ export default function App() {
 
                           {les.taskKey && (
                             <div className={`mt-3 pt-3 border-t space-y-2 ${darkMode ? 'border-purple-950' : 'border-pink-100'}`}>
-                              <div className={`p-2 rounded-lg text-[10px] font-bold border ${darkMode ? 'bg-slate-800 text-slate-200 border-slate-700' : 'bg-pink-50/50 text-purple-950 border-pink-100'}`}>
-                                👀 Viendo la mochila de: <b className="font-black text-fuchsia-950 dark:text-white">{targetStudent.toUpperCase()}</b>
+                              {/* 🔧 REFUERZO 2: "mochila de: (6 estudiantes)" en las lecciones */}
+                              <div className={`p-2 rounded-lg text-[10px] font-bold border ${darkMode ? 'bg-slate-800 text-slate-200 border-slate-700' : 'bg-pink-50/50 text-slate-950 border-pink-100'}`}>
+                                👀 Viendo la <span className="text-slate-950 dark:text-pink-300 font-black">mochila de:</span> <b className="font-black text-slate-950 dark:text-white">{targetStudent.toUpperCase()}</b>
                               </div>
                               
                               <div className="flex flex-wrap items-center gap-2">
@@ -575,7 +577,7 @@ export default function App() {
                                   </a>
                                 )}
                               </div>
-                              <p className={`text-xs font-black mt-1 ${darkMode ? 'text-pink-400' : 'text-purple-900'}`}>⭐ Calificación: {recordCalificacion?.nota || '-'} / 10</p>
+                              <p className={`text-xs font-black mt-1 ${darkMode ? 'text-pink-400' : 'text-slate-950'}`}>⭐ Calificación: {recordCalificacion?.nota || '-'} / 10</p>
                               {recordCalificacion?.comentario && (
                                 <p className={`text-[11px] font-bold p-2.5 rounded-md mt-1 border ${darkMode ? 'text-purple-200 bg-purple-950 border-purple-900' : 'text-slate-700 bg-pink-50/30 border-pink-100'}`}>💬 <b>Comentario Miss:</b> {recordCalificacion.comentario}</p>
                               )}
@@ -592,22 +594,23 @@ export default function App() {
 
           {activeTab === 'activities' && (
             <div className={`border rounded-3xl p-6 shadow-lg space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-pink-100'}`}>
-              {/* 🎨 TITULO CORREGIDO: Tono fuchsia-950 ultra visible para tema claro */}
+              {/* 🔧 REFUERZO 3: "Centro de tareas general" */}
               <div className={`flex items-center space-x-2 border-b pb-3 ${darkMode ? 'border-purple-950' : 'border-pink-100'}`}>
                 <Activity className="text-fuchsia-600" size={24} />
-                <h2 className="text-sm font-black text-fuchsia-950 dark:text-white tracking-wide">CENTRO DE TAREAS GENERAL 🎒👁️</h2>
+                <h2 className="text-sm font-black text-slate-950 dark:text-white tracking-wide">CENTRO DE TAREAS GENERAL 🎒👁️</h2>
               </div>
               
-              <div className={`p-4 rounded-2xl border space-y-3 ${darkMode ? 'bg-slate-800 border-slate-700 text-slate-300' : 'bg-[#FFF0F5] border-pink-200 text-purple-950'}`}>
+              <div className={`p-4 rounded-2xl border space-y-3 ${darkMode ? 'bg-slate-800 border-slate-700 text-slate-300' : 'bg-[#FFF0F5] border-pink-200 text-slate-950'}`}>
                 {esProfesora ? (
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <span className="text-xs font-black text-fuchsia-950 dark:text-slate-300">Selecciona un alumno para revisar:</span>
+                    {/* 🔧 REFUERZO 4: "selecciona alumno para revisar" en pestaña tareas */}
+                    <span className="text-xs font-black text-slate-950 dark:text-slate-300">Selecciona alumno para revisar:</span>
                     <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1.5 rounded border border-pink-200 bg-white text-slate-900 outline-none">
                       {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                     </select>
                   </div>
                 ) : (
-                  <span className="text-xs font-black block text-fuchsia-950 dark:text-slate-300">Tu Progreso de Entregas:</span>
+                  <span className="text-xs font-black block text-slate-950 dark:text-slate-300">Tu Progreso de Entregas:</span>
                 )}
               </div>
 
@@ -618,8 +621,11 @@ export default function App() {
                   return (
                     <div key={key} className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md transition-all duration-200 transform hover:scale-[1.01] ${darkMode ? 'border-purple-900 bg-slate-900 hover:border-pink-500 text-white' : 'border-pink-200 bg-[#FFF0F5] hover:bg-[#FFE4E1] hover:border-pink-400 text-slate-800'}`}>
                       <div className="text-xs max-w-md space-y-1">
-                        <span className={`font-black block leading-relaxed text-xs ${darkMode ? 'text-pink-300' : 'text-purple-950'}`}>{infoTareas[key]}</span>
-                        <span className="font-bold block text-[11px] text-slate-500">Mochila de: <b className="text-fuchsia-950 dark:text-slate-300 font-black">{targetStudent.toUpperCase()}</b></span>
+                        <span className={`font-black block leading-relaxed text-xs ${darkMode ? 'text-pink-300' : 'text-slate-950'}`}>{infoTareas[key]}</span>
+                        {/* 🔧 REFUERZO 5: "mochila de: (6 estudiantes)" en lista general */}
+                        <span className="font-bold block text-[11px] text-slate-950 dark:text-slate-400">
+                          <span className="text-slate-950 dark:text-slate-400 font-black">Mochila de:</span> <b className="text-slate-950 dark:text-pink-400 font-black">{targetStudent.toUpperCase()}</b>
+                        </span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         {!esProfesora && (
@@ -633,7 +639,7 @@ export default function App() {
                             <Eye size={12} /> Ver PDF 👁️
                           </a>
                         ) : (
-                          <span className={`text-[10px] px-2.5 py-1.5 rounded-lg font-bold border ${darkMode ? 'bg-slate-800 text-slate-300 border-slate-700' : 'bg-purple-100 text-purple-900 border-purple-200'}`}>Sin entregar todavía 🎒</span>
+                          <span className={`text-[10px] px-2.5 py-1.5 rounded-lg font-bold border ${darkMode ? 'bg-slate-800 text-slate-300 border-slate-700' : 'bg-purple-100 text-slate-950 border-purple-200'}`}>Sin entregar todavía 🎒</span>
                         )}
                       </div>
                     </div>
@@ -645,10 +651,10 @@ export default function App() {
 
           {activeTab === 'gradesTab' && (
             <div className={`border rounded-3xl p-6 shadow-lg space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-pink-100'}`}>
-              {/* 🎨 TITULO CORREGIDO: Tono fuchsia-950 ultra visible para tema claro */}
+              {/* 🔧 REFUERZO 6: "Sistema de calificaciones" */}
               <div className={`flex items-center space-x-2 border-b pb-3 ${darkMode ? 'border-purple-950' : 'border-pink-100'}`}>
                 <Star className="text-amber-500 fill-amber-500" size={24} />
-                <h2 className="text-sm font-black text-fuchsia-950 dark:text-white tracking-wide">SISTEMA DE CALIFICACIONES ⭐</h2>
+                <h2 className="text-sm font-black text-slate-950 dark:text-white tracking-wide">SISTEMA DE CALIFICACIONES ⭐</h2>
               </div>
               
               {esProfesora ? (
@@ -656,11 +662,11 @@ export default function App() {
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
                     const currentRecord = grades[selectedStudent]?.[key] || { nota: '-', comentario: '' };
                     return (
-                      <div key={key} className={`p-4 border rounded-2xl flex flex-col gap-3 text-xs font-bold shadow-md transition-all duration-200 transform hover:scale-[1.01] ${darkMode ? 'border-purple-900 bg-slate-900 hover:border-pink-500 text-white' : 'border-pink-200 bg-[#FFF0F5] hover:bg-[#FFE4E1] hover:border-pink-400 text-purple-950'}`}>
+                      <div key={key} className={`p-4 border rounded-2xl flex flex-col gap-3 text-xs font-bold shadow-md transition-all duration-200 transform hover:scale-[1.01] ${darkMode ? 'border-purple-900 bg-slate-900 hover:border-pink-500 text-white' : 'border-pink-200 bg-[#FFF0F5] hover:bg-[#FFE4E1] hover:border-pink-400 text-slate-950'}`}>
                         <span className="font-black block text-xs leading-relaxed">{infoTareas[key]}</span>
                         
                         <div className="flex items-center space-x-2">
-                          <label className="text-xs font-black">Asignar Nota:</label>
+                          <label className="text-xs font-black text-slate-950 dark:text-white">Asignar Nota:</label>
                           <select 
                             value={currentRecord.nota} 
                             onChange={(e) => asignarNota(selectedStudent, key, e.target.value)}
@@ -693,7 +699,7 @@ export default function App() {
                     return (
                       <div key={key} className={`p-4 rounded-2xl text-xs font-bold flex flex-col gap-2 border shadow-md transition-all duration-200 transform hover:scale-[1.01] ${darkMode ? 'border-purple-900 bg-slate-900 hover:border-pink-500 text-white' : 'border-pink-200 bg-[#FFF0F5] hover:bg-[#FFE4E1] hover:border-pink-400 text-slate-800'}`}>
                         <div className="flex justify-between items-start gap-4">
-                          <span className={`font-black leading-relaxed ${darkMode ? 'text-pink-300' : 'text-purple-950'}`}>{infoTareas[key]}</span>
+                          <span className={`font-black leading-relaxed ${darkMode ? 'text-pink-300' : 'text-slate-950'}`}>{infoTareas[key]}</span>
                           <span className="bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white font-black px-2.5 py-1 rounded-lg text-xs shrink-0 shadow-sm">Nota: {studentRecord.nota} / 10</span>
                         </div>
                         {studentRecord.comentario && (
@@ -711,15 +717,16 @@ export default function App() {
 
           {activeTab === 'vocabulary' && (
             <div className={`border rounded-3xl p-6 shadow-lg space-y-4 transition-colors ${darkMode ? 'bg-slate-900 border-purple-900' : 'bg-white border-pink-100'}`}>
+              {/* 🔧 REFUERZO 7: "Diccionario Parlante Completo" */}
               <div className={`flex items-center space-x-2 border-b pb-3 ${darkMode ? 'border-purple-950' : 'border-pink-100'}`}>
                 <Volume2 className="text-fuchsia-600" size={24} />
-                <h2 className="text-sm font-black text-purple-950 dark:text-white">DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
+                <h2 className="text-sm font-black text-slate-950 dark:text-white tracking-wide">DICCIONARIO PARLANTE COMPLETO 🔊✨</h2>
               </div>
               
               <div className="space-y-6 pt-2">
                 {modules.map(mod => (
                   <div key={mod.id} className={`border-l-4 border-fuchsia-500 pl-3 py-1 rounded-r-xl p-2 ${darkMode ? 'bg-transparent' : 'bg-[#FFF5F7]'}`}>
-                    <h3 className={`text-xs font-black uppercase mb-3 tracking-wider ${darkMode ? 'text-pink-400' : 'text-fuchsia-900'}`}>{mod.title}</h3>
+                    <h3 className={`text-xs font-black uppercase mb-3 tracking-wider ${darkMode ? 'text-pink-400' : 'text-slate-950'}`}>{mod.title}</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {mod.lessons.flatMap(l => l.content).map((item, idx) => (
                         <div key={idx} className={`p-3 rounded-xl flex justify-between items-center border shadow-sm transition-all duration-200 transform hover:scale-[1.01] ${darkMode ? 'border-purple-900 bg-slate-900 hover:border-pink-500 text-white' : 'border-pink-200 bg-[#FFF0F5] hover:bg-[#FFE4E1] hover:border-pink-400 text-slate-800'}`}>
@@ -727,7 +734,7 @@ export default function App() {
                             <button onClick={() => escucharPalabra(item.en)} className="p-1.5 bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white rounded-lg hover:opacity-90 shrink-0"><Volume2 size={12} /></button>
                             <span className={`text-[12px] font-black leading-tight ${darkMode ? 'text-white' : 'text-slate-900'}`}>{item.en}</span>
                           </div>
-                          <span className={`text-[11px] font-black px-2.5 py-1 rounded border shrink-0 text-right ${darkMode ? 'text-pink-300 bg-purple-950 border-purple-900' : 'text-purple-950 bg-white border-pink-200'}`}>🗣️ {item.es}</span>
+                          <span className={`text-[11px] font-black px-2.5 py-1 rounded border shrink-0 text-right ${darkMode ? 'text-pink-300 bg-purple-950 border-purple-900' : 'text-slate-950 bg-white border-pink-200'}`}>🗣️ {item.es}</span>
                         </div>
                       ))}
                     </div>
@@ -743,22 +750,22 @@ export default function App() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
                 <div className="border border-pink-100 dark:border-slate-800 p-4 rounded-2xl bg-[#FFF9FB] dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">🎯</span>
-                  <h4 className="text-xs font-black text-purple-950 dark:text-white">Saludos (Clase 1)</h4>
+                  <h4 className="text-xs font-black text-slate-950 dark:text-white">Saludos (Clase 1)</h4>
                   <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white py-1.5 rounded-xl hover:opacity-95">¡Jugar Wordwall!</a>
                 </div>
                 <div className="border border-pink-100 dark:border-slate-800 p-4 rounded-2xl bg-[#FFF9FB] dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">🧪</span>
-                  <h4 className="text-xs font-black text-purple-950 dark:text-white">Proceso (Clase 2)</h4>
+                  <h4 className="text-xs font-black text-slate-950 dark:text-white">Proceso (Clase 2)</h4>
                   <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white py-1.5 rounded-xl hover:opacity-95">¡Jugar Interacty!</a>
                 </div>
                 <div className="border border-pink-100 dark:border-slate-800 p-4 rounded-2xl bg-[#FFF9FB] dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">🧴</span>
-                  <h4 className="text-xs font-black text-purple-950 dark:text-white">Cuidado (Clase 3)</h4>
+                  <h4 className="text-xs font-black text-slate-950 dark:text-white">Cuidado (Clase 3)</h4>
                   <a href="https://wordwall.net/resource/116065664" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white py-1.5 rounded-xl hover:opacity-95">¡Jugar Wordwall!</a>
                 </div>
                 <div className="border border-pink-100 dark:border-slate-800 p-4 rounded-2xl bg-[#FFF9FB] dark:bg-slate-800 text-center space-y-2 shadow-sm">
                   <span className="text-2xl">💰</span>
-                  <h4 className="text-xs font-black text-purple-950 dark:text-white">Precios (Clase 4)</h4>
+                  <h4 className="text-xs font-black text-slate-950 dark:text-white">Precios (Clase 4)</h4>
                   <a href="https://create.kahoot.it/share/class-5/16e72ba0-e8fc-4910-9400-b7a3c94c3586" target="_blank" rel="noreferrer" className="w-full block text-[11px] font-black bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white py-1.5 rounded-xl hover:opacity-95">¡Jugar Kahoot!</a>
                 </div>
               </div>
