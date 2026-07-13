@@ -94,7 +94,7 @@ export default function App() {
     setToast({ show: true, message, type });
     setTimeout(() => {
       setToast(prev => ({ ...prev, show: false }));
-    }, 4000);
+    }, 4500);
   };
 
   const [allStudentsTasks, setAllStudentsTasks] = useState({
@@ -133,7 +133,7 @@ export default function App() {
   const [isRecording, setIsRecording] = useState(false);
   const [spokenText, setSpokenText] = useState('');
   const [practiceScore, setPracticeScore] = useState(null);
-  const [practiceStatus, setPracticeStatus] = useState('idle'); // idle, listening, success, try_again
+  const [practiceStatus, setPracticeStatus] = useState('idle'); 
   const [currentScenario, setCurrentScenario] = useState(0);
 
   const practiceScenarios = [
@@ -171,7 +171,7 @@ export default function App() {
 
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
   const [selectedWords, setSelectedWords] = useState([]);
-  const [builderStatus, setBuilderStatus] = useState('idle'); // idle, success, error
+  const [builderStatus, setBuilderStatus] = useState('idle'); 
 
   useEffect(() => {
     const initSupabase = () => {
@@ -196,7 +196,6 @@ export default function App() {
     if (!supabase) return;
     setLoadingCloud(true);
     try {
-      // 1. Traer tareas
       const { data: tareasDB, error: err1 } = await supabase.from('tareas').select('*');
       if (!err1 && tareasDB) {
         const clonTareas = {
@@ -210,7 +209,6 @@ export default function App() {
         setAllStudentsTasks(prev => ({ ...prev, ...clonTareas }));
       }
 
-      // 2. Traer notas
       const { data: notasDB, error: err2 } = await supabase.from('calificaciones').select('*');
       if (!err2 && notasDB) {
         const clonNotas = {
@@ -230,7 +228,7 @@ export default function App() {
         setGrades(clonNotas);
       }
 
-      // 3. Traer video de bienvenida
+      /* Sincronizando el video permanente de bienvenida */
       const { data: videoDB, error: err3 } = await supabase.from('configuracion').select('*').eq('clave', 'welcoming_video');
       if (!err3 && videoDB && videoDB.length > 0) {
         const videoData = JSON.parse(videoDB[0].valor);
@@ -238,7 +236,6 @@ export default function App() {
         localStorage.setItem('beauty_salon_welcoming_video', JSON.stringify(videoData));
       }
 
-      // 4. Traer canciones felices
       const { data: cancionesDB, error: err4 } = await supabase.from('canciones_felices').select('*');
       if (!err4 && cancionesDB) {
         const clonCanciones = { ...musicList };
@@ -277,7 +274,6 @@ export default function App() {
 
   const empezarPrácticaDeVoz = (fraseObjetivo) => {
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      // Simulación mágica si el navegador no tiene soporte de reconocimiento de voz real
       setIsRecording(true);
       setPracticeStatus('listening');
       setSpokenText('');
@@ -470,9 +466,10 @@ export default function App() {
       );
       setLoadingCloud(false);
       if (!error) {
-        showToast("¡Cine Mágico actualizado! El video ahora es visible para todos. 🎬🍿", "success");
+        showToast("¡Video enlazado de forma permanente en internet! 🎬🍿✨", "success");
+        descargarDeSupabase();
       } else {
-        showToast("Video guardado localmente, error de nube.", "success");
+        showToast("Error de conexión con la base de datos.", "error");
       }
     } else {
       showToast("Video guardado de forma local en tu navegador.", "success");
@@ -483,8 +480,9 @@ export default function App() {
   const handleVideoFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 15 * 1024 * 1024) { 
-        showToast("Este video es muy gigante. Para videos grandes usa un enlace de YouTube. 🦕", "error");
+      /* Límite de 4.5MB para evitar bloqueos del tobogán de internet */
+      if (file.size > 4.5 * 1024 * 1024) { 
+        showToast("¡Ay! Tu video es muy pesado (más de 4.5MB) y se atascó en la puerta. ¡Intenta con uno más cortito! 🧚‍♀️💫", "error");
         return;
       }
 
@@ -494,21 +492,26 @@ export default function App() {
         const base64String = event.target.result;
         const videoData = { type: 'base64', source: base64String };
         
-        setWelcomingVideo(videoData);
-        localStorage.setItem('beauty_salon_welcoming_video', JSON.stringify(videoData));
-
         if (supabase) {
+          setLoadingCloud(true);
           const { error } = await supabase.from('configuracion').upsert(
             { clave: 'welcoming_video', valor: JSON.stringify(videoData) },
             { onConflict: 'clave' }
           );
+          setLoadingCloud(false);
           if (!error) {
-            showToast("¡Video de bienvenida subido y guardado de forma permanente! 📺🎀", "success");
+            setWelcomingVideo(videoData);
+            localStorage.setItem('beauty_salon_welcoming_video', JSON.stringify(videoData));
+            showToast("¡Video subido y guardado de forma permanente para todos! 📺🎀✨", "success");
+            descargarDeSupabase();
           } else {
-            showToast("Subido localmente. ¡Nube ocupada!", "success");
+            console.error("Error al subir a Supabase:", error);
+            showToast("No se pudo subir a internet. ¿Creaste la tabla 'configuracion'? 😿", "error");
           }
         } else {
-          showToast("Subido localmente con éxito.", "success");
+          setWelcomingVideo(videoData);
+          localStorage.setItem('beauty_salon_welcoming_video', JSON.stringify(videoData));
+          showToast("Subido de manera local en tu computadora.", "success");
         }
         setUploadingVideo(false);
       };
@@ -549,6 +552,7 @@ export default function App() {
       setLoadingCloud(false);
       if (!error) {
         showToast("¡Tu canción feliz fue colgada en el Mural! 🎵✨", "success");
+        descargarDeSupabase();
       } else {
         showToast("Guardada localmente. ¡Nube ocupada!", "success");
       }
@@ -950,7 +954,6 @@ export default function App() {
   return (
     <div className={`min-h-screen font-sans flex flex-col ${darkMode ? 'bg-slate-950 text-slate-100' : 'bg-pink-50/30 text-slate-950'}`}>
       
-      {}
       <header className={`border-b-4 h-20 flex items-center justify-between px-6 shadow-md ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-pink-200'}`}>
         <div className="flex items-center space-x-3">
           <GraduationCap className="text-pink-600 animate-pulse" size={32} />
@@ -971,10 +974,10 @@ export default function App() {
         </div>
       </header>
 
-      {/* CUERPO DEL CASTILLO */}
+      {/* CUERPO PRINCIPAL DEL SISTEMA */}
       <div className="flex flex-1 flex-col md:flex-row">
         
-        {}
+        {/* BARRA DE MENÚ LATERAL */}
         <aside className={`w-full md:w-60 p-4 flex flex-col gap-2 ${darkMode ? 'bg-slate-900' : 'bg-white border-r-4 border-pink-100'}`}>
           <div className="text-xs uppercase tracking-wider font-extrabold text-pink-600 dark:text-pink-400 mb-2 px-3 flex items-center gap-1.5">
             <Heart size={12} className="fill-pink-500 text-pink-500 animate-pulse" /> Menú Principal
@@ -1057,7 +1060,7 @@ export default function App() {
           </div>
         </aside>
 
-        {/* PANTALLA PRINCIPAL */}
+        {/* PANTALLA DE CONTENIDO PRINCIPAL */}
         <main className="flex-1 p-6 max-w-4xl w-full mx-auto">
           {loadingCloud && (
             <div className="text-center p-2.5 mb-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-black rounded-2xl text-[11px] animate-pulse flex items-center justify-center gap-1.5 shadow-md">
@@ -1065,22 +1068,22 @@ export default function App() {
             </div>
           )}
           
-          {/* TAB: INICIO */}
+          {/* TAB: INICIO CON TEXTOS PERSONALIZADOS */}
           {activeTab === 'inicio' && (
             <div className="space-y-6 animate-slide-in">
               <div className="bg-gradient-to-r from-pink-500 to-purple-600 p-8 rounded-3xl text-white shadow-lg relative overflow-hidden border-b-4 border-purple-800">
                 <Sparkles className="absolute right-4 top-4 text-pink-200 animate-spin" size={48} />
                 <h1 className="text-3xl font-black text-white drop-shadow-md">¡Bienvenida de vuelta, {currentUser.name}! 💇‍♀️✨</h1>
-                <p className="text-sm mt-2 font-black text-pink-100 drop-shadow">Disfruta cada etapa de tu aprendizaje con los juegos interactivos y más</p>
+                <p className="text-sm mt-2 font-black text-pink-100 drop-shadow-md">Disfruta cada etapa de tu aprendizaje con los juegos interactivos y más</p>
               </div>
 
-              {/* SECCIÓN REPRODUCTOR DE VIDEO DE BIENVENIDA */}
+              {/* SECCIÓN REPRODUCTOR DE VIDEO DE BIENVENIDA PERMANENTE */}
               <div className="bg-white dark:bg-slate-900 border-4 border-pink-200 dark:border-slate-800 p-6 rounded-3xl shadow-lg space-y-4">
                 <h2 className="text-base font-black text-pink-600 dark:text-pink-400 tracking-wider uppercase flex items-center gap-2">
                   <Video className="text-pink-600 animate-pulse" size={24} />
                   Cine Mágico: Video de Bienvenida 🎬🌸
                 </h2>
-                <p className="text-xs text-slate-900 dark:text-slate-100 font-extrabold bg-pink-50 dark:bg-slate-800/80 p-2.5 rounded-xl border border-pink-100 dark:border-slate-700">
+                <p className="text-xs text-slate-950 dark:text-slate-100 font-extrabold bg-pink-50 dark:bg-slate-800/80 p-3 rounded-xl border border-pink-100 dark:border-slate-700">
                   Con nosotras aprenderás de forma práctica y sencilla. Somos un equipo
                 </p>
 
@@ -1110,9 +1113,9 @@ export default function App() {
                       🛠️ Zona de Profesora: Actualizar Video
                     </span>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/* Subida por Enlace */}
+                      {/* Subida por Enlace de YouTube */}
                       <div className="space-y-1">
-                        <label className="text-[11px] font-black text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
+                        <label className="text-[11px] font-black text-slate-950 dark:text-slate-100 flex items-center gap-1.5">
                           <Link size={12} /> Enlace del Video (YouTube):
                         </label>
                         <div className="flex gap-2">
@@ -1132,10 +1135,10 @@ export default function App() {
                         </div>
                       </div>
 
-                      {/* Subida por Archivo */}
+                      {/* Subida por Archivo Local (Máx. 4.5MB para Supabase) */}
                       <div className="space-y-1">
-                        <label className="text-[11px] font-black text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
-                          <UploadCloud size={12} /> Subir Video (.mp4 max 15MB):
+                        <label className="text-[11px] font-black text-slate-950 dark:text-slate-100 flex items-center gap-1.5">
+                          <UploadCloud size={12} /> Subir Video (.mp4 máx 4.5MB):
                         </label>
                         <label className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2.5 px-3 rounded-xl font-black cursor-pointer shadow-md active:scale-95 transition-all flex items-center justify-center gap-1.5 text-[11px]">
                           {uploadingVideo ? "Subiendo video... ☁️" : "Buscar Video de mi Computadora 🖥️"}
@@ -1153,6 +1156,7 @@ export default function App() {
                 )}
               </div>
 
+              {/* INSTRUCCIONES RÁPIDAS */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-white dark:bg-slate-900 border-4 border-pink-100 dark:border-slate-800 p-5 rounded-3xl shadow-sm">
                   <h3 className="font-black text-sm text-pink-600 dark:text-pink-400 mb-2 flex items-center gap-1.5">📢 Instrucciones Mágicas</h3>
@@ -1176,7 +1180,7 @@ export default function App() {
             </div>
           )}
 
-          {/* TAB DE UNIDADES DE CLASE */}
+          {}
           {['unit1', 'unit2', 'unit3'].map((tabKey, tabIdx) => {
             if (activeTab !== tabKey) return null;
             const currentModule = modules[tabIdx];
@@ -1230,7 +1234,7 @@ export default function App() {
                 <p className="text-xs mt-1.5 font-black text-purple-100">¡Conviértete en una estrella del Speaking y completa los desafíos del salón de belleza!</p>
               </div>
 
-              {/* 1. DESAFÍO DE VOZ / SPEAKING CHALLENGE */}
+              {/* DESAFÍO DE VOZ */}
               <div className="bg-white dark:bg-slate-900 border-4 border-purple-200 dark:border-slate-800 p-6 rounded-3xl shadow-lg space-y-4">
                 <div className="flex items-center space-x-2 border-b-2 pb-3 border-purple-100 dark:border-slate-800">
                   <span className="p-1.5 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-xl"><Mic size={18} /></span>
@@ -1282,7 +1286,6 @@ export default function App() {
                       {isRecording ? "¡Grabando! Te estoy escuchando... 🗣️" : "Haz clic en el micrófono para empezar a hablar"}
                     </span>
 
-                    {/* Mostrando resultados estilo Duolingo */}
                     {practiceStatus === 'listening' && (
                       <div className="text-center animate-pulse text-indigo-600 font-black">Procesando audio mágico... ✨</div>
                     )}
@@ -1315,7 +1318,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* 2. ARMADOR DE FRASES / SENTENCE BUILDER */}
+              {/* ARMADOR DE FRASES */}
               <div className="bg-white dark:bg-slate-900 border-4 border-indigo-200 dark:border-slate-800 p-6 rounded-3xl shadow-lg space-y-4">
                 <div className="flex items-center space-x-2 border-b-2 pb-3 border-indigo-100 dark:border-slate-800">
                   <span className="p-1.5 bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 rounded-xl"><Gamepad2 size={18} /></span>
@@ -1339,7 +1342,6 @@ export default function App() {
 
                   <p className="font-extrabold text-sm text-slate-950 dark:text-white">{sentenceBuilderScenarios[currentSentenceIndex].instruction}</p>
 
-                  {/* Cuadro donde van apareciendo las palabras seleccionadas */}
                   <div className="p-4 bg-white dark:bg-slate-900 border-2 border-dashed border-indigo-300 dark:border-slate-700 rounded-2xl min-h-[60px] flex flex-wrap gap-2 items-center justify-center">
                     {selectedWords.length === 0 ? (
                       <span className="text-[11px] text-slate-400 font-bold italic">Toca las palabras de abajo para armar la frase...</span>
@@ -1356,7 +1358,6 @@ export default function App() {
                     )}
                   </div>
 
-                  {/* Bloques de palabras desordenadas */}
                   <div className="flex flex-wrap gap-2.5 justify-center py-2 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-indigo-100 dark:border-slate-800">
                     {sentenceBuilderScenarios[currentSentenceIndex].shuffledArray.map((word, idx) => {
                       const isUsed = selectedWords.includes(word);
@@ -1373,7 +1374,6 @@ export default function App() {
                     })}
                   </div>
 
-                  {/* Botones de acción del armador */}
                   <div className="flex gap-2 justify-center pt-2">
                     <button
                       onClick={() => verificarFraseConstruida(sentenceBuilderScenarios[currentSentenceIndex].solutionKey)}
@@ -1389,7 +1389,6 @@ export default function App() {
                     </button>
                   </div>
 
-                  {/* Resultado de la verificación */}
                   {builderStatus === 'success' && (
                     <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 border-2 border-emerald-300 rounded-2xl text-center space-y-1">
                       <p className="text-emerald-700 dark:text-emerald-400 font-black">¡Fabuloso! Tu frase está perfectamente estructurada. 🦉💚</p>
@@ -1405,7 +1404,7 @@ export default function App() {
             </div>
           )}
 
-          {/* TAB: MOCHILA DE TAREAS */}
+          {}
           {activeTab === 'mochila' && (
             <div className="bg-white dark:bg-slate-900 border-4 border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4 animate-slide-in shadow-sm">
               <div className="flex items-center justify-between border-b-2 pb-4 border-slate-200 dark:border-slate-700">
@@ -1475,7 +1474,7 @@ export default function App() {
             </div>
           )}
 
-          {/* TAB: CALIFICACIONES */}
+          {}
           {activeTab === 'calificaciones' && (
             <div className="bg-white dark:bg-slate-900 border-4 border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4 shadow-sm animate-slide-in">
               <div className="flex items-center space-x-2 border-b-2 pb-2 border-slate-200 dark:border-slate-700">
@@ -1559,7 +1558,7 @@ export default function App() {
             </div>
           )}
 
-          {/* TAB: MÚSICA FELIZ */}
+          {}
           {activeTab === 'musica' && (
             <div className="bg-white dark:bg-slate-900 border-4 border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-5 animate-slide-in shadow-sm">
               <div className="flex items-center justify-between border-b-2 pb-4 border-slate-200 dark:border-slate-700">
@@ -1578,7 +1577,6 @@ export default function App() {
                 ¡La música llena de polvos de hadas nuestro salón! Comparte el enlace de la canción que te hace sonreír y llena de amor los recuadros de tus compañeros.
               </p>
 
-              {/* Formulario de Colgar Canción */}
               {!esIsabel ? (
                 <div className="p-4 bg-pink-50/50 dark:bg-slate-800/40 rounded-2xl border-2 border-pink-100 dark:border-slate-700/50 space-y-3">
                   <span className="text-xs font-black uppercase text-pink-600 tracking-wider flex items-center gap-1.5">
@@ -1626,7 +1624,6 @@ export default function App() {
                     <div key={userKey} className="bg-slate-50/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 p-4 rounded-3xl shadow-md relative overflow-hidden flex flex-col justify-between space-y-3">
                       <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-purple-400 to-pink-500"></div>
                       
-                      {/* Cabecera de la Tarjeta */}
                       <div className="flex justify-between items-start pl-2">
                         <div>
                           <span className="text-xs font-black uppercase tracking-wider text-pink-600">
@@ -1636,7 +1633,6 @@ export default function App() {
                             ({userAccount.role})
                           </span>
                         </div>
-                        {/* Botón de Corazón */}
                         <button 
                           onClick={() => handleDarLike(userKey)}
                           disabled={esIsabel}
@@ -1647,7 +1643,6 @@ export default function App() {
                         </button>
                       </div>
 
-                      {/* Detalles de la canción */}
                       <div className="bg-white dark:bg-slate-900 p-3 rounded-2xl border-2 border-pink-50 dark:border-slate-800 pl-4 space-y-2">
                         <p className="text-xs font-black text-slate-950 dark:text-white flex items-center gap-1.5">
                           🎧 {item.nombre_cancion}
@@ -1662,13 +1657,11 @@ export default function App() {
                         </a>
                       </div>
 
-                      {/* Seccion de Comentarios */}
                       <div className="space-y-2 bg-slate-100/50 dark:bg-slate-900/40 p-3 rounded-2xl">
                         <span className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest block">
                           Comentarios:
                         </span>
                         
-                        {/* Listado de comentarios */}
                         <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
                           {(item.comentarios || []).length === 0 ? (
                             <span className="text-[10px] italic text-slate-500 dark:text-slate-400 font-bold block">Sé la primera en comentar... 🌸</span>
@@ -1684,7 +1677,6 @@ export default function App() {
                                     <span className="text-slate-900 dark:text-slate-100 font-extrabold break-words">{c.texto}</span>
                                   </div>
                                   <div className="flex items-center gap-1.5 shrink-0 pt-0.5">
-                                    {/* Dar amor al comentario (Corazón) */}
                                     <button
                                       disabled={esIsabel}
                                       onClick={() => handleLikeComentario(userKey, idx)}
@@ -1695,7 +1687,6 @@ export default function App() {
                                       <span className="text-[9px] font-black">{(c.likes || []).length}</span>
                                     </button>
                                     
-                                    {/* Borrar comentario */}
                                     {puedoEliminarComentario && (
                                       <button
                                         onClick={() => handleEliminarComentario(userKey, idx)}
@@ -1712,7 +1703,6 @@ export default function App() {
                           )}
                         </div>
 
-                        {/* Caja para agregar comentario (Excepto para Isabel) */}
                         {!esIsabel && (
                           <div className="flex gap-1.5 pt-1.5 border-t border-slate-200/60 dark:border-slate-700/60">
                             <input 
@@ -1738,7 +1728,7 @@ export default function App() {
             </div>
           )}
 
-          {/* TAB: VOCABULARIO */}
+          {}
           {activeTab === 'vocabulario' && (
             <div className="bg-white dark:bg-slate-900 border-4 border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-5 animate-slide-in shadow-sm">
               <div className="flex flex-col md:flex-row md:items-center justify-between border-b-2 pb-4 border-slate-200 dark:border-slate-700 gap-3">
@@ -1801,7 +1791,7 @@ export default function App() {
             </div>
           )}
 
-          {/* TAB: JUEGOS */}
+          {}
           {activeTab === 'juegos' && (
             <div className="bg-white dark:bg-slate-900 border-4 border-pink-200 dark:border-slate-800 p-6 rounded-3xl space-y-4 animate-slide-in shadow-sm">
               <div className="flex items-center space-x-2 border-b-2 pb-4 border-slate-200 dark:border-slate-700">
@@ -1849,7 +1839,7 @@ export default function App() {
         </main>
       </div>
 
-      {/* MODAL DE CONFIRMACIÓN DE BORRADO DE PDF */}
+      {}
       {deleteConfirm.show && (
         <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-slide-in">
           <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl max-w-sm w-full border-4 border-pink-400 shadow-2xl text-center space-y-4">
@@ -1874,7 +1864,7 @@ export default function App() {
         </div>
       )}
 
-      {/* TOAST NOTIFICACIÓN MÁGICA */}
+      {/* TOAST CON NOTIFICACIÓN DE HADA */}
       {toast.show && (
         <div className="fixed bottom-5 right-5 z-50 animate-slide-in">
           <div className={`p-4 rounded-2xl shadow-xl flex items-center gap-2 border-2 text-xs font-black ${toast.type === 'success' ? 'bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-slate-900 dark:text-emerald-400' : 'bg-red-50 text-red-800 border-red-300 dark:bg-slate-900 dark:text-red-400'}`}>
