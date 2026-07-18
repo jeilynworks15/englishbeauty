@@ -242,63 +242,81 @@ export default function App() {
       role: "Narrador 📖",
       text: "Anna is a hairstylist. A client comes into the salon.",
       translation: "Ana es una estilista de cabello. Una clienta entra al salón.",
-      avatar: "💈"
+      avatar: "💈",
+      sceneEmoji: "💈💇‍♀️🚪👩",
+      sceneBg: "from-pink-100 to-purple-100"
     },
     {
       id: 2,
       role: "Anna 💇‍♀️",
       text: "Good morning! Welcome!",
       translation: "¡Buenos días! ¡Bienvenida!",
-      avatar: "💇‍♀️"
+      avatar: "💇‍♀️",
+      sceneEmoji: "💇‍♀️👋✨🧴",
+      sceneBg: "from-purple-105 to-cyan-105"
     },
     {
       id: 3,
       role: "Sarah (Clienta) 👩",
       text: "Hello!",
       translation: "¡Hola!",
-      avatar: "👩"
+      avatar: "👩",
+      sceneEmoji: "👩👋😊🌸",
+      sceneBg: "from-cyan-105 to-rose-105"
     },
     {
       id: 4,
       role: "Anna 💇‍♀️",
       text: "How are you?",
       translation: "¿Cómo está?",
-      avatar: "💇‍♀️"
+      avatar: "💇‍♀️",
+      sceneEmoji: "💇‍♀️💬💖🔍",
+      sceneBg: "from-rose-105 to-indigo-105"
     },
     {
       id: 5,
       role: "Sarah (Clienta) 👩",
       text: "I'm fine, thank you.",
       translation: "Estoy bien, gracias.",
-      avatar: "👩"
+      avatar: "👩",
+      sceneEmoji: "👩🙏✨🥰",
+      sceneBg: "from-indigo-105 to-pink-105"
     },
     {
       id: 6,
       role: "Anna 💇‍♀️",
       text: "My name is Anna.",
       translation: "Mi nombre es Ana.",
-      avatar: "💇‍♀️"
+      avatar: "💇‍♀️",
+      sceneEmoji: "💇‍♀️🙋‍♀️⭐🎀",
+      sceneBg: "from-pink-105 to-teal-105"
     },
     {
       id: 7,
       role: "Sarah (Clienta) 👩",
       text: "My name is Sarah.",
       translation: "Mi nombre es Sarah.",
-      avatar: "👩"
+      avatar: "👩",
+      sceneEmoji: "👩🙋‍♀️🌸🌱",
+      sceneBg: "from-teal-105 to-purple-105"
     },
     {
       id: 8,
       role: "Anna 💇‍♀️",
       text: "Nice to meet you. Please, have a seat.",
       translation: "Mucho gusto en conocerla. Por favor, tome asiento.",
-      avatar: "💇‍♀️"
+      avatar: "💇‍♀️",
+      sceneEmoji: "💇‍♀️🪑🤝💫",
+      sceneBg: "from-purple-105 to-rose-105"
     },
     {
       id: 9,
       role: "Sarah (Clienta) 👩",
       text: "Thank you.",
       translation: "Gracias.",
-      avatar: "👩"
+      avatar: "👩",
+      sceneEmoji: "👩💇‍♀️✨🧸",
+      sceneBg: "from-rose-105 to-cyan-105"
     }
   ];
 
@@ -1461,14 +1479,14 @@ export default function App() {
               <div className="bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 p-6 rounded-3xl text-white shadow-lg relative overflow-hidden">
                 <Sparkles className="absolute right-4 top-4 text-pink-200 animate-spin" size={40} />
                 <h1 className="text-2xl font-black text-white">Actividades Interactivas 🧩✨</h1>
-                <p className="text-xs mt-1.5 font-bold text-rose-50">¡Complazamos a la profesora resolviendo el cómic parlante de la Miss Josselyn!</p>
+                <p className="text-xs mt-1.5 font-bold text-rose-50">Aprendamos cada clase con pequeños desafíos creativos 🌸</p>
               </div>
 
               {/* SECCIÓN 1: EL CÓMIC PARLANTE DE ANNA Y SARAH */}
               <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-900'}`}>
                 <div className={`flex items-center space-x-2 border-b pb-3 ${darkMode ? 'border-slate-800' : 'border-purple-50'}`}>
                   <span className={`p-1.5 rounded-xl ${darkMode ? 'bg-purple-900 text-purple-300' : 'bg-rose-50 text-rose-600'}`}><BookOpen size={18} /></span>
-                  <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-purple-300' : 'text-purple-850'}`}>
+                  <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-purple-300' : 'text-purple-855'}`}>
                     Cómic Parlante: A New Client at the Beauty Salon 📖💬
                   </h2>
                 </div>
@@ -1501,10 +1519,18 @@ export default function App() {
                           <span className="text-lg">{panel.avatar}</span>
                         </div>
 
+                        {/* PEQUEÑA ILUSTRACIÓN REFERENCIAL MÁGICA */}
+                        <div className={`w-full h-24 rounded-xl bg-gradient-to-tr ${panel.sceneBg} flex items-center justify-center text-3xl shadow-inner border border-white/50 relative overflow-hidden select-none`}>
+                          <div className="absolute inset-0 bg-white/20 backdrop-blur-[0.5px]"></div>
+                          <span className="relative z-10 drop-shadow-md transform hover:scale-110 transition-all duration-300">
+                            {panel.sceneEmoji}
+                          </span>
+                        </div>
+
                         <div className="space-y-1">
                           <span className="text-[10px] font-black uppercase text-slate-400 block">{panel.role}</span>
                           <p className="text-xs font-black text-purple-955 dark:text-white">"{panel.text}"</p>
-                          <p className="text-[11px] text-slate-500 font-bold italic">{panel.translation}</p>
+                          <p className="text-[11px] text-slate-505 font-bold italic">{panel.translation}</p>
                         </div>
 
                         <div className="flex justify-end pt-1">
@@ -1544,7 +1570,7 @@ export default function App() {
                   <div className="flex items-center space-x-2">
                     <span className={`p-1.5 rounded-xl ${darkMode ? 'bg-purple-950 text-pink-300' : 'bg-purple-50 text-purple-700'}`}><Star size={18} /></span>
                     <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-pink-300' : 'text-purple-855'}`}>
-                      Quiz de Lectura: Circle the Correct Answer 📝🎓
+                      Quiz de Lectura: Choose the Correct Answer 📝🎓
                     </h2>
                   </div>
                   {quizSubmitted && (
@@ -1612,17 +1638,6 @@ export default function App() {
                       Volver a Intentar 🔄
                     </button>
                   )}
-                </div>
-              </div>
-
-              {/* SECCIÓN EXTRA: REFERENCIA LÁMINAS CANVA DE LA MISS JOSSELYN */}
-              <div className={`border p-4 rounded-3xl flex justify-between items-center text-xs ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-purple-50/20 border-purple-100/40'}`}>
-                <div className="flex items-center gap-2">
-                  <span className="text-xl">👩‍🏫🎒</span>
-                  <div>
-                    <p className="font-black text-purple-750">Canva Original Slides Reference</p>
-                    <p className="text-[10px] text-slate-505 font-bold">Lección basada en las imágenes originales del salón: 5104912847614971500.jpg y 5104912847614971501.jpg</p>
-                  </div>
                 </div>
               </div>
             </div>
