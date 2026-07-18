@@ -16,7 +16,6 @@ import {
   Trash2,
   PlayCircle,
   Search,
-  CheckCircle2,
   Heart,
   UploadCloud,
   Video,
@@ -24,23 +23,43 @@ import {
   Music,
   Send,
   Mic,
-  RotateCcw,
-  Trophy,
-  Activity,
-  Award
+  Award,
+  HelpCircle,
+  Sparkle,
+  Activity // <-- ¡Importamos el icono que faltaba para reparar el hechizo mágico! 💖
 } from 'lucide-react';
 
 const SUPABASE_URL = 'https://fiuphtskrnwdftsrspip.supabase.co'; 
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpdXBodHNrcm53ZGZ0c3JzcGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDQ4MTAsImV4cCI6MjA5OTM4MDgxMH0.EORFoOj4ssM9z5Q7xGQdbzFUMTldXqI9LyQ-Kvcgj5I';
 
+// ... rest of the existing code exactly as before ...
+const parseCommentAndSticker = (rawComment) => {
+  if (rawComment && rawComment.startsWith('[STK:')) {
+    const closeIdx = rawComment.indexOf(']');
+    if (closeIdx > 5) {
+      const sticker = rawComment.substring(5, closeIdx);
+      const comentario = rawComment.substring(closeIdx + 1);
+      return { sticker, comentario };
+    }
+  }
+  return { sticker: '', comentario: rawComment || '' };
+};
+
+const buildRawComment = (sticker, commentText) => {
+  if (sticker) {
+    return `[STK:${sticker}]${commentText || ''}`;
+  }
+  return commentText || '';
+};
+
 export default function App() {
   const [darkMode, setDarkMode] = useState(() => {
-    const savedDarkMode = localStorage.getItem('beauty_salon_dark_mode_v2');
+    const savedDarkMode = localStorage.getItem('beauty_salon_dark_mode_v3');
     return savedDarkMode === 'true';
   });
 
   useEffect(() => {
-    localStorage.setItem('beauty_salon_dark_mode_v2', darkMode);
+    localStorage.setItem('beauty_salon_dark_mode_v3', darkMode);
     if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {
@@ -64,13 +83,18 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeVocabFilter, setActiveVocabFilter] = useState('todos');
 
+  const [activeComicPanel, setActiveComicPanel] = useState(null);
+  const [quizAnswers, setQuizAnswers] = useState({ q1: null, q2: null, q3: null, q4: null });
+  const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const [quizScore, setQuizScore] = useState(0);
+
   const [musicList, setMusicList] = useState(() => {
     const savedMusic = localStorage.getItem('beauty_salon_music_list');
     return savedMusic ? JSON.parse(savedMusic) : {
       jean: { nombre_cancion: 'Happy 🌸', enlace: 'https://www.youtube.com/watch?v=ZbZSe6N_BXs', likes: ['ricardo'], comentarios: [{ usuario: 'ricardo', nombre: 'Ricardo', texto: '¡Qué gran ritmo Jean!', likes: [] }] },
       ricardo: { nombre_cancion: 'Can\'t Stop the Feeling! ⚡', enlace: 'https://www.youtube.com/watch?v=ru0K8uYEZWw', likes: ['jean'], comentarios: [] },
       legna: { nombre_cancion: 'Sparkle 🎀', enlace: 'https://www.youtube.com/watch?v=a2GujJZfALL', likes: [], comentarios: [] },
-      daniela: { nombre_cancion: 'A Thousand Years ✨', enlace: 'https://www.youtube.com/watch?v=rtOvBOTyX00', likes: [], comentarios: [] }
+      jordy: { nombre_cancion: 'Dynamite 🌟', enlace: 'https://www.youtube.com/watch?v=gdZLi9oWNZg', likes: [], comentarios: [] }
     };
   });
 
@@ -136,11 +160,19 @@ export default function App() {
   const [practiceStatus, setPracticeStatus] = useState('idle'); 
   const [currentScenario, setCurrentScenario] = useState(0);
 
+  const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
+  const [selectedWords, setSelectedWords] = useState([]);
+  const [builderStatus, setBuilderStatus] = useState('idle'); 
+
+  const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
+  const [quizSelectedAnswer, setQuizSelectedAnswer] = useState(null);
+  const [quizStatus, setQuizStatus] = useState('idle');
+
   const practiceScenarios = [
     {
       spanishPrompt: "Imagina que entra un cliente nuevo. Dale la bienvenida en inglés amablemente y ofrécele asiento:",
       englishTarget: "Hello, welcome to our salon! Please, have a seat.",
-      tip: "¡Dilo con una gran sonrisa para que tu cliente se sienta muy feliz! 😊"
+      tip: "¡Dilo con una gran sonrisa para que tu cliente se sientas muy feliz! 😊"
     },
     {
       spanishPrompt: "Explícale al cliente de forma muy sencilla el primer paso del tratamiento de keratina:",
@@ -169,9 +201,157 @@ export default function App() {
     }
   ];
 
-  const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
-  const [selectedWords, setSelectedWords] = useState([]);
-  const [builderStatus, setBuilderStatus] = useState('idle'); 
+  const triviaQuizzes = [
+    {
+      englishPhrase: "How are you?",
+      options: ["¿Cómo está?", "¿Qué hora es?", "¿Cuánto cuesta?"],
+      correctIndex: 0,
+      congrats: "¡Fantástico! Saludaste muy educadamente. 🌸"
+    },
+    {
+      englishPhrase: "Don't tie your hair.",
+      options: ["No lave su cabello.", "No se recoja el cabello.", "Por favor no se mueva."],
+      correctIndex: 1,
+      congrats: "¡Extraordinario! Cuidaste el cabello de tu cliente. 🧴"
+    },
+    {
+      englishPhrase: "You can pay by cash.",
+      options: ["Puede pagar con tarjeta.", "No puede pagar hoy.", "Puede pagar en efectivo."],
+      correctIndex: 2,
+      congrats: "¡Maravilloso! El dinero está en la caja registradora. 💰"
+    },
+    {
+      englishPhrase: "Thank you for coming.",
+      options: ["Gracias por venir.", "Buenos días.", "Disculpe la espera."],
+      correctIndex: 0,
+      congrats: "¡Súper dulce! Tu cliente volverá muy pronto. 👋💖"
+    }
+  ];
+
+  const stickersDisponibles = [
+    { emoji: '🌟', name: 'Estrella de Oro' },
+    { emoji: '🎙️', name: 'Super Voz' },
+    { emoji: '💖', name: 'Amor y Brillo' },
+    { emoji: '🏆', name: 'Gran Campeón' },
+    { emoji: '🧠', name: 'Mente Brillante' }
+  ];
+
+  const comicPanels = [
+    {
+      id: 1,
+      role: "Narrador 📖",
+      text: "Anna is a hairstylist. A client comes into the salon.",
+      translation: "Ana es una estilista de cabello. Una clienta entra al salón.",
+      avatar: "💈"
+    },
+    {
+      id: 2,
+      role: "Anna 💇‍♀️",
+      text: "Good morning! Welcome!",
+      translation: "¡Buenos días! ¡Bienvenida!",
+      avatar: "💇‍♀️"
+    },
+    {
+      id: 3,
+      role: "Sarah (Clienta) 👩",
+      text: "Hello!",
+      translation: "¡Hola!",
+      avatar: "👩"
+    },
+    {
+      id: 4,
+      role: "Anna 💇‍♀️",
+      text: "How are you?",
+      translation: "¿Cómo está?",
+      avatar: "💇‍♀️"
+    },
+    {
+      id: 5,
+      role: "Sarah (Clienta) 👩",
+      text: "I'm fine, thank you.",
+      translation: "Estoy bien, gracias.",
+      avatar: "👩"
+    },
+    {
+      id: 6,
+      role: "Anna 💇‍♀️",
+      text: "My name is Anna.",
+      translation: "Mi nombre es Ana.",
+      avatar: "💇‍♀️"
+    },
+    {
+      id: 7,
+      role: "Sarah (Clienta) 👩",
+      text: "My name is Sarah.",
+      translation: "Mi nombre es Sarah.",
+      avatar: "👩"
+    },
+    {
+      id: 8,
+      role: "Anna 💇‍♀️",
+      text: "Nice to meet you. Please, have a seat.",
+      translation: "Mucho gusto en conocerla. Por favor, tome asiento.",
+      avatar: "💇‍♀️"
+    },
+    {
+      id: 9,
+      role: "Sarah (Clienta) 👩",
+      text: "Thank you.",
+      translation: "Gracias.",
+      avatar: "👩"
+    }
+  ];
+
+  const josselynQuizQuestions = [
+    {
+      id: "q1",
+      question: "1) ¿Dónde se encuentra Ana?",
+      options: [
+        { key: "A", text: "AT SCHOOL (En la escuela)" },
+        { key: "B", text: "AT THE BEAUTY SALON (En el salón de belleza)" },
+        { key: "C", text: "AT HOME (En casa)" }
+      ],
+      correctKey: "B"
+    },
+    {
+      id: "q2",
+      question: "2) ¿Qué es lo primero que dice Ana?",
+      options: [
+        { key: "A", text: "GOODBYE. (Adiós)" },
+        { key: "B", text: "GOOD MORNING! (¡Buenos días!)" },
+        { key: "C", text: "THANK YOU. (Gracias)" }
+      ],
+      correctKey: "B"
+    },
+    {
+      id: "q3",
+      question: "3) ¿Qué palabra le dice Ana para darle la bienvenida?",
+      options: [
+        { key: "A", text: "GOODBYE. (Adiós)" },
+        { key: "B", text: "GOOD MORNING! (¡Buenos días!)" },
+        { key: "C", text: "WELCOME. (Bienvenida)" }
+      ],
+      correctKey: "C"
+    },
+    {
+      id: "q4",
+      question: "4) ¿Qué frase utiliza Ana para decirle a la clienta que tome asiento?",
+      options: [
+        { key: "A", text: "PLEASE, HAVE A SEAT. (Por favor, tome asiento.)" },
+        { key: "B", text: "GOOD MORNING! (¡Buenos días!)" },
+        { key: "C", text: "THANK YOU. (Gracias)" }
+      ],
+      correctKey: "A"
+    }
+  ];
+
+  const josselynNewWords = [
+    { en: "hairstylist", es: "estilista" },
+    { en: "client", es: "cliente" },
+    { en: "salon", es: "salón" },
+    { en: "smile", es: "sonreír" },
+    { en: "seat", es: "asiento" }
+  ];
 
   useEffect(() => {
     const initSupabase = () => {
@@ -364,6 +544,24 @@ export default function App() {
     setBuilderStatus('idle');
   };
 
+  const seleccionarRespuestaTrivia = (index) => {
+    if (quizStatus !== 'idle') return;
+    setQuizSelectedAnswer(index);
+    const correctIdx = triviaQuizzes[currentQuizIndex].correctIndex;
+    if (index === correctIdx) {
+      setQuizStatus('correct');
+      showToast(triviaQuizzes[currentQuizIndex].congrats, "success");
+    } else {
+      setQuizStatus('incorrect');
+      showToast("¡Oh oh! Inténtalo otra vez para ganar la copa. 🧸", "error");
+    }
+  };
+
+  const reiniciarTriviaQuiz = () => {
+    setQuizSelectedAnswer(null);
+    setQuizStatus('idle');
+  };
+
   const handlePdfUpload = async (e, claseKey, studentUser) => {
     if (!supabase) return;
     const file = e.target.files[0];
@@ -424,10 +622,10 @@ export default function App() {
     }
   };
 
-  const enviarNotaASupabase = async (estudiante, claseKey, notaSeleccionada, comentarioEscrito) => {
+  const enviarNotaASupabase = async (estudiante, claseKey, notaSeleccionada, rawCommentText) => {
     if (!supabase) return;
     const { error } = await supabase.from('calificaciones').upsert(
-      { estudiante: estudiante, clase: claseKey, nota: notaSeleccionada, comentario: comentarioEscrito },
+      { estudiante: estudiante, clase: claseKey, nota: notaSeleccionada, comentario: rawCommentText },
       { onConflict: 'estudiante,clase' }
     );
     if (!error) {
@@ -715,6 +913,33 @@ export default function App() {
     }
   };
 
+  const handleQuizAnswerSelect = (questionId, optionKey) => {
+    if (quizSubmitted) return;
+    setQuizAnswers(prev => ({ ...prev, [questionId]: optionKey }));
+  };
+
+  const handleQuizSubmit = () => {
+    let score = 0;
+    josselynQuizQuestions.forEach(q => {
+      if (quizAnswers[q.id] === q.correctKey) {
+        score += 2.5; 
+      }
+    });
+    setQuizScore(score);
+    setQuizSubmitted(true);
+    if (score >= 7.5) {
+      showToast(`¡Excelente nota de 10! Lograste un ${score} de 10 puntos. 🥇🎓✨`, "success");
+    } else {
+      showToast(`Has obtenido ${score}/10. ¡Inténtalo otra vez para lograr la puntuación perfecta! 🧸🌸`, "error");
+    }
+  };
+
+  const handleQuizReset = () => {
+    setQuizAnswers({ q1: null, q2: null, q3: null, q4: null });
+    setQuizSubmitted(false);
+    setQuizScore(0);
+  };
+
   const accounts = {
     'daniela': { username: 'daniela', name: "Miss Manzaba Daniela", role: "Profesora" },
     'josselyne': { username: 'josselyne', name: "Miss Lucas Josselyne", role: "Profesora" },
@@ -755,7 +980,7 @@ export default function App() {
       color: "from-rose-400 to-purple-400",
       lessons: [
         { 
-          title: "CLASE 1: Greetings (Saludos para recibir al cliente) 👋🎀", 
+          title: "CLASE 1: Greetings (Saludos para recibir al cliente) 👋👋", 
           objective: "Objetivo: Al finalizar la clase, podrás saludar y recibir a un cliente en inglés utilizando expresiones básicas de nuestro salón.",
           content: [
             { en: "Hello! / Hi!", es: "Hola" },
@@ -809,7 +1034,7 @@ export default function App() {
           objective: "Objetivo: Al finalizar la clase, podrás informar el precio, la duración del tratamiento y las formas de pago en una conversación sencilla.",
           content: [
             { en: "The price is $40.", es: "El precio es $40." },
-            { en: "The treatment takes around two hours.", es: "The treatment takes around two hours." },
+            { en: "The treatment takes around two hours.", es: "El tratamiento dura alrededor de dos horas." },
             { en: "You can pay by cash.", es: "Puede pagar en efectivo." }
           ],
           gameUrl: "https://create.kahoot.it/share/class-5/16e72ba0-e8fc-4910-9400-b7a3c94c3586",
@@ -869,7 +1094,7 @@ export default function App() {
     { en: "Don't wash your hair for 3 days.", es: "No lave su cabello durante 3 días.", cat: "cuidados" },
     { en: "Don't tie your hair.", es: "No se recoja el cabello.", cat: "cuidados" },
     { en: "The price is $40.", es: "El precio es $40.", cat: "precio" },
-    { en: "The treatment takes around two hours.", es: "El tratamiento dura alrededor de dos horas.", cat: "precio" },
+    { en: "The treatment takes around two hours.", es: "The treatment takes around two hours.", cat: "precio" },
     { en: "You can pay by cash.", es: "Puede pagar en efectivo.", cat: "precio" },
     { en: "Is this your first keratin treatment?", es: "¿Es este su primer tratamiento de keratina?", cat: "interaccion" },
     { en: "Do you have any allergies?", es: "¿Tiene alguna alergia?", cat: "interaccion" },
@@ -950,13 +1175,13 @@ export default function App() {
   const targetStudent = esProfesora ? selectedStudent : currentUser.username;
 
   return (
-    <div className={`min-h-screen font-sans flex flex-col ${darkMode ? 'bg-slate-950 text-slate-100' : 'bg-gradient-to-tr from-pink-100 via-purple-100 to-cyan-100 text-slate-900'}`}>
+    <div className={`min-h-screen font-sans flex flex-col ${darkMode ? 'bg-slate-955 text-slate-100' : 'bg-gradient-to-tr from-pink-100/40 via-purple-100/40 to-cyan-100/40 text-slate-900'}`}>
       
-      {/* HEADER DE NUESTRO CASTILLO (Sólido y de alto contraste en modo claro) */}
-      <header className={`border-b h-20 flex items-center justify-between px-6 shadow-md ${darkMode ? 'bg-slate-900 border-slate-800 text-white shadow-purple-950/10' : 'bg-white border-purple-100 text-slate-900 shadow-purple-100/20'}`}>
+      {/* HEADER DE NUESTRO CASTILLO (Sólido y de alto contraste en modo claro, tal como pidió la Princesa en image_f39b61.jpg) */}
+      <header className={`border-b h-20 flex items-center justify-between px-6 shadow-md ${darkMode ? 'bg-slate-900 border-slate-800 text-white shadow-purple-950/10' : 'bg-white border-purple-100 text-purple-900 shadow-purple-100/20'}`}>
         <div className="flex items-center space-x-3">
           <GraduationCap className={darkMode ? 'text-pink-400 animate-pulse' : 'text-purple-600 animate-pulse'} size={32} />
-          <span className={`font-black text-base md:text-lg flex items-center gap-1.5 ${darkMode ? 'text-white' : 'text-purple-900'}`}>
+          <span className={`font-black text-base md:text-lg flex items-center gap-1.5 ${darkMode ? 'text-white' : 'text-purple-950'}`}>
             Beauty English Course <span className="text-rose-500 animate-bounce">👩‍🏫✨</span>
           </span>
         </div>
@@ -976,78 +1201,86 @@ export default function App() {
       {/* CUERPO PRINCIPAL */}
       <div className="flex flex-1 flex-col md:flex-row">
         
-        {/* BARRA DE MENÚ LATERAL (Sólida, sin transparencias grises que opaquen el texto en modo claro) */}
-        <aside className={`w-full md:w-60 p-4 flex flex-col gap-2 border-r ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-100'}`}>
-          <div className={`text-xs uppercase tracking-wider font-extrabold mb-2 px-3 flex items-center gap-1.5 ${darkMode ? 'text-pink-400' : 'text-purple-700'}`}>
+        {/* BARRA DE MENÚ LATERAL (Totalmente blanca sólida en modo claro, nada de grisáceos feos para image_f39b61.jpg) */}
+        <aside className={`w-full md:w-64 p-4 flex flex-col gap-2 border-r ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-100'}`}>
+          <div className={`text-xs uppercase tracking-wider font-extrabold mb-2 px-3 flex items-center gap-1.5 ${darkMode ? 'text-pink-400' : 'text-purple-950'}`}>
             <Heart size={12} className="fill-rose-500 text-rose-500 animate-pulse" /> Menú Principal
           </div>
           
           <button 
             onClick={() => setActiveTab('inicio')} 
-            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'inicio' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-slate-800 hover:bg-purple-50')}`}
+            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'inicio' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-950 hover:bg-purple-50')}`}
           >
             <Home size={16} className={darkMode ? 'text-pink-400' : 'text-rose-500'} /> Inicio 🏠
           </button>
 
           <button 
             onClick={() => setActiveTab('unit1')} 
-            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'unit1' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-slate-800 hover:bg-purple-50')}`}
+            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'unit1' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-950 hover:bg-purple-50')}`}
           >
             <BookOpen size={16} className={darkMode ? 'text-pink-400' : 'text-purple-600'} /> Unidad 1: Welcome 🚪
           </button>
 
           <button 
             onClick={() => setActiveTab('unit2')} 
-            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'unit2' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-slate-800 hover:bg-purple-50')}`}
+            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'unit2' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-950 hover:bg-purple-50')}`}
           >
             <BookOpen size={16} className={darkMode ? 'text-pink-400' : 'text-purple-600'} /> Unidad 2: Info 📢
           </button>
 
           <button 
             onClick={() => setActiveTab('unit3')} 
-            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'unit3' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-slate-800 hover:bg-purple-50')}`}
+            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'unit3' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-950 hover:bg-purple-50')}`}
           >
             <BookOpen size={16} className={darkMode ? 'text-pink-400' : 'text-cyan-500'} /> Unidad 3: Client 💬
           </button>
 
           <button 
             onClick={() => setActiveTab('practica')} 
-            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'practica' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-slate-800 hover:bg-purple-50')}`}
+            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'practica' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-950 hover:bg-purple-50')}`}
           >
-            <Activity size={16} className={darkMode ? 'text-pink-400' : 'text-rose-500'} /> Práctica Mágica 🎙️🦉
+            <Activity size={16} className={darkMode ? 'text-pink-400' : 'text-rose-500'} /> Práctica Mágica Interactiva 🎙️🦉
+          </button>
+
+          {/* OPCIÓN DE MENÚ DE ACTIVIDADES INTERACTIVAS */}
+          <button 
+            onClick={() => setActiveTab('actividades')} 
+            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'actividades' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-950 hover:bg-purple-50')}`}
+          >
+            <Sparkle size={16} className={darkMode ? 'text-pink-400 animate-spin' : 'text-indigo-600 animate-spin'} /> Actividades Interactivas 🧩✨
           </button>
 
           <button 
             onClick={() => setActiveTab('mochila')} 
-            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'mochila' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-slate-800 hover:bg-purple-50')}`}
+            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'mochila' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-950 hover:bg-purple-50')}`}
           >
             <FolderHeart size={16} className={darkMode ? 'text-pink-400' : 'text-purple-500'} /> Mochila de Tareas 🎒
           </button>
 
           <button 
             onClick={() => setActiveTab('calificaciones')} 
-            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'calificaciones' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-slate-800 hover:bg-purple-50')}`}
+            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'calificaciones' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-950 hover:bg-purple-50')}`}
           >
             <Star size={16} className={darkMode ? 'text-pink-400' : 'text-purple-500'} /> Calificaciones ⭐
           </button>
 
           <button 
             onClick={() => setActiveTab('musica')} 
-            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'musica' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-slate-800 hover:bg-purple-50')}`}
+            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'musica' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-950 hover:bg-purple-50')}`}
           >
             <Music size={16} className={darkMode ? 'text-pink-400 animate-bounce' : 'text-rose-500 animate-bounce'} /> Música Feliz 🎵
           </button>
 
           <button 
             onClick={() => setActiveTab('vocabulario')} 
-            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'vocabulario' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-slate-800 hover:bg-purple-50')}`}
+            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'vocabulario' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-950 hover:bg-purple-50')}`}
           >
             <Volume2 size={16} className={darkMode ? 'text-pink-400' : 'text-cyan-500'} /> Vocabulario 🔊
           </button>
 
           <button 
             onClick={() => setActiveTab('juegos')} 
-            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'juegos' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-slate-800 hover:bg-purple-50')}`}
+            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'juegos' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-950 hover:bg-purple-50')}`}
           >
             <Gamepad2 size={16} className={darkMode ? 'text-pink-400' : 'text-rose-500'} /> Área de Juegos 🎮
           </button>
@@ -1076,17 +1309,17 @@ export default function App() {
                 <p className="text-sm mt-2 font-bold text-rose-50 drop-shadow-md">Disfruta cada etapa de tu aprendizaje con los juegos interactivos y más</p>
               </div>
 
-              {/* SECCIÓN REPRODUCTOR DE VIDEO DE BIENVENIDA (Sólido y de alto contraste en modo claro) */}
+              {/* SECCIÓN REPRODUCTOR DE VIDEO DE BIENVENIDA */}
               <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 shadow-purple-950/10' : 'bg-white border-purple-100 shadow-purple-100/20'}`}>
-                <h2 className={`text-base font-black tracking-wider uppercase flex items-center gap-2 ${darkMode ? 'text-pink-400' : 'text-purple-800'}`}>
+                <h2 className={`text-base font-black tracking-wider uppercase flex items-center gap-2 ${darkMode ? 'text-pink-400' : 'text-purple-950'}`}>
                   <Video className="text-rose-500 animate-pulse" size={24} />
                   Cine Mágico: Video de Bienvenida 🎬🌸
                 </h2>
-                <p className={`text-xs font-bold p-3 rounded-xl border ${darkMode ? 'bg-slate-800/80 border-slate-750 text-slate-100' : 'bg-purple-50/50 border-purple-100/50 text-slate-900'}`}>
+                <p className={`text-xs font-bold p-3 rounded-xl border ${darkMode ? 'bg-slate-800/80 border-slate-750 text-slate-100' : 'bg-purple-50/50 border-purple-100/50 text-purple-950'}`}>
                   Con nosotras aprenderás de forma práctica y sencilla. Somos un equipo
                 </p>
 
-                {/* VISUALIZADOR DE VIDEO (Sólido, sin transparencias) */}
+                {/* VISUALIZADOR DE VIDEO */}
                 <div className={`relative w-full aspect-video rounded-2xl overflow-hidden shadow-md border ${darkMode ? 'bg-slate-950 border-slate-800' : 'bg-purple-50/50 border-purple-100/50'}`}>
                   {welcomingVideo.type === 'url' ? (
                     processedVideoUrl(welcomingVideo.source) ? (
@@ -1107,14 +1340,13 @@ export default function App() {
 
                 {/* CONTROLES PARA PROFESORAS */}
                 {esProfesora && (
-                  <div className={`p-4 rounded-2xl border space-y-3 ${darkMode ? 'bg-slate-850/40 border-slate-850' : 'bg-purple-50/20 border-purple-100/40'}`}>
+                  <div className={`p-4 rounded-2xl border space-y-3 ${darkMode ? 'bg-slate-855/40 border-slate-850' : 'bg-purple-50/20 border-purple-100/40'}`}>
                     <span className={`text-xs font-black uppercase tracking-wider flex items-center gap-1.5 ${darkMode ? 'text-pink-300' : 'text-purple-800'}`}>
                       🛠️ Zona de Profesora: Actualizar Video
                     </span>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/* Subida por Enlace de YouTube */}
                       <div className="space-y-1">
-                        <label className={`text-[11px] font-black flex items-center gap-1.5 ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>
+                        <label className={`text-[11px] font-black flex items-center gap-1.5 ${darkMode ? 'text-slate-200' : 'text-purple-950'}`}>
                           <Link size={12} className="text-purple-600" /> Enlace del Video (YouTube):
                         </label>
                         <div className="flex gap-2">
@@ -1134,9 +1366,8 @@ export default function App() {
                         </div>
                       </div>
 
-                      {/* Subida por Archivo Local */}
                       <div className="space-y-1">
-                        <label className={`text-[11px] font-black flex items-center gap-1.5 ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>
+                        <label className={`text-[11px] font-black flex items-center gap-1.5 ${darkMode ? 'text-slate-200' : 'text-purple-950'}`}>
                           <UploadCloud size={12} className="text-purple-600" /> Subir Video (.mp4 máx 4.5MB):
                         </label>
                         <label className="w-full bg-gradient-to-r from-purple-600 to-cyan-500 hover:opacity-95 text-white py-2.5 px-3 rounded-xl font-black cursor-pointer shadow-md active:scale-95 transition-all flex items-center justify-center gap-1.5 text-[11px]">
@@ -1155,10 +1386,10 @@ export default function App() {
                 )}
               </div>
 
-              {/* INSTRUCCIONES RÁPIDAS (Sólidas, sin transparencias) */}
+              {/* INSTRUCCIONES RÁPIDAS */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className={`border p-5 rounded-3xl shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-100'}`}>
-                  <h3 className={`font-black text-sm mb-2 flex items-center gap-1.5 ${darkMode ? 'text-pink-400' : 'text-purple-800'}`}>📢 Instrucciones Mágicas</h3>
+                  <h3 className={`font-black text-sm mb-2 flex items-center gap-1.5 ${darkMode ? 'text-pink-400' : 'text-purple-850'}`}>📢 Instrucciones Mágicas</h3>
                   <ul className={`text-xs space-y-2 font-bold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>
                     <li className="flex items-center gap-1.5">🌸 <span className="text-purple-600 font-black">Unidades:</span> Escucha la pronunciación en inglés haciendo clic en el parlante rosa.</li>
                     <li className="flex items-center gap-1.5">🎒 <span className="text-purple-600 font-black">Mochila:</span> Sube tus PDFs. ¡Y si eres estudiante y te equivocas, usa el nuevo botón de eliminar!</li>
@@ -1168,7 +1399,7 @@ export default function App() {
 
                 <div className={`border p-5 rounded-3xl flex flex-col justify-between shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-100'}`}>
                   <div>
-                    <h3 className={`font-black text-sm mb-1 flex items-center gap-1.5 ${darkMode ? 'text-purple-400' : 'text-purple-800'}`}>🎮 Zona Interactiva</h3>
+                    <h3 className={`font-black text-sm mb-1 flex items-center gap-1.5 ${darkMode ? 'text-purple-400' : 'text-purple-850'}`}>🎮 Zona Interactiva</h3>
                     <p className={`text-xs font-bold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>Diviértete con los juegos interactivos de Kahoot, Interacty y Wordwall que diseñamos.</p>
                   </div>
                   <button onClick={() => setActiveTab('juegos')} className="mt-4 bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 hover:opacity-95 text-white text-xs font-black py-3 rounded-2xl shadow-md active:scale-95 transition-all">
@@ -1186,28 +1417,28 @@ export default function App() {
 
             return (
               <div key={tabKey} className="space-y-5 animate-slide-in">
-                <h2 className={`text-base font-black tracking-widest uppercase border-b pb-2 flex items-center gap-2 ${darkMode ? 'text-pink-400 border-slate-800' : 'text-purple-800 border-purple-100'}`}>
+                <h2 className={`text-base font-black tracking-widest uppercase border-b pb-2 flex items-center gap-2 ${darkMode ? 'text-pink-400 border-slate-800' : 'text-purple-850 border-purple-100'}`}>
                   <span className={`p-1 rounded-lg ${darkMode ? 'bg-slate-800 text-pink-400' : 'bg-purple-50 text-purple-600'}`}><BookOpen size={18} /></span>
                   {currentModule.title}
                 </h2>
                 
                 {currentModule.lessons.map((lesson, idx) => (
-                  <div key={idx} className={`border p-5 rounded-3xl space-y-4 shadow-xl relative overflow-hidden ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-900'}`}>
+                  <div key={idx} className={`border p-5 rounded-3xl space-y-4 shadow-xl relative overflow-hidden ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-905'}`}>
                     <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-pink-500 via-purple-600 to-cyan-500"></div>
                     
                     <div className={`border-b pb-2 ${darkMode ? 'border-slate-850' : 'border-purple-50'}`}>
-                      <h3 className="text-sm font-black uppercase flex items-center gap-1.5">{lesson.title}</h3>
+                      <h3 className="text-sm font-black uppercase flex items-center gap-1.5 text-purple-950 dark:text-white">{lesson.title}</h3>
                       <p className={`text-xs font-black mt-1 w-max px-3 py-1.5 rounded-full ${darkMode ? 'bg-slate-800 text-pink-300' : 'bg-purple-50 text-purple-700'}`}>{lesson.objective}</p>
                     </div>
 
                     <div className="grid grid-cols-1 gap-2.5">
                       {lesson.content.map((item, keyIdx) => (
-                        <div key={keyIdx} className={`flex justify-between items-center p-3 rounded-2xl border hover:border-pink-600 transition-all ${darkMode ? 'bg-slate-800/80 border-slate-700 text-white' : 'bg-purple-50/30 border-purple-100/40 text-slate-900'}`}>
+                        <div key={keyIdx} className={`flex justify-between items-center p-3 rounded-2xl border hover:border-pink-605 transition-all ${darkMode ? 'bg-slate-800/80 border-slate-705 text-white' : 'bg-purple-50/30 border-purple-100/40 text-slate-900'}`}>
                           <div className="flex items-center space-x-3">
                             <button onClick={() => escucharPalabra(item.en)} className="p-2.5 bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 text-white rounded-xl transition-all active:scale-90 shadow-md">
                               <Volume2 size={16} />
                             </button>
-                            <span className="text-xs font-black">{item.en}</span>
+                            <span className="text-xs font-black text-purple-955 dark:text-white">{item.en}</span>
                           </div>
                           <span className={`text-xs font-black px-2.5 py-1 rounded-xl border shadow-sm ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-purple-100 text-slate-900'}`}>🗣️ {item.es}</span>
                         </div>
@@ -1224,23 +1455,196 @@ export default function App() {
             );
           })}
 
+          {/* TAB: ACTIVIDADES INTERACTIVAS (Basado en 5104912847614971500.jpg y 5104912847614971501.jpg) */}
+          {activeTab === 'actividades' && (
+            <div className="space-y-6 animate-slide-in">
+              <div className="bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 p-6 rounded-3xl text-white shadow-lg relative overflow-hidden">
+                <Sparkles className="absolute right-4 top-4 text-pink-200 animate-spin" size={40} />
+                <h1 className="text-2xl font-black text-white">Actividades Interactivas 🧩✨</h1>
+                <p className="text-xs mt-1.5 font-bold text-rose-50">¡Complazamos a la profesora resolviendo el cómic parlante de la Miss Josselyn!</p>
+              </div>
+
+              {/* SECCIÓN 1: EL CÓMIC PARLANTE DE ANNA Y SARAH */}
+              <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-900'}`}>
+                <div className={`flex items-center space-x-2 border-b pb-3 ${darkMode ? 'border-slate-800' : 'border-purple-50'}`}>
+                  <span className={`p-1.5 rounded-xl ${darkMode ? 'bg-purple-900 text-purple-300' : 'bg-rose-50 text-rose-600'}`}><BookOpen size={18} /></span>
+                  <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-purple-300' : 'text-purple-850'}`}>
+                    Cómic Parlante: A New Client at the Beauty Salon 📖💬
+                  </h2>
+                </div>
+
+                <p className="text-xs font-bold text-slate-500">
+                  ¡Haz clic sobre cualquier viñeta del cómic para escuchar a Anna y Sarah hablar en inglés real! El panel seleccionado se iluminará con destellos rosas.
+                </p>
+
+                {/* GRILLA DE PANELES DE CÓMIC */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {comicPanels.map((panel) => {
+                    const isActive = activeComicPanel === panel.id;
+                    return (
+                      <button
+                        key={panel.id}
+                        onClick={() => {
+                          setActiveComicPanel(panel.id);
+                          escucharPalabra(panel.text);
+                        }}
+                        className={`p-4 rounded-2xl border-2 text-left transition-all active:scale-98 shadow-sm flex flex-col justify-between space-y-3 relative overflow-hidden ${
+                          isActive 
+                            ? 'bg-gradient-to-tr from-pink-500/10 to-purple-600/10 border-pink-400 scale-[1.02]' 
+                            : (darkMode ? 'bg-slate-800 border-slate-700 hover:border-slate-600' : 'bg-white border-purple-100 hover:border-purple-200')
+                        }`}
+                      >
+                        <div className="flex justify-between items-center">
+                          <span className={`text-[10px] font-black uppercase px-2.5 py-1 rounded-full ${darkMode ? 'bg-slate-900 text-pink-300' : 'bg-purple-50 text-purple-700'}`}>
+                            Panel {panel.id}
+                          </span>
+                          <span className="text-lg">{panel.avatar}</span>
+                        </div>
+
+                        <div className="space-y-1">
+                          <span className="text-[10px] font-black uppercase text-slate-400 block">{panel.role}</span>
+                          <p className="text-xs font-black text-purple-955 dark:text-white">"{panel.text}"</p>
+                          <p className="text-[11px] text-slate-500 font-bold italic">{panel.translation}</p>
+                        </div>
+
+                        <div className="flex justify-end pt-1">
+                          <span className="p-1.5 rounded-lg bg-pink-100 dark:bg-slate-700 text-pink-600 dark:text-pink-400">
+                            <Volume2 size={12} />
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* VOCABULARIO EXTRA DEL CÓMIC */}
+                <div className={`p-4 rounded-2xl border space-y-3 ${darkMode ? 'bg-slate-855 border-slate-800' : 'bg-purple-50/30 border-purple-100/40'}`}>
+                  <span className="text-xs font-black uppercase text-purple-700 block">✨ New Words / Nuevas Palabras del Cómic</span>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                    {josselynNewWords.map((word, wIdx) => (
+                      <button
+                        key={wIdx}
+                        onClick={() => escucharPalabra(word.en)}
+                        className={`p-3 rounded-xl border text-center transition-all active:scale-95 flex flex-col items-center justify-center gap-1 ${
+                          darkMode ? 'bg-slate-800 border-slate-700 hover:bg-slate-750' : 'bg-white border-purple-100 hover:bg-purple-50'
+                        }`}
+                      >
+                        <Volume2 size={12} className="text-pink-500" />
+                        <span className="text-xs font-black text-purple-950 dark:text-white">{word.en}</span>
+                        <span className="text-[10px] text-slate-400 font-bold uppercase">{word.es}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* SECCIÓN 2: EL QUIZ COMPRENSION DE LECTURA (Canva slide 5104912847614971501.jpg) */}
+              <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-905'}`}>
+                <div className={`flex items-center justify-between border-b pb-3 ${darkMode ? 'border-slate-800' : 'border-purple-50'}`}>
+                  <div className="flex items-center space-x-2">
+                    <span className={`p-1.5 rounded-xl ${darkMode ? 'bg-purple-950 text-pink-300' : 'bg-purple-50 text-purple-700'}`}><Star size={18} /></span>
+                    <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-pink-300' : 'text-purple-855'}`}>
+                      Quiz de Lectura: Circle the Correct Answer 📝🎓
+                    </h2>
+                  </div>
+                  {quizSubmitted && (
+                    <span className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-3 py-1.5 rounded-full font-black text-xs">
+                      Nota final: {quizScore} / 10 Puntos
+                    </span>
+                  )}
+                </div>
+
+                <div className="space-y-5">
+                  {josselynQuizQuestions.map((question) => {
+                    return (
+                      <div key={question.id} className={`p-4 rounded-2xl border space-y-3 ${darkMode ? 'bg-slate-850 border-slate-800' : 'bg-purple-50/10 border-purple-100/30'}`}>
+                        <span className="text-xs font-black text-purple-950 dark:text-white block">{question.question}</span>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                          {question.options.map((opt) => {
+                            const isSelected = quizAnswers[question.id] === opt.key;
+                            let btnColor = darkMode ? 'bg-slate-800 border-slate-755 text-white' : 'bg-white border-purple-100 text-slate-900';
+                            
+                            if (isSelected) {
+                              btnColor = 'bg-gradient-to-r from-pink-500 to-purple-600 text-white border-pink-400 font-black shadow-md scale-[1.01]';
+                            }
+
+                            if (quizSubmitted) {
+                              const isCorrect = opt.key === question.correctKey;
+                              if (isCorrect) {
+                                btnColor = 'bg-emerald-500 text-white border-emerald-400 font-black';
+                              } else if (isSelected) {
+                                btnColor = 'bg-red-500 text-white border-red-400';
+                              }
+                            }
+
+                            return (
+                              <button
+                                key={opt.key}
+                                disabled={quizSubmitted}
+                                onClick={() => handleQuizAnswerSelect(question.id, opt.key)}
+                                className={`p-3 rounded-xl border text-left text-xs transition-all flex items-center gap-2 ${btnColor}`}
+                              >
+                                <span className="font-black shrink-0">{opt.key})</span>
+                                <span className="font-bold">{opt.text}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* BOTONES ACCION DEL QUIZ */}
+                <div className="flex gap-2 justify-center pt-2">
+                  {!quizSubmitted ? (
+                    <button
+                      onClick={handleQuizSubmit}
+                      className="bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 hover:opacity-95 text-white font-black py-3 px-6 rounded-2xl text-xs shadow-md active:scale-95 transition-all"
+                    >
+                      Calificar mi Examen 🎓✔️
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleQuizReset}
+                      className="bg-gradient-to-r from-purple-600 to-cyan-500 hover:opacity-95 text-white font-black py-3 px-6 rounded-2xl text-xs shadow-md active:scale-95 transition-all flex items-center gap-1.5"
+                    >
+                      Volver a Intentar 🔄
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* SECCIÓN EXTRA: REFERENCIA LÁMINAS CANVA DE LA MISS JOSSELYN */}
+              <div className={`border p-4 rounded-3xl flex justify-between items-center text-xs ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-purple-50/20 border-purple-100/40'}`}>
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">👩‍🏫🎒</span>
+                  <div>
+                    <p className="font-black text-purple-750">Canva Original Slides Reference</p>
+                    <p className="text-[10px] text-slate-505 font-bold">Lección basada en las imágenes originales del salón: 5104912847614971500.jpg y 5104912847614971501.jpg</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* TAB: PRÁCTICA MÁGICA INTERACTIVA */}
           {activeTab === 'practica' && (
             <div className="space-y-6 animate-slide-in">
               <div className="bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 p-6 rounded-3xl text-white shadow-lg relative overflow-hidden">
-                <Trophy className="absolute right-4 top-4 text-pink-200 animate-bounce" size={48} />
+                <Award className="absolute right-4 top-4 text-pink-200 animate-bounce" size={48} />
                 <h1 className="text-2xl font-black text-white">Práctica Mágica Interactiva 🦉💚</h1>
                 <p className="text-xs mt-1.5 font-bold text-rose-50">¡Conviértete en una estrella del Speaking y completa los desafíos del salón de belleza!</p>
               </div>
 
-              {/* DESAFÍO DE VOZ */}
+              {/* DESAFÍO 1: SIMULADOR DE SPEAKING */}
               <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-900'}`}>
                 <div className={`flex items-center space-x-2 border-b pb-3 ${darkMode ? 'border-slate-800' : 'border-purple-50'}`}>
                   <span className={`p-1.5 rounded-xl ${darkMode ? 'bg-purple-900 text-purple-300' : 'bg-rose-50 text-rose-600'}`}><Mic size={18} /></span>
                   <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-purple-300' : 'text-purple-800'}`}>Desafío 1: Simulador de Speaking 🎙️</h2>
                 </div>
 
-                <div className={`p-4 rounded-2xl border text-xs space-y-3 ${darkMode ? 'bg-slate-800/80 border-slate-700' : 'bg-purple-50/20 border-purple-100/30'}`}>
+                <div className={`p-4 rounded-2xl border text-xs space-y-3 ${darkMode ? 'bg-slate-800/80 border-slate-705' : 'bg-purple-50/20 border-purple-100/30'}`}>
                   <div className="flex justify-between items-center">
                     <span className="font-black text-purple-600">Escenario {currentScenario + 1} de {practiceScenarios.length}</span>
                     <div className="flex gap-1.5">
@@ -1259,10 +1663,10 @@ export default function App() {
                     </div>
                   </div>
 
-                  <p className="font-bold text-sm">{practiceScenarios[currentScenario].spanishPrompt}</p>
+                  <p className="font-bold text-sm text-slate-850 dark:text-white">{practiceScenarios[currentScenario].spanishPrompt}</p>
 
                   <div className={`p-4 rounded-xl border flex items-center justify-between shadow-sm ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-100'}`}>
-                    <span className="text-sm font-black text-purple-600">"{practiceScenarios[currentScenario].englishTarget}"</span>
+                    <span className="text-sm font-black text-purple-605">"{practiceScenarios[currentScenario].englishTarget}"</span>
                     <button 
                       onClick={() => escucharPalabra(practiceScenarios[currentScenario].englishTarget)}
                       className={`p-2.5 rounded-xl active:scale-95 shadow-sm border ${darkMode ? 'bg-slate-800 border-slate-700 text-purple-300' : 'bg-rose-50 text-rose-600 border-purple-100/40'}`}
@@ -1272,7 +1676,7 @@ export default function App() {
                     </button>
                   </div>
 
-                  <p className="text-[11px] text-slate-500 font-bold italic">💡 Tip de Hada: {practiceScenarios[currentScenario].tip}</p>
+                  <p className="text-[11px] text-slate-505 font-bold italic">💡 Tip de Hada: {practiceScenarios[currentScenario].tip}</p>
 
                   <div className={`flex flex-col items-center justify-center p-4 rounded-2xl border border-dashed space-y-3 ${darkMode ? 'bg-slate-900/50 border-slate-800' : 'bg-white border-purple-200'}`}>
                     <button
@@ -1281,7 +1685,7 @@ export default function App() {
                     >
                       <Mic size={28} />
                     </button>
-                    <span className="text-xs font-black">
+                    <span className="text-xs font-black text-purple-950 dark:text-white">
                       {isRecording ? "¡Grabando! Te estoy escuchando... 🗣️" : "Haz clic en el micrófono para empezar a hablar"}
                     </span>
 
@@ -1317,16 +1721,16 @@ export default function App() {
                 </div>
               </div>
 
-              {/* ARMADOR DE FRASES */}
+              {/* DESAFÍO 2: ARMADOR DE FRASES */}
               <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100'}`}>
                 <div className={`flex items-center space-x-2 border-b pb-3 ${darkMode ? 'border-slate-800' : 'border-purple-50'}`}>
                   <span className={`p-1.5 rounded-xl ${darkMode ? 'bg-indigo-950 text-cyan-300' : 'bg-cyan-50 text-cyan-600'}`}><Gamepad2 size={18} /></span>
-                  <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-cyan-300' : 'text-purple-800'}`}>Desafío 2: Armador de Frases Interactiva 🦉</h2>
+                  <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-cyan-300' : 'text-purple-855'}`}>Desafío 2: Armador de Frases Interactiva 🦉</h2>
                 </div>
 
                 <div className={`p-4 rounded-2xl border text-xs space-y-3 ${darkMode ? 'bg-slate-800/80 border-slate-750' : 'bg-cyan-50/20 border-purple-100/30'}`}>
                   <div className="flex justify-between items-center">
-                    <span className="font-black text-purple-600 font-bold">Pregunta {currentSentenceIndex + 1} de {sentenceBuilderScenarios.length}</span>
+                    <span className="font-black text-purple-600">Pregunta {currentSentenceIndex + 1} de {sentenceBuilderScenarios.length}</span>
                     <button 
                       onClick={() => {
                         const nextIdx = (currentSentenceIndex + 1) % sentenceBuilderScenarios.length;
@@ -1339,7 +1743,7 @@ export default function App() {
                     </button>
                   </div>
 
-                  <p className="font-bold text-sm">{sentenceBuilderScenarios[currentSentenceIndex].instruction}</p>
+                  <p className="font-bold text-sm text-slate-850 dark:text-white">{sentenceBuilderScenarios[currentSentenceIndex].instruction}</p>
 
                   <div className={`p-4 border-2 border-dashed rounded-2xl min-h-[60px] flex flex-wrap gap-2 items-center justify-center ${darkMode ? 'bg-slate-900 border-slate-700' : 'bg-white border-purple-200'}`}>
                     {selectedWords.length === 0 ? (
@@ -1382,7 +1786,7 @@ export default function App() {
                     </button>
                     <button
                       onClick={reiniciarArmadorDeFrase}
-                      className={`font-black py-2.5 px-4 rounded-xl text-xs border active:scale-95 ${darkMode ? 'bg-slate-800 text-white border-slate-700 hover:bg-slate-750' : 'bg-purple-50 text-purple-750 border-purple-200 hover:bg-purple-100'}`}
+                      className={`font-black py-2.5 px-4 rounded-xl text-xs border active:scale-95 ${darkMode ? 'bg-slate-800 text-white border-slate-700 hover:bg-slate-750' : 'bg-purple-50 text-purple-755 border-purple-200 hover:bg-purple-100'}`}
                     >
                       Reiniciar 🔄
                     </button>
@@ -1400,6 +1804,85 @@ export default function App() {
                   )}
                 </div>
               </div>
+
+              {/* DESAFÍO 3: TRIVIA DE CARTAS MÁGICAS (Estilo Duolingo) */}
+              <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100'}`}>
+                <div className={`flex items-center space-x-2 border-b pb-3 ${darkMode ? 'border-slate-800' : 'border-purple-50'}`}>
+                  <span className={`p-1.5 rounded-xl ${darkMode ? 'bg-pink-950 text-pink-300' : 'bg-rose-50 text-rose-600'}`}><HelpCircle size={18} /></span>
+                  <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-pink-300' : 'text-purple-855'}`}>Desafío 3: Trivia de Cartas Mágicas 🃏🦉</h2>
+                </div>
+
+                <div className={`p-4 rounded-2xl border text-xs space-y-3 ${darkMode ? 'bg-slate-800/80 border-slate-750' : 'bg-rose-50/10 border-purple-100/30'}`}>
+                  <div className="flex justify-between items-center">
+                    <span className="font-black text-purple-600">Pregunta {currentQuizIndex + 1} de {triviaQuizzes.length}</span>
+                    <button 
+                      onClick={() => {
+                        const nextIdx = (currentQuizIndex + 1) % triviaQuizzes.length;
+                        setCurrentQuizIndex(nextIdx);
+                        reiniciarTriviaQuiz();
+                      }}
+                      className="bg-purple-50 text-purple-700 font-black py-1.5 px-3 rounded-xl border border-purple-100 hover:bg-purple-100 active:scale-95 text-xs"
+                    >
+                      Siguiente Carta ➡️
+                    </button>
+                  </div>
+
+                  <p className="font-bold text-sm text-slate-850 dark:text-white">¿Cuál es la traducción correcta de la siguiente expresión en el salón de belleza?</p>
+
+                  <div className="p-5 rounded-2xl border-2 border-dashed flex flex-col items-center justify-center bg-gradient-to-tr from-pink-500/10 to-purple-600/10 border-purple-300">
+                    <span className="text-lg font-black text-purple-900 dark:text-white">"{triviaQuizzes[currentQuizIndex].englishPhrase}"</span>
+                    <button 
+                      onClick={() => escucharPalabra(triviaQuizzes[currentQuizIndex].englishPhrase)}
+                      className="mt-2.5 flex items-center gap-1 bg-white text-purple-700 border border-purple-200 px-3.5 py-1.5 rounded-xl font-black text-xs shadow-sm active:scale-95"
+                    >
+                      <Volume2 size={14} /> Escuchar Audio 🔊
+                    </button>
+                  </div>
+
+                  {/* CARTAS DE OPCIONES */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    {triviaQuizzes[currentQuizIndex].options.map((opt, oIdx) => {
+                      const isSelected = quizSelectedAnswer === oIdx;
+                      const isCorrect = oIdx === triviaQuizzes[currentQuizIndex].correctIndex;
+
+                      let cardColor = "bg-white border-purple-200 hover:border-purple-400 text-slate-900";
+                      if (quizStatus !== 'idle') {
+                        if (isCorrect) {
+                          cardColor = "bg-emerald-50 border-emerald-400 text-emerald-950 font-black";
+                        } else if (isSelected) {
+                          cardColor = "bg-red-50 border-red-400 text-red-950";
+                        } else {
+                          cardColor = "bg-slate-50 border-slate-200 opacity-60 text-slate-400";
+                        }
+                      }
+
+                      return (
+                        <button
+                          key={oIdx}
+                          disabled={quizStatus !== 'idle'}
+                          onClick={() => seleccionarRespuestaTrivia(oIdx)}
+                          className={`p-4 rounded-2xl border-2 text-center text-xs font-bold transition-all active:scale-95 shadow-sm flex flex-col items-center justify-center gap-2 ${cardColor}`}
+                        >
+                          <span className="text-sm font-black">{opt}</span>
+                          {quizStatus !== 'idle' && isCorrect && <span className="text-xs">✔️ ¡Correcto!</span>}
+                          {quizStatus !== 'idle' && isSelected && !isCorrect && <span className="text-xs">❌ Incorrecto</span>}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {quizStatus === 'correct' && (
+                    <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-center font-black text-emerald-800 text-xs">
+                      🏆 ¡Súper! Ganaste una estrellita de Duolingo por esta respuesta.
+                    </div>
+                  )}
+                  {quizStatus === 'incorrect' && (
+                    <div className="p-3 bg-red-50 border border-red-300 rounded-xl text-center font-black text-red-800 text-xs">
+                      🧸 Inténtalo de nuevo. ¡Tú puedes hacerlo perfecto!
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           )}
 
@@ -1409,11 +1892,11 @@ export default function App() {
               <div className={`flex items-center justify-between border-b pb-4 ${darkMode ? 'border-slate-800' : 'border-purple-50'}`}>
                 <div className="flex items-center space-x-2">
                   <FolderHeart className="text-rose-500 animate-bounce" size={24} />
-                  <h2 className="text-sm font-black uppercase tracking-wider">MOCHILA DE TAREAS EN LA NUBE</h2>
+                  <h2 className="text-sm font-black uppercase tracking-wider text-purple-950 dark:text-white">MOCHILA DE TAREAS EN LA NUBE</h2>
                 </div>
                 {esProfesora && (
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-black">Estudiante:</span>
+                    <span className="text-xs font-black text-purple-955 dark:text-white">Estudiante:</span>
                     <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1.5 rounded-xl bg-white text-slate-900 border border-purple-200 outline-none">
                       {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                     </select>
@@ -1424,12 +1907,13 @@ export default function App() {
               <div className="space-y-4">
                 {['clase2', 'clase3', 'clase5', 'clase6'].map((key) => {
                   const taskData = allStudentsTasks[targetStudent]?.[key];
-                  const gradeData = grades[targetStudent]?.[key] || { nota: '-', comentario: '' };
+                  const rawRecord = grades[targetStudent]?.[key] || { nota: '-', comentario: '' };
+                  const parsed = parseCommentAndSticker(rawRecord.comentario);
 
                   return (
-                    <div key={key} className={`p-4 rounded-3xl border text-xs space-y-3 ${darkMode ? 'bg-slate-850 border-slate-800' : 'bg-purple-50/20 border-purple-100/40'}`}>
+                    <div key={key} className={`p-4 rounded-3xl border text-xs space-y-3 ${darkMode ? 'bg-slate-855 border-slate-800' : 'bg-purple-50/20 border-purple-100/40'}`}>
                       <p className="font-black text-purple-700 flex items-center gap-1.5">🎯 {infoTareas[key]}</p>
-                      <p className="text-[11px] font-bold">Mochila de: <span className="uppercase text-purple-600 font-black">{targetStudent}</span></p>
+                      <p className="text-[11px] font-bold text-slate-850 dark:text-white">Mochila de: <span className="uppercase text-purple-600 font-black">{targetStudent}</span></p>
                       
                       <div className="flex flex-wrap gap-2 items-center">
                         {!esProfesora && (
@@ -1459,10 +1943,17 @@ export default function App() {
                       </div>
 
                       <div className={`border-t pt-2 flex justify-between items-center flex-wrap gap-2 ${darkMode ? 'border-slate-800' : 'border-purple-100'}`}>
-                        <span className="font-black text-purple-700">⭐ Nota: {gradeData.nota} / 10</span>
-                        {gradeData.comentario && (
+                        <div className="flex items-center gap-2">
+                          <span className="font-black text-purple-705">⭐ Nota: {rawRecord.nota} / 10</span>
+                          {parsed.sticker && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-pink-100 text-pink-700 font-black text-xs animate-bounce" title="¡Sticker de Regalo de tu Miss!">
+                              Sticker: <span className="text-sm">{parsed.sticker}</span>
+                            </span>
+                          )}
+                        </div>
+                        {parsed.comentario && (
                           <p className={`p-2.5 rounded-2xl border font-bold italic w-full ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-200' : 'bg-white border-purple-100 text-slate-900'}`}>
-                            💬 Comentario de Miss: {gradeData.comentario}
+                            💬 Comentario de Miss: {parsed.comentario}
                           </p>
                         )}
                       </div>
@@ -1475,10 +1966,10 @@ export default function App() {
 
           {/* TAB: CALIFICACIONES */}
           {activeTab === 'calificaciones' && (
-            <div className={`border p-6 rounded-3xl space-y-4 shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800 text-white animate-slide-in' : 'bg-white border-purple-100 text-slate-900'}`}>
-              <div className={`flex items-center space-x-2 border-b pb-2 ${darkMode ? 'border-slate-800' : 'border-purple-100'}`}>
+            <div className={`border p-6 rounded-3xl space-y-4 shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800 text-white animate-slide-in' : 'bg-white border-purple-100 text-slate-905'}`}>
+              <div className={`flex items-center space-x-2 border-b pb-2 ${darkMode ? 'border-slate-800' : 'border-purple-105'}`}>
                 <Star className="text-amber-500 fill-amber-500 animate-pulse" size={24} />
-                <h2 className="text-sm font-black uppercase tracking-wider">CALIFICACIONES EN TIEMPO REAL</h2>
+                <h2 className="text-sm font-black uppercase tracking-wider text-purple-950 dark:text-white">CALIFICACIONES EN TIEMRE REAL</h2>
               </div>
 
               {esProfesora ? (
@@ -1491,42 +1982,88 @@ export default function App() {
                   </div>
 
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
-                    const currentRecord = grades[selectedStudent]?.[key] || { nota: '-', comentario: '' };
+                    const rawRecord = grades[selectedStudent]?.[key] || { nota: '-', comentario: '' };
+                    const parsed = parseCommentAndSticker(rawRecord.comentario);
+
                     return (
                       <div key={key} className={`p-4 rounded-3xl border space-y-3 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-purple-50/10 border-purple-100/30'}`}>
-                        <span className="text-xs font-black block">{infoTareas[key]}</span>
-                        <div className="flex items-center space-x-3 text-xs font-black">
-                          <label>Calificación:</label>
-                          <select 
-                            value={currentRecord.nota} 
-                            onChange={(e) => {
-                              const v = e.target.value;
-                              setGrades(prev => {
-                                const actualizado = { ...prev, [selectedStudent]: { ...prev[selectedStudent], [key]: { ...currentRecord, nota: v } } };
-                                enviarNotaASupabase(selectedStudent, key, v, currentRecord.comentario);
-                                return actualizado;
-                              });
-                            }}
-                            className="p-1.5 rounded bg-white text-slate-900 border border-purple-400 font-black outline-none focus:ring-2 focus:ring-purple-400"
-                          >
-                            <option value="-">Sin Evaluar</option>
-                            {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={String(n)}>{n} Puntos</option>)}
-                          </select>
+                        <span className="text-xs font-black block text-slate-850 dark:text-white">{infoTareas[key]}</span>
+                        
+                        <div className="flex flex-wrap items-center gap-4">
+                          {/* Selector de Nota */}
+                          <div className="flex items-center space-x-3 text-xs font-black text-slate-855 dark:text-white">
+                            <label>Calificación:</label>
+                            <select 
+                              value={rawRecord.nota} 
+                              onChange={(e) => {
+                                const v = e.target.value;
+                                setGrades(prev => {
+                                  const rawText = buildRawComment(parsed.sticker, parsed.comentario);
+                                  const actualizado = { ...prev, [selectedStudent]: { ...prev[selectedStudent], [key]: { ...rawRecord, nota: v } } };
+                                  enviarNotaASupabase(selectedStudent, key, v, rawText);
+                                  return actualizado;
+                                });
+                              }}
+                              className="p-1.5 rounded bg-white text-slate-900 border border-purple-400 font-black outline-none focus:ring-2 focus:ring-purple-400"
+                            >
+                              <option value="-">Sin Evaluar</option>
+                              {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={String(n)}>{n} Puntos</option>)}
+                            </select>
+                          </div>
+
+                          {/* RECOLECTOR DE STICKERS */}
+                          <div className="flex items-center space-x-3 text-xs font-black text-slate-850 dark:text-white">
+                            <label>Regalar Sticker:</label>
+                            <div className="flex gap-1.5">
+                              {stickersDisponibles.map(st => {
+                                const isCurrent = parsed.sticker === st.emoji;
+                                return (
+                                  <button
+                                    key={st.emoji}
+                                    title={st.name}
+                                    onClick={() => {
+                                      const nuevoSticker = isCurrent ? '' : st.emoji;
+                                      const rawText = buildRawComment(nuevoSticker, parsed.comentario);
+                                      setGrades(prev => {
+                                        const actualizado = {
+                                          ...prev,
+                                          [selectedStudent]: {
+                                            ...prev[selectedStudent],
+                                            [key]: { ...rawRecord, comentario: rawText }
+                                          }
+                                        };
+                                        enviarNotaASupabase(selectedStudent, key, rawRecord.nota, rawText);
+                                        return actualizado;
+                                      });
+                                    }}
+                                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all border active:scale-90 ${isCurrent ? 'bg-pink-100 border-pink-400 scale-110 shadow-md' : 'bg-white border-purple-100 hover:bg-purple-50'}`}
+                                  >
+                                    {st.emoji}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
                         </div>
+
                         <textarea 
-                          value={currentRecord.comentario || ''} 
+                          value={parsed.comentario || ''} 
                           onChange={(e) => {
                             const val = e.target.value;
+                            const rawText = buildRawComment(parsed.sticker, val);
                             setGrades(prev => ({
                               ...prev,
                               [selectedStudent]: {
                                 ...prev[selectedStudent],
-                                [key]: { ...prev[selectedStudent]?.[key], comentario: val }
+                                [key]: { ...prev[selectedStudent]?.[key], comentario: rawText }
                               }
                             }));
                           }}
-                          onBlur={(e) => enviarNotaASupabase(selectedStudent, key, currentRecord.nota, e.target.value)}
-                          placeholder="Escribe un comentario que el estudiante pueda ver en su cuenta..." 
+                          onBlur={(e) => {
+                            const rawText = buildRawComment(parsed.sticker, e.target.value);
+                            enviarNotaASupabase(selectedStudent, key, rawRecord.nota, rawText);
+                          }}
+                          placeholder="Escribe un comentario que el estudiante pueda ver..." 
                           className="w-full p-2.5 text-xs text-slate-900 font-bold border border-purple-200 rounded-2xl bg-white outline-none focus:ring-2 focus:ring-purple-400"
                           rows={2}
                         />
@@ -1537,16 +2074,25 @@ export default function App() {
               ) : (
                 <div className="space-y-3">
                   {['clase2', 'clase3', 'clase5', 'clase6'].map(key => {
-                    const record = grades[currentUser.username]?.[key] || { nota: '-', comentario: '' };
+                    const rawRecord = grades[currentUser.username]?.[key] || { nota: '-', comentario: '' };
+                    const parsed = parseCommentAndSticker(rawRecord.comentario);
+
                     return (
                       <div key={key} className={`p-4 rounded-3xl border text-xs space-y-2 relative overflow-hidden ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-purple-100/40'}`}>
-                        <div className="flex justify-between items-start">
-                          <span className="font-black max-w-md">{infoTareas[key]}</span>
-                          <span className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-2.5 py-1 rounded-lg font-black text-xs">Nota: {record.nota} / 10</span>
+                        <div className="flex justify-between items-start flex-wrap gap-2">
+                          <span className="font-black max-w-md text-purple-955 dark:text-white">{infoTareas[key]}</span>
+                          <div className="flex items-center gap-2">
+                            {parsed.sticker && (
+                              <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-pink-100 text-pink-700 font-black animate-bounce text-xs" title="¡Tu Miss te dio este Sticker!">
+                                Sticker: <span className="text-sm">{parsed.sticker}</span>
+                              </span>
+                            )}
+                            <span className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-2.5 py-1 rounded-lg font-black text-xs">Nota: {rawRecord.nota} / 10</span>
+                          </div>
                         </div>
-                        {record.comentario && (
+                        {parsed.comentario && (
                           <p className={`p-2.5 rounded-2xl border font-bold ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-200' : 'bg-white border-purple-100 text-slate-900'}`}>
-                            📢 Miss comentó: {record.comentario}
+                            📢 Miss comentó: {parsed.comentario}
                           </p>
                         )}
                       </div>
@@ -1563,7 +2109,7 @@ export default function App() {
               <div className={`flex items-center justify-between border-b pb-4 ${darkMode ? 'border-slate-800' : 'border-purple-100'}`}>
                 <div className="flex items-center space-x-2">
                   <Music className="text-purple-600 animate-pulse" size={24} />
-                  <h2 className="text-sm font-black uppercase tracking-wider">MURAL DE MÚSICA FELIZ 🎵✨</h2>
+                  <h2 className="text-sm font-black uppercase tracking-wider text-purple-950 dark:text-white">MURAL DE MÚSICA FELIZ 🎵✨</h2>
                 </div>
                 {esIsabel && (
                   <span className="bg-purple-50 text-purple-700 text-[10px] font-black uppercase px-2.5 py-1.5 rounded-xl border border-purple-200">
@@ -1572,12 +2118,12 @@ export default function App() {
                 )}
               </div>
 
-              <p className={`text-xs font-bold p-2.5 rounded-xl border ${darkMode ? 'bg-slate-800/50 border-slate-750 text-slate-100' : 'bg-purple-50/50 border-purple-100/30'}`}>
+              <p className={`text-xs font-bold p-2.5 rounded-xl border ${darkMode ? 'bg-slate-800/50 border-slate-750 text-slate-100' : 'bg-purple-50/50 border-purple-100/30 text-slate-905'}`}>
                 ¡La música llena de polvos de hadas nuestro salón! Comparte el enlace de la canción que te hace sonreír y llena de amor los recuadros de tus compañeros.
               </p>
 
               {!esIsabel ? (
-                <div className={`p-4 rounded-2xl border space-y-3 ${darkMode ? 'bg-slate-850/40 border-slate-800' : 'bg-purple-50/20 border-purple-100/40'}`}>
+                <div className={`p-4 rounded-2xl border space-y-3 ${darkMode ? 'bg-slate-855/40 border-slate-800' : 'bg-purple-50/20 border-purple-100/40'}`}>
                   <span className="text-xs font-black uppercase text-purple-700 tracking-wider flex items-center gap-1.5">
                     🎶 Comparte o Actualiza tu Melodía Favorita
                   </span>
@@ -1592,7 +2138,7 @@ export default function App() {
                     <div className="flex gap-1.5">
                       <input 
                         type="text" 
-                        placeholder="Enlace de la canción (YouTube/Spotify/etc)" 
+                        placeholder="Enlace de la canción (YouTube/Spotify)" 
                         value={newSongUrl}
                         onChange={(e) => setNewSongUrl(e.target.value)}
                         className="flex-1 p-2.5 border border-purple-200 rounded-xl bg-white text-slate-900 font-bold text-xs outline-none focus:ring-2 focus:ring-purple-400"
@@ -1643,7 +2189,7 @@ export default function App() {
                       </div>
 
                       <div className={`p-3 rounded-2xl border pl-4 space-y-2 ${darkMode ? 'bg-slate-950 border-slate-800' : 'bg-purple-50/10 border-purple-100/30'}`}>
-                        <p className="text-xs font-black flex items-center gap-1.5">
+                        <p className="text-xs font-black flex items-center gap-1.5 text-purple-955 dark:text-white">
                           🎧 {item.nombre_cancion}
                         </p>
                         <a 
@@ -1656,14 +2202,14 @@ export default function App() {
                         </a>
                       </div>
 
-                      <div className={`p-3 rounded-2xl border ${darkMode ? 'bg-slate-850 border-slate-800' : 'bg-purple-50/20 border-purple-100/30'}`}>
-                        <span className={`text-[10px] font-black uppercase tracking-widest block mb-1 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                      <div className={`p-3 rounded-2xl border ${darkMode ? 'bg-slate-855 border-slate-800' : 'bg-purple-50/20 border-purple-100/30'}`}>
+                        <span className={`text-[10px] font-black uppercase tracking-widest block mb-1 ${darkMode ? 'text-slate-400' : 'text-slate-505'}`}>
                           Comentarios:
                         </span>
                         
                         <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
                           {(item.comentarios || []).length === 0 ? (
-                            <span className="text-[10px] italic font-bold block text-slate-500">Sé la primera en comentar... 🌸</span>
+                            <span className="text-[10px] italic font-bold block text-slate-505">Sé la primera en comentar... 🌸</span>
                           ) : (
                             item.comentarios.map((c, idx) => {
                               const tieneComentarioHeart = (c.likes || []).includes(currentUser.username);
@@ -1679,7 +2225,7 @@ export default function App() {
                                     <button
                                       disabled={esIsabel}
                                       onClick={() => handleLikeComentario(userKey, idx)}
-                                      className={`p-1.5 rounded-md transition-all active:scale-90 flex items-center gap-1 ${tieneComentarioHeart ? 'text-rose-600 bg-rose-50' : 'text-purple-300 hover:text-rose-500'}`}
+                                      className={`p-1.5 rounded-md transition-all active:scale-90 flex items-center gap-1 ${tieneComentarioHeart ? 'text-rose-600 bg-rose-50' : 'text-purple-305 hover:text-rose-500'}`}
                                       title="Dar amor al comentario"
                                     >
                                       <Heart size={12} className={tieneComentarioHeart ? 'fill-rose-600 text-rose-600' : ''} />
@@ -1689,7 +2235,7 @@ export default function App() {
                                     {puedoEliminarComentario && (
                                       <button
                                         onClick={() => handleEliminarComentario(userKey, idx)}
-                                        className="p-1.5 text-purple-300 hover:text-red-500 rounded-md transition-all active:scale-90"
+                                        className="p-1.5 text-purple-300 hover:text-red-505 rounded-md transition-all active:scale-90"
                                         title="Eliminar comentario"
                                       >
                                         <Trash2 size={12} />
@@ -1733,7 +2279,7 @@ export default function App() {
               <div className={`flex flex-col md:flex-row md:items-center justify-between border-b pb-4 gap-3 ${darkMode ? 'border-slate-800' : 'border-purple-50'}`}>
                 <div className="flex items-center space-x-2">
                   <Volume2 className="text-purple-600 animate-pulse" size={24} />
-                  <h2 className="text-sm font-black uppercase tracking-wider">DICCIONARIO INTERACTIVO PARLANTE 👋🔊</h2>
+                  <h2 className="text-sm font-black uppercase tracking-wider text-purple-950 dark:text-white">DICCIONARIO INTERACTIVO PARLANTE 👋🔊</h2>
                 </div>
                 <div className="relative flex items-center">
                   <input 
@@ -1743,7 +2289,7 @@ export default function App() {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-8 pr-3 py-2 border border-purple-200 rounded-xl bg-white text-slate-900 font-bold text-xs outline-none focus:ring-2 focus:ring-purple-400 w-full"
                   />
-                  <Search className="absolute left-2.5 text-purple-400" size={14} />
+                  <Search className="absolute left-2.5 text-purple-450" size={14} />
                 </div>
               </div>
 
@@ -1776,7 +2322,7 @@ export default function App() {
                         <Volume2 size={16} />
                       </button>
                       <div className="flex flex-col">
-                        <span className="text-xs font-black">{item.en}</span>
+                        <span className="text-xs font-black text-purple-955 dark:text-white">{item.en}</span>
                         <span className={`text-[9px] w-max px-2 py-0.5 rounded-md font-black mt-1 uppercase tracking-wider ${darkMode ? 'bg-slate-900 text-pink-300' : 'bg-purple-50 text-purple-700'}`}>{item.cat}</span>
                       </div>
                     </div>
@@ -1784,7 +2330,7 @@ export default function App() {
                   </div>
                 ))}
                 {filteredVocab.length === 0 && (
-                  <p className="text-center text-xs font-bold text-slate-400 py-4">No se encontraron palabras 🌸</p>
+                  <p className="text-center text-xs font-bold text-slate-450 py-4">No se encontraron palabras 🌸</p>
                 )}
               </div>
             </div>
@@ -1795,7 +2341,7 @@ export default function App() {
             <div className={`border p-6 rounded-3xl space-y-4 shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800 text-white animate-slide-in' : 'bg-white border-purple-100 text-slate-900'}`}>
               <div className={`flex items-center space-x-2 border-b pb-4 ${darkMode ? 'border-slate-800' : 'border-purple-100'}`}>
                 <Gamepad2 className="text-purple-600 animate-bounce" size={24} />
-                <h2 className="text-sm font-black uppercase tracking-wider">ÁREA DE JUEGOS 🎮✨</h2>
+                <h2 className="text-sm font-black uppercase tracking-wider text-purple-955 dark:text-white">ÁREA DE JUEGOS 🎮✨</h2>
               </div>
               <p className={`text-xs font-bold p-2.5 rounded-xl border ${darkMode ? 'bg-slate-800/50 border-slate-750 text-slate-100' : 'bg-purple-50/10 border-purple-100/30'}`}>¡Haz clic en cualquiera de los juegos para repasar y divertirte al máximo!</p>
               
@@ -1803,7 +2349,7 @@ export default function App() {
                 <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noopener noreferrer" className={`block p-4 rounded-3xl border transition-all active:scale-95 shadow-md ${darkMode ? 'bg-slate-800 border-slate-700 hover:bg-slate-750' : 'bg-rose-50/30 hover:bg-rose-50/60 border-rose-100'}`}>
                   <div className="flex items-center space-x-2">
                     <PlayCircle className="text-rose-500 animate-pulse" size={18} />
-                    <span className="text-xs font-black text-rose-700">Juego 1: Wordwall 👋</span>
+                    <span className="text-xs font-black text-rose-750">Juego 1: Wordwall 👋</span>
                   </div>
                   <span className={`text-[11px] block mt-1 font-bold ${darkMode ? 'text-slate-300' : 'text-slate-800'}`}>Greetings & Saludos iniciales para recibir clientes de forma alegre.</span>
                 </a>
@@ -1818,7 +2364,7 @@ export default function App() {
 
                 <a href="https://wordwall.net/es/resource/116065664" target="_blank" rel="noopener noreferrer" className={`block p-4 rounded-3xl border transition-all active:scale-95 shadow-md ${darkMode ? 'bg-slate-800 border-slate-700 hover:bg-slate-750' : 'bg-cyan-50/30 hover:bg-cyan-50/60 border-cyan-100'}`}>
                   <div className="flex items-center space-x-2">
-                    <PlayCircle className="text-cyan-500 animate-pulse" size={18} />
+                    <PlayCircle className="text-cyan-505 animate-pulse" size={18} />
                     <span className="text-xs font-black text-cyan-600">Juego 3: Wordwall Aftercare 🧴</span>
                   </div>
                   <span className={`text-[11px] block mt-1 font-bold ${darkMode ? 'text-slate-300' : 'text-slate-800'}`}>Cuidado posterior y recomendaciones cruciales al cliente.</span>
@@ -1844,7 +2390,7 @@ export default function App() {
           <div className={`p-6 rounded-3xl max-w-sm w-full border shadow-2xl text-center space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-200 text-slate-900'}`}>
             <span className="text-5xl animate-bounce inline-block">🧹✨</span>
             <h3 className="font-black text-base">¿Quieres borrar esta tarea para subir otra?</h3>
-            <p className="text-xs text-slate-500 font-bold">¡Tu antigua tarea desaparecerá de la nube de Supabase!</p>
+            <p className="text-xs text-slate-505 font-bold">¡Tu antigua tarea desaparecerá de la nube de Supabase!</p>
             <div className="flex gap-2 justify-center">
               <button
                 onClick={handlePdfDeleteConfirmed}
@@ -1866,7 +2412,7 @@ export default function App() {
       {/* TOAST CON NOTIFICACIÓN DE HADA */}
       {toast.show && (
         <div className="fixed bottom-5 right-5 z-50 animate-slide-in">
-          <div className={`p-4 rounded-2xl shadow-xl flex items-center gap-2 border text-xs font-black ${toast.type === 'success' ? (darkMode ? 'bg-slate-900 text-emerald-400 border-emerald-950' : 'bg-emerald-50 text-emerald-800 border-emerald-200') : (darkMode ? 'bg-slate-900 text-red-400 border-red-950' : 'bg-red-50 text-red-800 border-red-200')}`}>
+          <div className={`p-4 rounded-2xl shadow-xl flex items-center gap-2 border text-xs font-black ${toast.type === 'success' ? (darkMode ? 'bg-slate-900 text-emerald-400 border-emerald-955' : 'bg-emerald-50 text-emerald-800 border-emerald-200') : (darkMode ? 'bg-slate-900 text-red-400 border-red-950' : 'bg-red-50 text-red-800 border-red-200')}`}>
             <Sparkles className={toast.type === 'success' ? 'text-emerald-600 animate-spin' : 'text-red-500'} size={18} />
             {toast.message}
           </div>
