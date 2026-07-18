@@ -53,12 +53,12 @@ const buildRawComment = (sticker, commentText) => {
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(() => {
-    const savedDarkMode = localStorage.getItem('beauty_salon_dark_mode_v3');
+    const savedDarkMode = localStorage.getItem('beauty_salon_dark_mode_v5');
     return savedDarkMode === 'true';
   });
 
   useEffect(() => {
-    localStorage.setItem('beauty_salon_dark_mode_v3', darkMode);
+    localStorage.setItem('beauty_salon_dark_mode_v5', darkMode);
     if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {
@@ -176,7 +176,7 @@ export default function App() {
     {
       spanishPrompt: "Imagina que entra un cliente nuevo. Dale la bienvenida en inglés amablemente y ofrécele asiento:",
       englishTarget: "Hello, welcome to our salon! Please, have a seat.",
-      tip: "¡Dilo con una gran sonrisa para que tu cliente se sientas muy feliz! 😊"
+      tip: "¡Dilo con una gran sonrisa para que tu cliente se sienta muy feliz! 😊"
     },
     {
       spanishPrompt: "Explícale al cliente de forma muy sencilla el primer paso del tratamiento de keratina:",
@@ -803,7 +803,7 @@ export default function App() {
             showToast("¡Video subido y guardado de forma permanente para todos! 📺🎀✨", "success");
             descargarDeSupabase();
           } else {
-            console.error("Error al subir a Supabase:", error);
+            console.error("Error al subir to Supabase:", error);
             showToast("No se pudo subir a internet. ¿Creaste la tabla 'configuracion'? 😿", "error");
           }
         } else {
@@ -1153,9 +1153,9 @@ export default function App() {
           title: "CLASE 5: Conversar con el Cliente (Preguntas previas) 💇‍♂️🔍",
           objective: "Objetivo: Al finalizar la clase, los estudiantes podrán hacer preguntas sencillas a un cliente antes de realizar un tratamiento de keratina y responder de forma cortés.",
           content: [
-            { en: "Is this your first keratin treatment?", es: "Is this your first keratin treatment?" },
-            { en: "Do you have any allergies?", es: "Do you have any allergies?" },
-            { en: "Is your hair colored?", es: "Is your hair colored?" }
+            { en: "Is this your first keratin treatment?", es: "¿Es este su primer tratamiento de keratina?" },
+            { en: "Do you have any allergies?", es: "¿Tiene alguna alergia?" },
+            { en: "Is your hair colored?", es: "¿Su cabello está teñido?" }
           ],
           gameUrl: "https://wordwall.net/es/resource/115823970",
           task: "Grabar un audio practicando las expresiones y preguntas que aprendieron en esta clase.",
@@ -1165,9 +1165,9 @@ export default function App() {
           title: "CLASE 6: Despedir al Cliente de manera amable 👋💖✨",
           objective: "Objetivo: Al finalizar la clase, los estudiantes podrán despedir a un cliente de manera cortés y participar en una conversación completa de atención al cliente.",
           content: [
-            { en: "Thank you for coming.", es: "Thank you for coming." },
-            { en: "Have a nice day.", es: "Have a nice day." },
-            { en: "We hope to see you again.", es: "We hope to see you again." }
+            { en: "Thank you for coming.", es: "Gracias por venir." },
+            { en: "Have a nice day.", es: "Que tenga un buen día." },
+            { en: "We hope to see you again.", es: "Esperamos verla nuevamente." }
           ],
           gameUrl: "https://interacty.me/projects/e502cc8626a13026",
           task: "EVALUACIÓN FINAL (ROLE-PLAY): Hacer un juego completo con un compañero que incluya todo lo aprendido. ¡Se calificará sobre 10 puntos!",
@@ -1257,7 +1257,7 @@ export default function App() {
 
   if (!isLoggedIn || !currentUser) {
     return (
-      <div className="min-h-screen bg-gradient-to-tr from-pink-100 via-purple-100 to-cyan-100 dark:from-slate-950 dark:via-purple-950/20 dark:to-slate-950 flex flex-col items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-tr from-pink-100 via-purple-100 to-cyan-100 dark:from-slate-950 dark:via-purple-955/20 dark:to-slate-950 flex flex-col items-center justify-center p-4">
         <form onSubmit={handleLogin} className="bg-white dark:bg-slate-900/95 backdrop-blur-md p-8 rounded-3xl shadow-2xl shadow-purple-200/50 dark:shadow-none max-w-sm w-full space-y-5 border border-purple-200/50 dark:border-slate-800 relative overflow-hidden">
           <div className="absolute -top-10 -left-10 w-24 h-24 bg-pink-300/30 rounded-full blur-xl"></div>
           <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-purple-300/30 rounded-full blur-xl"></div>
@@ -1284,7 +1284,7 @@ export default function App() {
             />
           </div>
           {error && <p className="text-red-500 text-xs font-black text-center bg-red-50 dark:bg-red-955/20 p-2.5 rounded-xl border border-red-200 relative z-10">{error}</p>}
-          <button type="submit" className="w-full bg-gradient-to-r from-rose-500 via-purple-600 to-cyan-500 hover:opacity-90 text-white font-black py-4 rounded-2xl text-sm shadow-xl shadow-purple-500/20 transition-all active:scale-95 flex items-center justify-center gap-2">
+          <button type="submit" className="w-full bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 hover:opacity-90 text-white font-black py-4 rounded-2xl text-sm shadow-xl shadow-purple-500/20 transition-all active:scale-95 flex items-center justify-center gap-2">
             ¡Ingresar al Aula Mágica! 🚀🌸
           </button>
         </form>
@@ -1296,34 +1296,36 @@ export default function App() {
   const esIsabel = currentUser.username === 'isabel';
   const targetStudent = esProfesora ? selectedStudent : currentUser.username;
 
+  const esProfesoraActiva = esProfesora && !esIsabel;
+
   return (
     <div className={`min-h-screen font-sans flex flex-col ${darkMode ? 'bg-slate-955 text-slate-100' : 'bg-gradient-to-tr from-pink-100/40 via-purple-100/40 to-cyan-100/40 text-slate-900'}`}>
       
-      {/* HEADER DE NUESTRO CASTILLO (Modo Claro de Súper Contraste sin blanco-grisáceo de image_f39b61.jpg) */}
+      {/* HEADER DE NUESTRO CASTILLO */}
       <header className={`border-b h-20 flex items-center justify-between px-6 shadow-md ${darkMode ? 'bg-slate-900 border-slate-800 text-white shadow-purple-955/10' : 'bg-white border-purple-100 text-purple-900 shadow-purple-100/20'}`}>
         <div className="flex items-center space-x-3">
-          <GraduationCap className={darkMode ? 'text-pink-400' : 'text-purple-650'} size={32} />
+          <GraduationCap className={darkMode ? 'text-pink-400' : 'text-purple-600'} size={32} />
           <span className={`font-black text-base md:text-lg flex items-center gap-1.5 ${darkMode ? 'text-white' : 'text-purple-950'}`}>
             Beauty English Course <span className="text-rose-500 animate-bounce">👩‍🏫✨</span>
           </span>
         </div>
         <div className="flex items-center space-x-4">
-          <button onClick={() => setDarkMode(!darkMode)} className={`p-2.5 rounded-xl transition-all active:scale-95 border ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-purple-50 border-purple-200'}`}>
+          <button onClick={() => setDarkMode(!darkMode)} className={`p-2.5 rounded-xl transition-all active:scale-95 border ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-purple-55 border-purple-200'}`}>
             {darkMode ? <Sun size={18} className="text-yellow-400" /> : <Moon size={18} className="text-purple-600" />}
           </button>
-          <span className={`text-xs font-black uppercase px-4 py-2.5 rounded-xl flex items-center gap-1.5 border shadow-sm ${darkMode ? 'bg-slate-800 border-slate-700 text-pink-300' : 'bg-purple-55 border-purple-200 text-purple-950'}`}>
+          <span className={`text-xs font-black uppercase px-4 py-2.5 rounded-xl flex items-center gap-1.5 border shadow-sm ${darkMode ? 'bg-slate-800 border-slate-700 text-pink-300' : 'bg-purple-55 border-purple-200 text-purple-955'}`}>
             <Smile size={16} className="text-rose-500 animate-bounce" /> {currentUser.name} ({currentUser.role})
           </span>
-          <button onClick={handleLogout} className={`text-xs font-extrabold px-4 py-2.5 rounded-xl flex items-center gap-1.5 active:scale-95 transition-all border ${darkMode ? 'bg-red-955/20 text-red-400 border-red-900/30' : 'bg-red-50 text-red-600 border-red-200'}`}>
+          <button onClick={handleLogout} className={`text-xs font-extrabold px-4 py-2.5 rounded-xl flex items-center gap-1.5 active:scale-95 transition-all border ${darkMode ? 'bg-red-955/20 text-red-400 border-red-900/30' : 'bg-red-55 text-red-600 border-red-200'}`}>
             <LogOut size={14} /> Salir
           </button>
         </div>
       </header>
 
-      {/* CUERPO PRINCIPAL */}
+      {/* CUERPO PRINCIPAL CON BARRA LATERAL */}
       <div className="flex flex-1 flex-col md:flex-row">
         
-        {/* BARRA DE MENÚ LATERAL (Totalmente blanca sólida en modo claro, sin el gris opaco de image_f39b61.jpg) */}
+        {/* BARRA DE MENÚ LATERAL */}
         <aside className={`w-full md:w-64 p-4 flex flex-col gap-2 border-r ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-105'}`}>
           <div className={`text-xs uppercase tracking-wider font-extrabold mb-2 px-3 flex items-center gap-1.5 ${darkMode ? 'text-pink-400' : 'text-purple-950'}`}>
             <Heart size={12} className="fill-rose-500 text-rose-500 animate-pulse" /> Menú Principal
@@ -1331,7 +1333,7 @@ export default function App() {
           
           <button 
             onClick={() => setActiveTab('inicio')} 
-            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'inicio' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-950 hover:bg-purple-50')}`}
+            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'inicio' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-955 hover:bg-purple-50')}`}
           >
             <Home size={16} className={darkMode ? 'text-pink-400' : 'text-rose-500'} /> Inicio 🏠
           </button>
@@ -1354,14 +1356,7 @@ export default function App() {
             onClick={() => setActiveTab('unit3')} 
             className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'unit3' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-955 hover:bg-purple-50')}`}
           >
-            <BookOpen size={16} className={darkMode ? 'text-pink-400' : 'text-cyan-505'} /> Unidad 3: Client 💬
-          </button>
-
-          <button 
-            onClick={() => setActiveTab('practica')} 
-            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'practica' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-955 hover:bg-purple-50')}`}
-          >
-            <Activity size={16} className={darkMode ? 'text-pink-400' : 'text-rose-500'} /> Práctica Mágica Interactiva 🎙️🦉
+            <BookOpen size={16} className={darkMode ? 'text-pink-400' : 'text-cyan-500'} /> Unidad 3: Client 💬
           </button>
 
           <button 
@@ -1372,17 +1367,24 @@ export default function App() {
           </button>
 
           <button 
+            onClick={() => setActiveTab('practica')} 
+            className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'practica' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-955 hover:bg-purple-50')}`}
+          >
+            <Activity size={16} className={darkMode ? 'text-pink-400' : 'text-rose-500'} /> Práctica Mágica Interactiva 🎙️🦉
+          </button>
+
+          <button 
             onClick={() => setActiveTab('mochila')} 
             className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'mochila' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-955 hover:bg-purple-50')}`}
           >
-            <FolderHeart size={16} className={darkMode ? 'text-pink-400' : 'text-purple-500'} /> Mochila de Tareas 🎒
+            <FolderHeart size={16} className={darkMode ? 'text-pink-400' : 'text-purple-50'} /> Mochila de Tareas 🎒
           </button>
 
           <button 
             onClick={() => setActiveTab('calificaciones')} 
             className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'calificaciones' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-955 hover:bg-purple-50')}`}
           >
-            <Star size={16} className={darkMode ? 'text-pink-400' : 'text-purple-500'} /> Calificaciones ⭐
+            <Star size={16} className={darkMode ? 'text-pink-400' : 'text-purple-50'} /> Calificaciones ⭐
           </button>
 
           <button 
@@ -1396,7 +1398,7 @@ export default function App() {
             onClick={() => setActiveTab('vocabulario')} 
             className={`w-full text-left px-4 py-3 rounded-2xl text-xs font-black flex items-center gap-2.5 transition-all ${activeTab === 'vocabulario' ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white shadow-lg' : (darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-purple-955 hover:bg-purple-50')}`}
           >
-            <Volume2 size={16} className={darkMode ? 'text-pink-400' : 'text-cyan-505'} /> Vocabulario 🔊
+            <Volume2 size={16} className={darkMode ? 'text-pink-400' : 'text-cyan-500'} /> Vocabulario 🔊
           </button>
 
           <button 
@@ -1407,14 +1409,13 @@ export default function App() {
           </button>
 
           <div className="border-t border-purple-100 dark:border-slate-800 my-4 pt-4">
-            <button onClick={descargarDeSupabase} className={`w-full text-[11px] font-black py-3 rounded-xl flex items-center justify-center gap-1 active:scale-95 transition-all shadow-md border ${darkMode ? 'bg-slate-800 border-slate-700 text-white hover:bg-slate-750' : 'bg-purple-50 border-purple-200 text-purple-950 hover:bg-purple-100'}`}>
+            <button onClick={descargarDeSupabase} className={`w-full text-[11px] font-black py-3 rounded-xl flex items-center justify-center gap-1 active:scale-95 transition-all shadow-md border ${darkMode ? 'bg-slate-800 border-slate-700 text-white hover:bg-slate-750' : 'bg-purple-55 border-purple-200 text-purple-955 hover:bg-purple-100'}`}>
                🔄 Sincronizar Nube ☁️
             </button>
           </div>
         </aside>
 
         {/* PANTALLA DE CONTENIDO PRINCIPAL */}
-        {}
         <main className="flex-1 p-6 max-w-4xl w-full mx-auto">
           {loadingCloud && (
             <div className="text-center p-2.5 mb-4 bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 text-white font-black rounded-2xl text-[11px] animate-pulse flex items-center justify-center gap-1.5 shadow-md">
@@ -1431,18 +1432,18 @@ export default function App() {
                 <p className="text-sm mt-2 font-bold text-rose-50 drop-shadow-md">Disfruta cada etapa de tu aprendizaje con los juegos interactivos y más</p>
               </div>
 
-              {/* SECCIÓN REPRODUCTOR DE VIDEO DE BIENVENIDA (Fondo Blanco de Súper Contraste) */}
+              {/* SECCIÓN REPRODUCTOR DE VIDEO DE BIENVENIDA */}
               <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 shadow-purple-955/10' : 'bg-white border-purple-100 shadow-purple-100/20'}`}>
-                <h2 className={`text-base font-black tracking-wider uppercase flex items-center gap-2 ${darkMode ? 'text-pink-400' : 'text-purple-950'}`}>
+                <h2 className={`text-base font-black tracking-wider uppercase flex items-center gap-2 ${darkMode ? 'text-pink-400' : 'text-purple-955'}`}>
                   <Video className="text-rose-500 animate-pulse" size={24} />
                   Cine Mágico: Video de Bienvenida 🎬🌸
                 </h2>
-                <p className={`text-xs font-bold p-3 rounded-xl border ${darkMode ? 'bg-slate-800/80 border-slate-750 text-slate-100' : 'bg-purple-50/50 border-purple-100/50 text-purple-950'}`}>
+                <p className={`text-xs font-bold p-3 rounded-xl border ${darkMode ? 'bg-slate-800/80 border-slate-750 text-slate-100' : 'bg-purple-50/50 border-purple-100/50 text-purple-955'}`}>
                   Con nosotras aprenderás de forma práctica y sencilla. Somos un equipo para cuidarte.
                 </p>
 
                 {/* Reproductor de Video */}
-                <div className={`relative w-full aspect-video rounded-2xl overflow-hidden shadow-md border ${darkMode ? 'bg-slate-955 border-slate-800' : 'bg-purple-50/50 border-purple-100/50'}`}>
+                <div className={`relative w-full aspect-video rounded-2xl overflow-hidden shadow-md border ${darkMode ? 'bg-slate-955 border-slate-800' : 'bg-purple-50/50 border-purple-101/50'}`}>
                   {welcomingVideo.type === 'url' ? (
                     processedVideoUrl(welcomingVideo.source) ? (
                       <iframe 
@@ -1460,15 +1461,15 @@ export default function App() {
                   )}
                 </div>
 
-                {/* CONTROLES PARA PROFESORAS */}
-                {esProfesora && (
+                {/* CONTROLES PARA PROFESORAS ACTIVAS */}
+                {esProfesoraActiva && (
                   <div className={`p-4 rounded-2xl border space-y-3 ${darkMode ? 'bg-slate-855/40 border-slate-850' : 'bg-purple-50/20 border-purple-100/40'}`}>
                     <span className={`text-xs font-black uppercase tracking-wider flex items-center gap-1.5 ${darkMode ? 'text-pink-300' : 'text-purple-900'}`}>
                       🛠️ Zona de Profesora: Actualizar Video
                     </span>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className={`text-[11px] font-black flex items-center gap-1.5 ${darkMode ? 'text-slate-200' : 'text-purple-950'}`}>
+                        <label className={`text-[11px] font-black flex items-center gap-1.5 ${darkMode ? 'text-slate-200' : 'text-purple-955'}`}>
                           <Link size={12} className="text-purple-650" /> Enlace del Video (YouTube):
                         </label>
                         <div className="flex gap-2">
@@ -1489,7 +1490,7 @@ export default function App() {
                       </div>
 
                       <div className="space-y-1">
-                        <label className={`text-[11px] font-black flex items-center gap-1.5 ${darkMode ? 'text-slate-200' : 'text-purple-950'}`}>
+                        <label className={`text-[11px] font-black flex items-center gap-1.5 ${darkMode ? 'text-slate-200' : 'text-purple-955'}`}>
                           <UploadCloud size={12} className="text-purple-650" /> Subir Video (.mp4 máx 4.5MB):
                         </label>
                         <label className="w-full bg-gradient-to-r from-purple-600 to-cyan-500 hover:opacity-95 text-white py-2.5 px-3 rounded-xl font-black cursor-pointer shadow-md active:scale-95 transition-all flex items-center justify-center gap-1.5 text-[11px]">
@@ -1508,21 +1509,21 @@ export default function App() {
                 )}
               </div>
 
-              {/* INSTRUCCIONES RÁPIDAS (Modo Claro de Súper Contraste) */}
+              {/* INSTRUCCIONES RÁPIDAS */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className={`border p-5 rounded-3xl shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-100'}`}>
-                  <h3 className={`font-black text-sm mb-2 flex items-center gap-1.5 ${darkMode ? 'text-pink-400' : 'text-purple-900'}`}>📢 Instrucciones Mágicas</h3>
-                  <ul className={`text-xs space-y-2 font-bold ${darkMode ? 'text-slate-200' : 'text-slate-900'}`}>
-                    <li className="flex items-center gap-1.5">🌸 <span className="text-purple-650 font-black">Unidades:</span> Escucha la pronunciación en inglés haciendo clic en el parlante rosa.</li>
-                    <li className="flex items-center gap-1.5">🎒 <span className="text-purple-650 font-black">Mochila:</span> Sube tus PDFs y elimina si te equivocas.</li>
-                    <li className="flex items-center gap-1.5">🎵 <span className="text-purple-650 font-black">Música Feliz:</span> Comparte, regala corazones y deja lindos comentarios.</li>
+                  <h3 className={`font-black text-sm mb-2 flex items-center gap-1.5 ${darkMode ? 'text-pink-400' : 'text-purple-950'}`}>📢 Instrucciones Mágicas</h3>
+                  <ul className={`text-xs space-y-2 font-bold ${darkMode ? 'text-slate-200' : 'text-slate-955'}`}>
+                    <li className="flex items-center gap-1.5">🌸 <span className="text-purple-600 font-black">Unidades:</span> Escucha la pronunciación en inglés haciendo clic en el parlante rosa.</li>
+                    <li className="flex items-center gap-1.5">🎒 <span className="text-purple-600 font-black">Mochila:</span> Sube tus PDFs y elimina si te equivocas.</li>
+                    <li className="flex items-center gap-1.5">🎵 <span className="text-purple-600 font-black">Música Feliz:</span> Comparte, regala corazones y deja lindos comentarios.</li>
                   </ul>
                 </div>
 
                 <div className={`border p-5 rounded-3xl flex flex-col justify-between shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-purple-100'}`}>
                   <div>
-                    <h3 className={`font-black text-sm mb-1 flex items-center gap-1.5 ${darkMode ? 'text-purple-400' : 'text-purple-900'}`}>🎮 Zona Interactiva</h3>
-                    <p className={`text-xs font-bold ${darkMode ? 'text-slate-200' : 'text-slate-900'}`}>Diviértete con los juegos interactivos de Kahoot, Interacty y Wordwall que diseñamos.</p>
+                    <h3 className={`font-black text-sm mb-1 flex items-center gap-1.5 ${darkMode ? 'text-purple-400' : 'text-purple-955'}`}>🎮 Zona Interactiva</h3>
+                    <p className={`text-xs font-bold ${darkMode ? 'text-slate-200' : 'text-slate-955'}`}>Diviértete con los juegos interactivos de Kahoot, Interacty y Wordwall que diseñamos.</p>
                   </div>
                   <button onClick={() => setActiveTab('juegos')} className="mt-4 bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 hover:opacity-95 text-white text-xs font-black py-3 rounded-2xl shadow-md active:scale-95 transition-all">
                     ¡Ir a los Juegos ahora! 🎮✨
@@ -1533,7 +1534,6 @@ export default function App() {
           )}
 
           {/* TAB: CLASES (UNIDAD 1, 2, 3) */}
-          {}
           {['unit1', 'unit2', 'unit3'].map((tabKey, tabIdx) => {
             if (activeTab !== tabKey) return null;
             const currentModule = modules[tabIdx];
@@ -1541,36 +1541,36 @@ export default function App() {
             return (
               <div key={tabKey} className="space-y-5">
                 <h2 className={`text-base font-black tracking-widest uppercase border-b pb-2 flex items-center gap-2 ${darkMode ? 'text-pink-400 border-slate-800' : 'text-purple-900 border-purple-100'}`}>
-                  <span className={`p-1 rounded-lg ${darkMode ? 'bg-slate-800 text-pink-400' : 'bg-purple-50 text-purple-650'}`}><BookOpen size={18} /></span>
+                  <span className={`p-1 rounded-lg ${darkMode ? 'bg-slate-800 text-pink-400' : 'bg-purple-50 text-purple-600'}`}><BookOpen size={18} /></span>
                   {currentModule.title}
                 </h2>
                 
                 {currentModule.lessons.map((lesson, idx) => (
-                  <div key={idx} className={`border p-5 rounded-3xl space-y-4 shadow-xl relative overflow-hidden ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-950'}`}>
+                  <div key={idx} className={`border p-5 rounded-3xl space-y-4 shadow-xl relative overflow-hidden ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-955'}`}>
                     <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-pink-500 via-purple-600 to-cyan-500"></div>
                     
                     <div className={`border-b pb-2 ${darkMode ? 'border-slate-850' : 'border-purple-50'}`}>
-                      <h3 className="text-sm font-black uppercase flex items-center gap-1.5 text-purple-950 dark:text-white">{lesson.title}</h3>
+                      <h3 className="text-sm font-black uppercase flex items-center gap-1.5 text-purple-955 dark:text-white">{lesson.title}</h3>
                       <p className={`text-xs font-black mt-1 w-max px-3 py-1.5 rounded-full ${darkMode ? 'bg-slate-800 text-pink-300' : 'bg-purple-50 text-purple-700'}`}>{lesson.objective}</p>
                     </div>
 
                     <div className="grid grid-cols-1 gap-2.5">
                       {lesson.content.map((item, keyIdx) => (
-                        <div key={keyIdx} className={`flex justify-between items-center p-3 rounded-2xl border hover:border-pink-600 transition-all ${darkMode ? 'bg-slate-800/80 border-slate-700 text-white' : 'bg-purple-50/30 border-purple-100/40 text-slate-900'}`}>
+                        <div key={keyIdx} className={`flex justify-between items-center p-3 rounded-2xl border hover:border-pink-600 transition-all ${darkMode ? 'bg-slate-800/80 border-slate-700 text-white' : 'bg-purple-50/30 border-purple-100/40 text-slate-905'}`}>
                           <div className="flex items-center space-x-3">
-                            <button onClick={() => escucharPalabra(item.en)} className="p-2.5 bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 text-white rounded-xl transition-all active:scale-90 shadow-md">
+                            <button onClick={() => escucharPalabra(item.en)} className="p-2.5 bg-gradient-to-r from-pink-500 to-purple-605 hover:opacity-90 text-white rounded-xl transition-all active:scale-90 shadow-md">
                               <Volume2 size={16} />
                             </button>
                             <span className="text-xs font-black text-purple-955 dark:text-white">{item.en}</span>
                           </div>
-                          <span className={`text-xs font-black px-2.5 py-1 rounded-xl border shadow-sm ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-purple-100 text-slate-950'}`}>🗣️ {item.es}</span>
+                          <span className={`text-xs font-black px-2.5 py-1 rounded-xl border shadow-sm ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-101' : 'bg-white border-purple-100 text-slate-955'}`}>🗣️ {item.es}</span>
                         </div>
                       ))}
                     </div>
 
                     <div className={`p-3 rounded-2xl border text-xs ${darkMode ? 'bg-slate-855/50 border-slate-800' : 'bg-rose-50/30 border-purple-100/30'}`}>
-                      <p className="font-black text-purple-650 flex items-center gap-1.5">🎯 Actividad Evaluativa:</p>
-                      <p className={`font-bold mt-1 p-3 rounded-xl border shadow-sm ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-950'}`}>{lesson.task}</p>
+                      <p className="font-black text-purple-600 flex items-center gap-1.5">🎯 Actividad Evaluativa:</p>
+                      <p className={`font-bold mt-1 p-3 rounded-xl border shadow-sm ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-955'}`}>{lesson.task}</p>
                     </div>
                   </div>
                 ))}
@@ -1578,8 +1578,7 @@ export default function App() {
             );
           })}
 
-          {/* TAB: ACTIVIDADES INTERACTIVAS (Modo Claro de Súper Contraste sin Gris Opaco de image_f39b61.jpg) */}
-          {}
+          {/* TAB: ACTIVIDADES INTERACTIVAS */}
           {activeTab === 'actividades' && (
             <div className="space-y-6">
               <div className="bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 p-6 rounded-3xl text-white shadow-lg relative overflow-hidden">
@@ -1589,10 +1588,10 @@ export default function App() {
               </div>
 
               {/* SECCIÓN 1: EL CÓMIC PARLANTE DE ANNA Y SARAH */}
-              <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-950'}`}>
+              <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-955'}`}>
                 <div className={`flex items-center space-x-2 border-b pb-3 ${darkMode ? 'border-slate-800' : 'border-purple-50'}`}>
                   <span className={`p-1.5 rounded-xl ${darkMode ? 'bg-purple-900 text-purple-300' : 'bg-rose-50 text-rose-600'}`}><BookOpen size={18} /></span>
-                  <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-purple-300' : 'text-purple-950'}`}>
+                  <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-purple-300' : 'text-purple-955'}`}>
                     Cómic Parlante: A New Client at the Beauty Salon 📖💬
                   </h2>
                 </div>
@@ -1617,13 +1616,13 @@ export default function App() {
                         }`}
                       >
                         <div className="flex justify-between items-center">
-                          <span className={`text-[10px] font-black uppercase px-2.5 py-1 rounded-full ${darkMode ? 'bg-slate-900 text-pink-300' : 'bg-purple-50 text-purple-700'}`}>
+                          <span className={`text-[10px] font-black uppercase px-2.5 py-1 rounded-full ${darkMode ? 'bg-slate-900 text-pink-300' : 'bg-purple-55 text-purple-705'}`}>
                             Panel {panel.id}
                           </span>
                           <span className="text-lg">{panel.avatar}</span>
                         </div>
 
-                        {/* CONTENEDOR DE LA IMAGEN DEL CÓMIC (Muestra la imagen subida o el degradado original) */}
+                        {/* CONTENEDOR DE LA IMAGEN DEL CÓMIC */}
                         <div className={`relative w-full h-28 rounded-xl bg-gradient-to-tr ${panel.sceneBg} flex items-center justify-center text-3xl shadow-inner border border-white/50 overflow-hidden select-none group`}>
                           {hasCustomImg ? (
                             <img src={comicImages[panel.id]} alt={`Panel ${panel.id}`} className="w-full h-full object-cover" />
@@ -1637,18 +1636,20 @@ export default function App() {
                           )}
 
                           {/* Botón flotante para subir foto */}
-                          <label className="absolute bottom-1 right-1 bg-white/95 dark:bg-slate-900/95 hover:bg-white dark:hover:bg-slate-800 p-1.5 rounded-full cursor-pointer shadow-md border border-purple-200 dark:border-slate-700 transition-all active:scale-90 flex items-center justify-center opacity-80 hover:opacity-100">
-                            <UploadCloud size={14} className="text-purple-600 dark:text-pink-400" />
-                            <input 
-                              type="file" 
-                              accept="image/*" 
-                              className="hidden" 
-                              onChange={(e) => handleComicImageUpload(e, panel.id)} 
-                            />
-                          </label>
+                          {esProfesoraActiva && (
+                            <label className="absolute bottom-1 right-1 bg-white/95 dark:bg-slate-900/95 hover:bg-white dark:hover:bg-slate-800 p-1.5 rounded-full cursor-pointer shadow-md border border-purple-200 dark:border-slate-700 transition-all active:scale-90 flex items-center justify-center opacity-80 hover:opacity-100">
+                              <UploadCloud size={14} className="text-purple-650 dark:text-pink-400" />
+                              <input 
+                                type="file" 
+                                accept="image/*" 
+                                className="hidden" 
+                                onChange={(e) => handleComicImageUpload(e, panel.id)} 
+                              />
+                            </label>
+                          )}
 
                           {/* Botón para borrar foto personalizada y volver al emoji */}
-                          {hasCustomImg && (
+                          {hasCustomImg && esProfesoraActiva && (
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -1666,7 +1667,7 @@ export default function App() {
                         <div className="space-y-1">
                           <span className="text-[10px] font-black uppercase text-slate-400 block">{panel.role}</span>
                           <p className="text-xs font-black text-purple-955 dark:text-white">"{panel.text}"</p>
-                          <p className="text-[11px] text-slate-500 font-bold italic">{panel.translation}</p>
+                          <p className="text-[11px] text-slate-505 font-bold italic">{panel.translation}</p>
                         </div>
 
                         <div className="flex justify-between items-center pt-1">
@@ -1679,7 +1680,7 @@ export default function App() {
                           >
                             🔊 Escuchar Audio
                           </button>
-                          <span className="p-1.5 rounded-lg bg-pink-100 dark:bg-slate-700 text-pink-600 dark:text-pink-400">
+                          <span className="p-1.5 rounded-lg bg-pink-100 dark:bg-slate-700 text-pink-650 dark:text-pink-400">
                             <Volume2 size={12} />
                           </span>
                         </div>
@@ -1709,14 +1710,13 @@ export default function App() {
                 </div>
               </div>
 
-              {/* SECCIÓN 2: EL QUIZ COMPRENSION DE LECTURA (Cambiado de 'circle' a 'choose') */}
-              {}
-              <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-950'}`}>
+              {/* SECCIÓN 2: EL QUIZ COMPRENSION DE LECTURA */}
+              <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-955'}`}>
                 <div className={`flex items-center justify-between border-b pb-3 ${darkMode ? 'border-slate-800' : 'border-purple-50'}`}>
                   <div className="flex items-center space-x-2">
-                    <span className={`p-1.5 rounded-xl ${darkMode ? 'bg-purple-950 text-pink-300' : 'bg-purple-50 text-purple-700'}`}><Star size={18} /></span>
-                    <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-pink-300' : 'text-purple-950'}`}>
-                      Quiz de Lectura: Choose the Correct Answer 📝🎓
+                    <span className={`p-1.5 rounded-xl ${darkMode ? 'bg-purple-955 text-pink-300' : 'bg-purple-50 text-purple-700'}`}><Star size={18} /></span>
+                    <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-pink-300' : 'text-purple-955'}`}>
+                      Quiz de Lectura: Choose the Correct Answer 📝🏆
                     </h2>
                   </div>
                   {quizSubmitted && (
@@ -1790,7 +1790,6 @@ export default function App() {
           )}
 
           {/* TAB: PRÁCTICA MÁGICA INTERACTIVA */}
-          {}
           {activeTab === 'practica' && (
             <div className="space-y-6">
               <div className="bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 p-6 rounded-3xl text-white shadow-lg relative overflow-hidden">
@@ -1800,10 +1799,10 @@ export default function App() {
               </div>
 
               {/* DESAFÍO 1: SIMULADOR SPEAKING */}
-              <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100'}`}>
+              <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-955'}`}>
                 <div className={`flex items-center space-x-2 border-b pb-3 ${darkMode ? 'border-slate-800' : 'border-purple-50'}`}>
                   <span className={`p-1.5 rounded-xl ${darkMode ? 'bg-purple-900 text-purple-300' : 'bg-rose-50 text-rose-600'}`}><Mic size={18} /></span>
-                  <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-purple-300' : 'text-purple-950'}`}>Desafío 1: Simulador de Speaking 🎙️</h2>
+                  <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-purple-300' : 'text-purple-955'}`}>Desafío 1: Simulador de Speaking 🎙️</h2>
                 </div>
 
                 <div className={`p-4 rounded-2xl border text-xs space-y-3 ${darkMode ? 'bg-slate-800/80 border-slate-705' : 'bg-purple-50/20 border-purple-100/30'}`}>
@@ -1819,7 +1818,7 @@ export default function App() {
                             setSpokenText('');
                             setPracticeScore(null);
                           }}
-                          className={`w-3.5 h-3.5 rounded-full ${currentScenario === idx ? 'bg-purple-600' : 'bg-purple-200'}`}
+                          className={`w-3.5 h-3.5 rounded-full ${currentScenario === idx ? 'bg-purple-605' : 'bg-purple-200'}`}
                         />
                       ))}
                     </div>
@@ -1852,7 +1851,7 @@ export default function App() {
                     </span>
 
                     {practiceStatus === 'listening' && (
-                      <div className="text-center animate-pulse text-purple-600 font-black">Procesando audio mágico... ✨</div>
+                      <div className="text-center animate-pulse text-purple-650 font-black">Procesando audio mágico... ✨</div>
                     )}
 
                     {spokenText && (
@@ -1884,14 +1883,13 @@ export default function App() {
               </div>
 
               {/* DESAFÍO 2: ARMADOR DE FRASES */}
-              {}
               <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100'}`}>
                 <div className={`flex items-center space-x-2 border-b pb-3 ${darkMode ? 'border-slate-800' : 'border-purple-50'}`}>
                   <span className={`p-1.5 rounded-xl ${darkMode ? 'bg-indigo-950 text-cyan-300' : 'bg-cyan-50 text-cyan-600'}`}><Gamepad2 size={18} /></span>
-                  <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-cyan-300' : 'text-purple-950'}`}>Desafío 2: Armador de Frases Interactiva 🦉</h2>
+                  <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-cyan-300' : 'text-purple-955'}`}>Desafío 2: Armador de Frases Interactiva 🦉</h2>
                 </div>
 
-                <div className={`p-4 rounded-2xl border text-xs space-y-3 ${darkMode ? 'bg-slate-800/80 border-slate-755' : 'bg-cyan-50/20 border-purple-100/30'}`}>
+                <div className={`p-4 rounded-2xl border text-xs space-y-3 ${darkMode ? 'bg-slate-800/80 border-slate-755' : 'bg-cyan-50/20 border-purple-101/30'}`}>
                   <div className="flex justify-between items-center">
                     <span className="font-black text-purple-600">Pregunta {currentSentenceIndex + 1} de {sentenceBuilderScenarios.length}</span>
                     <button 
@@ -1900,15 +1898,15 @@ export default function App() {
                         setCurrentSentenceIndex(nextIdx);
                         reiniciarArmadorDeFrase();
                       }}
-                      className="bg-purple-50 text-purple-700 font-black py-1.5 px-3 rounded-xl border border-purple-100 hover:bg-purple-100 active:scale-95 text-xs"
+                      className="bg-purple-55 text-purple-700 font-black py-1.5 px-3 rounded-xl border border-purple-100 hover:bg-purple-100 active:scale-95 text-xs"
                     >
                       Siguiente Ejercicio ➡️
                     </button>
                   </div>
 
-                  <p className="font-bold text-sm text-slate-850 dark:text-white">{sentenceBuilderScenarios[currentSentenceIndex].instruction}</p>
+                  <p className="font-bold text-sm text-slate-855 dark:text-white">{sentenceBuilderScenarios[currentSentenceIndex].instruction}</p>
 
-                  <div className={`p-4 border-2 border-dashed rounded-2xl min-h-[60px] flex flex-wrap gap-2 items-center justify-center ${darkMode ? 'bg-slate-900 border-slate-700' : 'bg-white border-purple-200'}`}>
+                  <div className={`p-4 border-2 border-dashed rounded-2xl min-h-[60px] flex flex-wrap gap-2 items-center justify-center ${darkMode ? 'bg-slate-900 border-slate-705' : 'bg-white border-purple-200'}`}>
                     {selectedWords.length === 0 ? (
                       <span className="text-[11px] text-slate-400 font-bold italic">Toca las palabras de abajo para armar la frase...</span>
                     ) : (
@@ -1932,7 +1930,7 @@ export default function App() {
                           key={idx}
                           disabled={isUsed}
                           onClick={() => agregarPalabraAlArmador(word)}
-                          className={`font-black px-3 py-2 rounded-xl text-xs transition-all border ${isUsed ? (darkMode ? 'bg-slate-800 border-slate-700 text-purple-200' : 'bg-purple-50/50 border-purple-100 text-purple-205 cursor-not-allowed') : (darkMode ? 'bg-slate-800 border-slate-700 text-white hover:bg-slate-700' : 'bg-purple-50/20 border-purple-200 text-slate-900 hover:bg-purple-50 hover:border-purple-300 active:scale-95')}`}
+                          className={`font-black px-3 py-2 rounded-xl text-xs transition-all border ${isUsed ? (darkMode ? 'bg-slate-800 border-slate-700 text-purple-200' : 'bg-purple-50/50 border-purple-100 text-purple-200 cursor-not-allowed') : (darkMode ? 'bg-slate-800 border-slate-700 text-white hover:bg-slate-700' : 'bg-purple-50/20 border-purple-202 text-slate-900 hover:bg-purple-50 hover:border-purple-300 active:scale-95')}`}
                         >
                           {word}
                         </button>
@@ -1949,7 +1947,7 @@ export default function App() {
                     </button>
                     <button
                       onClick={reiniciarArmadorDeFrase}
-                      className={`font-black py-2.5 px-4 rounded-xl text-xs border active:scale-95 ${darkMode ? 'bg-slate-800 text-white border-slate-700 hover:bg-slate-750' : 'bg-purple-50 text-purple-755 border-purple-200 hover:bg-purple-100'}`}
+                      className={`font-black py-2.5 px-4 rounded-xl text-xs border active:scale-95 ${darkMode ? 'bg-slate-800 text-white border-slate-700 hover:bg-slate-750' : 'bg-purple-55 text-purple-755 border-purple-200 hover:bg-purple-100'}`}
                     >
                       Reiniciar 🔄
                     </button>
@@ -1969,11 +1967,10 @@ export default function App() {
               </div>
 
               {/* DESAFÍO 3: TRIVIA DE CARTAS MÁGICAS */}
-              {}
               <div className={`border p-6 rounded-3xl shadow-xl space-y-4 ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100'}`}>
                 <div className={`flex items-center space-x-2 border-b pb-3 ${darkMode ? 'border-slate-800' : 'border-purple-50'}`}>
                   <span className={`p-1.5 rounded-xl ${darkMode ? 'bg-pink-955 text-pink-300' : 'bg-rose-50 text-rose-600'}`}><HelpCircle size={18} /></span>
-                  <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-pink-300' : 'text-purple-950'}`}>Desafío 3: Trivia de Cartas Mágicas 🃏🦉</h2>
+                  <h2 className={`text-sm font-black uppercase tracking-wider ${darkMode ? 'text-pink-300' : 'text-purple-955'}`}>Desafío 3: Trivia de Cartas Mágicas 🃏🦉</h2>
                 </div>
 
                 <div className={`p-4 rounded-2xl border text-xs space-y-3 ${darkMode ? 'bg-slate-800/80 border-slate-750' : 'bg-rose-50/10 border-purple-100/30'}`}>
@@ -1985,7 +1982,7 @@ export default function App() {
                         setCurrentQuizIndex(nextIdx);
                         reiniciarTriviaQuiz();
                       }}
-                      className="bg-purple-50 text-purple-700 font-black py-1.5 px-3 rounded-xl border border-purple-100 hover:bg-purple-100 active:scale-95 text-xs"
+                      className="bg-purple-55 text-purple-700 font-black py-1.5 px-3 rounded-xl border border-purple-100 hover:bg-purple-100 active:scale-95 text-xs"
                     >
                       Siguiente Carta ➡️
                     </button>
@@ -2009,12 +2006,12 @@ export default function App() {
                       const isSelected = quizSelectedAnswer === oIdx;
                       const isCorrect = oIdx === triviaQuizzes[currentQuizIndex].correctIndex;
 
-                      let cardColor = "bg-white border-purple-200 hover:border-purple-400 text-slate-900";
+                      let cardColor = "bg-white border-purple-202 hover:border-purple-400 text-slate-900";
                       if (quizStatus !== 'idle') {
                         if (isCorrect) {
-                          cardColor = "bg-emerald-50 border-emerald-400 text-emerald-950 font-black";
+                          cardColor = "bg-emerald-50 border-emerald-400 text-emerald-955 font-black";
                         } else if (isSelected) {
-                          cardColor = "bg-red-50 border-red-400 text-red-950";
+                          cardColor = "bg-red-50 border-red-400 text-red-955";
                         } else {
                           cardColor = "bg-slate-50 border-slate-200 opacity-60 text-slate-400";
                         }
@@ -2028,20 +2025,20 @@ export default function App() {
                           className={`p-4 rounded-2xl border-2 text-center text-xs font-bold transition-all active:scale-95 shadow-sm flex flex-col items-center justify-center gap-2 ${cardColor}`}
                         >
                           <span className="text-sm font-black">{opt}</span>
-                          {quizStatus !== 'idle' && isCorrect && <span className="text-xs">✔️ ¡Correcto!</span>}
-                          {quizStatus !== 'idle' && isSelected && !isCorrect && <span className="text-xs">❌ Incorrecto</span>}
+                          {quizStatus !== 'idle' && isCorrect && <span className="text-xs text-emerald-650">✔️ ¡Correcto!</span>}
+                          {quizStatus !== 'idle' && isSelected && !isCorrect && <span className="text-xs text-red-650">❌ Incorrecto</span>}
                         </button>
                       );
                     })}
                   </div>
 
                   {quizStatus === 'correct' && (
-                    <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-center font-black text-emerald-800 text-xs">
+                    <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-center font-black text-emerald-805 text-xs">
                       🏆 ¡Súper! Ganaste una estrellita de Duolingo por esta respuesta.
                     </div>
                   )}
                   {quizStatus === 'incorrect' && (
-                    <div className="p-3 bg-red-50 border border-red-300 rounded-xl text-center font-black text-red-800 text-xs">
+                    <div className="p-3 bg-red-50 border border-red-300 rounded-xl text-center font-black text-red-805 text-xs">
                       🧸 Inténtalo de nuevo. ¡Tú puedes hacerlo perfecto!
                     </div>
                   )}
@@ -2051,9 +2048,8 @@ export default function App() {
           )}
 
           {/* TAB: MOCHILA DE TAREAS */}
-          {}
           {activeTab === 'mochila' && (
-            <div className={`border p-6 rounded-3xl space-y-4 shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-950'}`}>
+            <div className={`border p-6 rounded-3xl space-y-4 shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-955'}`}>
               <div className={`flex items-center justify-between border-b pb-4 ${darkMode ? 'border-slate-800' : 'border-purple-50'}`}>
                 <div className="flex items-center space-x-2">
                   <FolderHeart className="text-rose-500 animate-bounce" size={24} />
@@ -2062,7 +2058,7 @@ export default function App() {
                 {esProfesora && (
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-black text-purple-955 dark:text-white">Estudiante:</span>
-                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1.5 rounded-xl bg-white text-slate-905 border border-purple-200 outline-none">
+                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-bold p-1.5 rounded-xl bg-white text-slate-905 border border-purple-202 outline-none">
                       {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                     </select>
                   </div>
@@ -2096,7 +2092,7 @@ export default function App() {
                             {!esProfesora && (
                               <button 
                                 onClick={() => openDeleteConfirmModal(key, targetStudent)} 
-                                className="bg-red-500 hover:bg-red-605 text-white px-4 py-2.5 rounded-xl font-black shadow-md transition-all flex items-center gap-1 text-[11px] active:scale-95"
+                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2.5 rounded-xl font-black shadow-md transition-all flex items-center gap-1 text-[11px] active:scale-95"
                               >
                                 <Trash2 size={14} /> Eliminar PDF 🗑️
                               </button>
@@ -2117,7 +2113,7 @@ export default function App() {
                           )}
                         </div>
                         {parsed.comentario && (
-                          <p className={`p-2.5 rounded-2xl border font-bold italic w-full ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-200' : 'bg-white border-purple-105'}`}>
+                          <p className={`p-2.5 rounded-2xl border font-bold italic w-full ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-205' : 'bg-white border-purple-105 text-slate-950'}`}>
                             💬 Comentario de Miss: {parsed.comentario}
                           </p>
                         )}
@@ -2130,9 +2126,8 @@ export default function App() {
           )}
 
           {/* TAB: CALIFICACIONES */}
-          {}
           {activeTab === 'calificaciones' && (
-            <div className={`border p-6 rounded-3xl space-y-4 shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-101 text-slate-950'}`}>
+            <div className={`border p-6 rounded-3xl space-y-4 shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-955'}`}>
               <div className={`flex items-center space-x-2 border-b pb-2 ${darkMode ? 'border-slate-800' : 'border-purple-100'}`}>
                 <Star className="text-amber-500 fill-amber-500 animate-pulse" size={24} />
                 <h2 className="text-sm font-black uppercase tracking-wider text-purple-955 dark:text-white">CALIFICACIONES EN TIEMPO REAL</h2>
@@ -2142,7 +2137,7 @@ export default function App() {
                 <div className="space-y-4">
                   <div className={`p-3 rounded-2xl flex items-center justify-between border ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-purple-50/20 border-purple-100/50'}`}>
                     <span className="text-xs font-black">Estudiante a Calificar:</span>
-                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-black p-1.5 rounded-xl bg-white text-slate-905 border border-purple-200">
+                    <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="text-xs font-black p-1.5 rounded-xl bg-white text-slate-905 border border-purple-202">
                       {estudiantesLista.map(est => <option key={est.id} value={est.id}>{est.name}</option>)}
                     </select>
                   </div>
@@ -2242,18 +2237,18 @@ export default function App() {
                     const parsed = parseCommentAndSticker(rawRecord.comentario);
 
                     return (
-                      <div key={key} className={`p-4 rounded-3xl border text-xs text-slate-955 dark:text-white space-y-2 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-purple-100'}`}>
+                      <div key={key} className={`p-4 rounded-3xl border text-xs text-slate-955 dark:text-white space-y-2 ${darkMode ? 'bg-slate-800 border-slate-705' : 'bg-white border-purple-101 shadow-md shadow-purple-50/40'}`}>
                         <div className="flex justify-between items-start">
                           <span className="font-black max-w-md">{infoTareas[key]}</span>
                           <span className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-2.5 py-1 rounded-xl font-black">Nota: {rawRecord.nota} / 10</span>
                         </div>
                         {parsed.sticker && (
-                          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-pink-50 text-pink-700 font-black border border-purple-200 animate-bounce">
+                          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-pink-55 text-pink-700 font-black border border-purple-202 animate-bounce">
                             🏆 ¡Sticker de Regalo!: <span className="text-lg">{parsed.sticker}</span>
                           </div>
                         )}
                         {parsed.comentario && (
-                          <p className={`p-2.5 rounded-2xl border font-bold italic text-slate-955 dark:text-slate-205 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-purple-50/25 border-purple-100/40'}`}>
+                          <p className={`p-2.5 rounded-2xl border font-bold italic text-slate-955 dark:text-slate-200 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-purple-50/25 border-purple-101/40 text-slate-905'}`}>
                             📢 Miss comentó: {parsed.comentario}
                           </p>
                         )}
@@ -2266,9 +2261,8 @@ export default function App() {
           )}
 
           {/* TAB: MÚSICA FELIZ */}
-          {}
           {activeTab === 'musica' && (
-            <div className={`border p-6 rounded-3xl space-y-4 shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-950'}`}>
+            <div className={`border p-6 rounded-3xl space-y-4 shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-955'}`}>
               <div className="flex items-center space-x-2 border-b pb-4 border-slate-200 dark:border-slate-700">
                 <Music className="text-rose-500 animate-bounce" size={24} />
                 <h2 className="text-sm font-black uppercase tracking-wider text-purple-955 dark:text-white">Mural de Música Feliz 🎵🎧</h2>
@@ -2283,14 +2277,14 @@ export default function App() {
                       placeholder="Nombre de la Canción (ej: Happy 🌸)" 
                       value={newSongName}
                       onChange={(e) => setNewSongName(e.target.value)}
-                      className="p-2.5 border border-purple-200 rounded-xl bg-white text-slate-900 font-bold text-xs outline-none"
+                      className="p-2.5 border border-purple-202 rounded-xl bg-white text-slate-900 font-bold text-xs outline-none"
                     />
                     <input 
                       type="text" 
                       placeholder="Enlace de YouTube" 
                       value={newSongUrl}
                       onChange={(e) => setNewSongUrl(e.target.value)}
-                      className="p-2.5 border border-purple-200 rounded-xl bg-white text-slate-900 font-bold text-xs outline-none"
+                      className="p-2.5 border border-purple-202 rounded-xl bg-white text-slate-900 font-bold text-xs outline-none"
                     />
                   </div>
                   <button 
@@ -2310,7 +2304,7 @@ export default function App() {
                   const hasLiked = song.likes?.includes(currentUser.username);
 
                   return (
-                    <div key={userKey} className={`p-4 rounded-3xl border flex flex-col justify-between space-y-3 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-purple-100 shadow-md shadow-purple-100/5'}`}>
+                    <div key={userKey} className={`p-4 rounded-3xl border flex flex-col justify-between space-y-3 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-purple-100 shadow-md shadow-purple-50/40'}`}>
                       <div>
                         <div className="flex justify-between items-center">
                           <span className="text-[10px] font-black uppercase text-slate-400 block">De: {accounts[userKey]?.name || userKey}</span>
@@ -2321,19 +2315,19 @@ export default function App() {
                         </h4>
                         
                         {song.enlace && (
-                          <a href={song.enlace} target="_blank" rel="noopener noreferrer" className="text-[11px] text-pink-600 font-bold hover:underline flex items-center gap-1 mt-1">
+                          <a href={song.enlace} target="_blank" rel="noopener noreferrer" className="text-[11px] text-pink-650 font-bold hover:underline flex items-center gap-1 mt-1">
                             <PlayCircle size={12} /> Abrir Enlace de Música 🎧
                           </a>
                         )}
                       </div>
 
-                      <div className="flex items-center justify-between border-t border-b py-2 my-2 border-purple-100 dark:border-slate-700">
+                      <div className="flex items-center justify-between border-t border-b py-2 my-2 border-purple-101 dark:border-slate-700">
                         <button 
                           onClick={() => handleDarLike(userKey)}
                           disabled={esIsabel}
-                          className={`flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-xl border transition-all active:scale-90 ${hasLiked ? 'bg-pink-100 border-pink-300 text-pink-600' : 'bg-slate-50 border-slate-200 hover:bg-slate-100 text-slate-600'}`}
+                          className={`flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-xl border transition-all active:scale-90 ${hasLiked ? 'bg-pink-100 border-pink-300 text-pink-605' : 'bg-slate-50 border-slate-200 hover:bg-slate-100 text-slate-600'}`}
                         >
-                          <Heart size={14} className={hasLiked ? 'fill-pink-500 text-pink-500' : ''} />
+                          <Heart size={14} className={hasLiked ? 'fill-pink-500 text-pink-600' : ''} />
                           <span>{song.likes?.length || 0} Likes</span>
                         </button>
                         <span className="text-[11px] text-slate-400 font-bold">{song.comentarios?.length || 0} Comentarios</span>
@@ -2348,7 +2342,7 @@ export default function App() {
                           return (
                             <div key={commentIdx} className={`p-2 rounded-2xl border text-[11px] space-y-1 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-purple-50/15 border-purple-101'}`}>
                               <div className="flex justify-between items-center">
-                                <span className="font-black text-purple-700">{comment.nombre}:</span>
+                                <span className="font-black text-purple-705">{comment.nombre}:</span>
                                 
                                 <div className="flex items-center space-x-1.5">
                                   <button 
@@ -2357,17 +2351,17 @@ export default function App() {
                                     className={`p-1 rounded-lg transition-all active:scale-90 border ${hasLikedComment ? 'bg-pink-100 border-pink-300 text-pink-600' : 'bg-slate-50 border-slate-200'}`}
                                     title="Dar like al comentario"
                                   >
-                                    <Heart size={10} className={hasLikedComment ? 'fill-pink-500 text-pink-500' : ''} />
+                                    <Heart size={10} className={hasLikedComment ? 'fill-pink-500 text-pink-600' : ''} />
                                   </button>
 
                                   {comment.likes?.length > 0 && (
-                                    <span className="text-[9px] font-black text-pink-600">{comment.likes.length} ❤️</span>
+                                    <span className="text-[9px] font-black text-pink-650">{comment.likes.length} ❤️</span>
                                   )}
 
                                   {iCanDelete && !esIsabel && (
                                     <button 
                                       onClick={() => handleEliminarComentario(userKey, commentIdx)}
-                                      className="p-1 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg active:scale-90 transition-all border border-red-200"
+                                      className="p-1 bg-red-100 hover:bg-red-200 text-red-650 rounded-lg active:scale-90 transition-all border border-red-200"
                                       title="Borrar comentario"
                                     >
                                       <Trash2 size={10} />
@@ -2388,7 +2382,7 @@ export default function App() {
                             placeholder="Escribe un comentario..." 
                             value={commentInput[userKey] || ''}
                             onChange={(e) => setCommentInput(prev => ({ ...prev, [userKey]: e.target.value }))}
-                            className="flex-1 p-2 border border-purple-200 rounded-xl bg-white text-slate-900 font-bold text-xs outline-none"
+                            className="flex-1 p-2 border border-purple-202 rounded-xl bg-white text-slate-900 font-bold text-xs outline-none"
                           />
                           <button 
                             onClick={() => handleAgregarComentario(userKey)}
@@ -2406,12 +2400,11 @@ export default function App() {
           )}
 
           {/* TAB: VOCABULARIO */}
-          {}
           {activeTab === 'vocabulario' && (
-            <div className={`border p-6 rounded-3xl space-y-4 shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-950'}`}>
+            <div className={`border p-6 rounded-3xl space-y-4 shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-955'}`}>
               <div className="flex items-center justify-between border-b pb-4 border-slate-200 dark:border-slate-700">
                 <div className="flex items-center space-x-2">
-                  <Volume2 className="text-pink-605" size={24} />
+                  <Volume2 className="text-pink-600" size={24} />
                   <h2 className="text-sm font-black uppercase tracking-wider text-purple-955 dark:text-white">DICCIONARIO INTERACTIVO 👋✨</h2>
                 </div>
               </div>
@@ -2424,7 +2417,7 @@ export default function App() {
                     placeholder="Buscar palabra o frase..." 
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-9 p-3 border border-purple-200 rounded-2xl bg-white text-slate-900 font-bold text-xs outline-none focus:ring-2 focus:ring-purple-400"
+                    className="w-full pl-9 p-3 border border-purple-202 rounded-2xl bg-white text-slate-900 font-bold text-xs outline-none focus:ring-2 focus:ring-purple-400"
                   />
                 </div>
                 <div className="flex gap-2 overflow-x-auto pb-1 shrink-0">
@@ -2432,7 +2425,7 @@ export default function App() {
                     <button
                       key={cat}
                       onClick={() => setActiveVocabFilter(cat)}
-                      className={`text-[10px] font-black uppercase px-3.5 py-2.5 rounded-xl border transition-all active:scale-95 ${activeVocabFilter === cat ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white' : 'bg-purple-50 text-purple-700 border-purple-100 hover:bg-purple-100'}`}
+                      className={`text-[10px] font-black uppercase px-3.5 py-2.5 rounded-xl border transition-all active:scale-95 ${activeVocabFilter === cat ? 'bg-gradient-to-r from-pink-500 to-purple-605 text-white' : 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100'}`}
                     >
                       {cat}
                     </button>
@@ -2444,12 +2437,12 @@ export default function App() {
                 {filteredVocab.map((item, i) => (
                   <div key={i} className={`flex justify-between items-center p-3.5 rounded-2xl border transition-all hover:border-pink-500 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-purple-50/10 border-purple-101 shadow-sm'}`}>
                     <div className="flex items-center space-x-2.5">
-                      <button onClick={() => escucharPalabra(item.en)} className="p-2.5 bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 text-white rounded-xl transition-all active:scale-90 shadow-md">
+                      <button onClick={() => escucharPalabra(item.en)} className="p-2.5 bg-gradient-to-r from-pink-500 to-purple-606 hover:opacity-90 text-white rounded-xl transition-all active:scale-90 shadow-md">
                         <Volume2 size={14} />
                       </button>
                       <span className="text-xs font-black text-purple-955 dark:text-white">{item.en}</span>
                     </div>
-                    <span className={`text-xs font-black px-2.5 py-1 rounded-xl border shadow-sm ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-purple-100 text-slate-950'}`}>🗣️ {item.es}</span>
+                    <span className={`text-xs font-black px-2.5 py-1 rounded-xl border shadow-sm ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-101' : 'bg-white border-purple-100 text-slate-955'}`}>🗣️ {item.es}</span>
                   </div>
                 ))}
               </div>
@@ -2457,28 +2450,27 @@ export default function App() {
           )}
 
           {/* TAB: JUEGOS */}
-          {}
           {activeTab === 'juegos' && (
-            <div className={`border p-6 rounded-3xl space-y-4 shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-950'}`}>
+            <div className={`border p-6 rounded-3xl space-y-4 shadow-xl ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-purple-100 text-slate-955'}`}>
               <div className="flex items-center space-x-2 border-b pb-4 border-slate-200 dark:border-slate-700">
-                <Gamepad2 className="text-purple-650 animate-bounce" size={24} />
+                <Gamepad2 className="text-purple-600 animate-bounce" size={24} />
                 <h2 className="text-sm font-black uppercase tracking-wider text-purple-955 dark:text-white">ÁREA DE JUEGOS 🎮✨</h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noopener noreferrer" className="block p-5 bg-gradient-to-tr from-rose-50 to-pink-100/20 hover:scale-[1.01] rounded-3xl border border-purple-205 shadow-md transition-all">
-                  <span className="text-sm font-black block text-pink-700">🎮 Wordwall: Greetings & Saludos 👋</span>
+                <a href="https://wordwall.net/es/resource/115823970" target="_blank" rel="noopener noreferrer" className="block p-5 bg-gradient-to-tr from-rose-50 to-pink-100/20 hover:scale-[1.01] rounded-3xl border border-purple-202 shadow-md transition-all">
+                  <span className="text-sm font-black block text-pink-750">🎮 Wordwall: Greetings & Saludos 👋</span>
                   <p className="text-xs font-bold text-slate-500 mt-1">Practica los saludos iniciales relacionando las columnas mágicas en tiempo récord.</p>
                 </a>
-                <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noopener noreferrer" className="block p-5 bg-gradient-to-tr from-purple-50 to-purple-100/20 hover:scale-[1.01] rounded-3xl border border-purple-205 shadow-md transition-all">
-                  <span className="text-sm font-black block text-purple-700">🎮 Interacty: Keratin Challenge 🧪</span>
+                <a href="https://interacty.me/projects/e502cc8626a13026" target="_blank" rel="noopener noreferrer" className="block p-5 bg-gradient-to-tr from-purple-50 to-purple-100/20 hover:scale-[1.01] rounded-3xl border border-purple-202 shadow-md transition-all">
+                  <span className="text-sm font-black block text-purple-750">🎮 Interacty: Keratin Challenge 🧪</span>
                   <p className="text-xs font-bold text-slate-500 mt-1">Ordena los pasos del tratamiento de keratina y gana la medalla del salón.</p>
                 </a>
-                <a href="https://wordwall.net/es/resource/116065664" target="_blank" rel="noopener noreferrer" className="block p-5 bg-gradient-to-tr from-cyan-50 to-cyan-100/20 hover:scale-[1.01] rounded-3xl border border-purple-205 shadow-md transition-all">
-                  <span className="text-sm font-black block text-cyan-700">🎮 Wordwall: Aftercare Rules 🧴</span>
+                <a href="https://wordwall.net/es/resource/116065664" target="_blank" rel="noopener noreferrer" className="block p-5 bg-gradient-to-tr from-cyan-50 to-cyan-100/20 hover:scale-[1.01] rounded-3xl border border-purple-202 shadow-md transition-all">
+                  <span className="text-sm font-black block text-cyan-750">🎮 Wordwall: Aftercare Rules 🧴</span>
                   <p className="text-xs font-bold text-slate-500 mt-1">Prueba tus conocimientos sobre el cuidado del tratamiento de keratina.</p>
                 </a>
-                <a href="https://create.kahoot.it/share/class-5/16e72ba0-e8fc-4910-9400-b7a3c94c3586" target="_blank" rel="noopener noreferrer" className="block p-5 bg-gradient-to-tr from-emerald-50 to-emerald-100/20 hover:scale-[1.01] rounded-3xl border border-purple-205 shadow-md transition-all">
-                  <span className="text-sm font-black block text-emerald-700">🎮 Kahoot: Price, Time & Pay 💰</span>
+                <a href="https://create.kahoot.it/share/class-5/16e72ba0-e8fc-4910-9400-b7a3c94c3586" target="_blank" rel="noopener noreferrer" className="block p-5 bg-gradient-to-tr from-emerald-50 to-emerald-100/20 hover:scale-[1.01] rounded-3xl border border-purple-202 shadow-md transition-all">
+                  <span className="text-sm font-black block text-emerald-750">🎮 Kahoot: Price, Time & Pay 💰</span>
                   <p className="text-xs font-bold text-slate-500 mt-1">El gran examen interactivo en vivo con tus amigos para divertirte.</p>
                 </a>
               </div>
@@ -2489,7 +2481,6 @@ export default function App() {
       </div>
 
       {/* CONFIRMACIÓN BORRADO PDF MODAL */}
-      {}
       {deleteConfirm.show && (
         <div className="fixed inset-0 bg-slate-900/65 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white p-6 rounded-3xl max-w-sm w-full space-y-4 border border-purple-200 shadow-2xl text-center">
@@ -2500,7 +2491,7 @@ export default function App() {
               <button onClick={handlePdfDeleteConfirmed} className="flex-1 bg-red-500 hover:bg-red-600 text-white font-black py-2.5 rounded-2xl text-xs shadow-md">
                 Sí, borrar tarea 🗑️
               </button>
-              <button onClick={() => setDeleteConfirm({ show: false, claseKey: null, studentUser: null })} className="flex-1 bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-black py-2.5 rounded-2xl text-xs">
+              <button onClick={() => setDeleteConfirm({ show: false, claseKey: null, studentUser: null })} className="flex-1 bg-purple-50 hover:bg-purple-100 text-purple-750 border border-purple-200 font-black py-2.5 rounded-2xl text-xs">
                 No, cancelar 🌸
               </button>
             </div>
